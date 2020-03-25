@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD//EN"
+"http://hibernate.org/dtd/hibernate-configuration-3.0.dtd"> <!-- This is really no 5.0 dtd. 3.0 is used for latest version (5.0 hibernate). -->
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- This is handled automatically by hibernate. There is no need to defined it any more. -->
+<!-- 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property> -->
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/immport_shared</property>
+		<property name="hibernate.connection.username">{}</property>
+		<property name="hibernate.connection.password">{}</property>
+		<!-- For internal test. ssl is not required. -->
+		<property name="hibernate.connection.useSSL">false</property>
+		<property name="hibernate.connection.pool_size">4</property>
+		<property name="show_sql">false</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+
+		<mapping class="org.reactome.immport.ws.model.Study" />
+		<mapping class="org.reactome.immport.ws.model.Experiment" />
+		<mapping class="org.reactome.immport.ws.model.ExpSample" />
+		<mapping class="org.reactome.immport.ws.model.ResultSchema" />
+		<mapping class="org.reactome.immport.ws.model.PublicRepository" />
+		<mapping class="org.reactome.immport.ws.model.SampleGeneExpression" />
+		<mapping class="org.reactome.immport.ws.model.ArmOrCohort" />
+		<mapping class="org.reactome.immport.ws.model.ArmToSubject" />
+		<mapping class="org.reactome.immport.ws.model.Subject" />
+		<mapping class="org.reactome.immport.ws.model.BioSample" />
+		<mapping class="org.reactome.immport.ws.model.Treatment" />
+		<mapping class="org.reactome.immport.ws.model.AdverseEvent" />
+		<mapping class="org.reactome.immport.ws.model.Intervention" />
+		<mapping class="org.reactome.immport.ws.model.ImmuneExposure" />
+		
+	</session-factory>
+</hibernate-configuration>
