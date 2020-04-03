@@ -42,6 +42,13 @@ public class WSTests {
         testGetMethod(url);
     }
     
+    @Test
+    public void testQueryStudiesForVO() throws Exception {
+    	String url = HOST_URL + "/study/vaccine";
+    	String rtn = callHttp(url, HTTP_GET, "VO_0000044");
+    	outputJSON(rtn);
+    }
+    
     private String outputJSON(String json) throws JsonProcessingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         Object obj = mapper.readValue(json, Object.class);
