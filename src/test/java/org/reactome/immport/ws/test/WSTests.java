@@ -44,8 +44,24 @@ public class WSTests {
     
     @Test
     public void testQueryStudiesForVO() throws Exception {
+    	String url = HOST_URL + "/study/vaccine/VO_0000642";
+    	String rtn = callHttp(url, HTTP_GET, null);
+    	outputJSON(rtn);
+    }
+    
+    @Test
+    public void testQueryStudiesForVOs() throws Exception {
     	String url = HOST_URL + "/study/vaccine";
-    	String rtn = callHttp(url, HTTP_GET, "VO_0000044");
+    	String query = "VO_0000044,VO_0000642,VO_0004809,VO_0000045,VO_0000046,VO_0000047";
+    	String rtn = callHttp(url, HTTP_POST, query);
+    	outputJSON(rtn);
+    }
+    
+    @Test
+    public void testQueryExpSamplesForVOs() throws Exception {
+    	String url = HOST_URL + "/expSample/vaccine";
+    	String query = "VO_0000642,VO_0000044,VO_0004809,VO_0000045,VO_0000046,VO_0000047 \n male,female";
+    	String rtn = callHttp(url, HTTP_POST, query);
     	outputJSON(rtn);
     }
     

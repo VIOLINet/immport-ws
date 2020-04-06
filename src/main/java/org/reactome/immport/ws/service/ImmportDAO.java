@@ -1,14 +1,18 @@
 package org.reactome.immport.ws.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.reactome.immport.ws.model.ExpSample;
 import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
+import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +50,31 @@ public class ImmportDAO {
         Session session = sessionFactory.getCurrentSession();
         List<Study> studies = session.createQuery(queryText, Study.class)
                                      .setParameter("voIds", voIds)
-                                     .list();
+                                     .getResultList();
         return studies;
+    }
+
+    @Transactional(readOnly = true)
+    public List<VOToGSM> queryExpSamplesForVO(Collection<String>voIds, Collection<String> gender){
+		 String queryText = "SELECT DISTINCT ge.repositoryAccession, bs.subject.race FROM SampleGeneExpression ge " +
+				 "INNER JOIN ge.expSample es " +
+				 "INNER JOIN es.experiment ex " + 
+				 "INNER JOIN es.bioSamples bs " +
+				 "INNER JOIN ex.study s " +
+	             "INNER JOIN s.arms a " + 
+	             "INNER JOIN a.exposures e " + 
+	             "WHERE e.exposureMaterialId in :voIds "+
+	             "AND bs.subject.gender in :sjGender";
+		Session session = sessionFactory.getCurrentSession();
+		List<Object[]> repositoryAccessions = session.createQuery(queryText, Object[].class)
+						                           .setParameter("voIds", voIds)
+						                           .setParameter("sjGender", gender)
+						                           .list();
+		List<VOToGSM> result = new ArrayList<>();
+		for(Object[] obj : repositoryAccessions) {
+			result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
+		}
+    	return result;
     }
     
     
@@ -60,5 +87,4 @@ public class ImmportDAO {
         Session session = sessionFactory.getCurrentSession();
         return session.get(cls, accession);
     }
-    
 }
