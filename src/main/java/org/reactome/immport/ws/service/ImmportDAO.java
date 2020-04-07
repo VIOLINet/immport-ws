@@ -56,15 +56,13 @@ public class ImmportDAO {
 
     @Transactional(readOnly = true)
     public List<VOToGSM> queryGSMDataForVO(Collection<String>voIds, Collection<String> gender){
-		 String queryText = "SELECT DISTINCT ge.repositoryAccession, bs.subject.race FROM SampleGeneExpression ge " +
-				 "INNER JOIN ge.expSample es " +
-				 "INNER JOIN es.experiment ex " + 
-				 "INNER JOIN es.bioSamples bs " +
-				 "INNER JOIN ex.study s " +
-	             "INNER JOIN s.arms a " + 
-	             "INNER JOIN a.exposures e " + 
-	             "WHERE e.exposureMaterialId in :voIds "+
-	             "AND bs.subject.gender in :sjGender";
+    	String queryText = "SELECT bs.study.id, ge.repositoryAccession, ie.exposureMaterialId, bs.studyTimeCollected, bs.studyTimeCollectedUnit, sub.race, sub.gender FROM Subject sub " + 
+    					   "INNER JOIN sub.immuneExposures ie " +
+    					   "INNER JOIN sub.biosamples bs " + 
+    					   "INNER JOIN bs.expSamples es " +
+    					   "INNER JOIN es.geneExpressions ge " +
+    					   "WHERE ie.exposureMaterialId in :voIds " + 
+    					   "AND sub.gender in :sjGender";
 		Session session = sessionFactory.getCurrentSession();
 		List<Object[]> repositoryAccessions = session.createQuery(queryText, Object[].class)
 						                           .setParameter("voIds", voIds)
@@ -72,7 +70,7 @@ public class ImmportDAO {
 						                           .list();
 		List<VOToGSM> result = new ArrayList<>();
 		for(Object[] obj : repositoryAccessions) {
-			result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
+			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString(), obj[4].toString(), obj[5].toString(), obj[6].toString()));
 		}
     	return result;
     }
