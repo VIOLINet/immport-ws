@@ -62,7 +62,7 @@ public class ImmportWSController {
      * @return
      */
     @PostMapping("expSample/vaccine")
-    public List<VOToGSM> queryExpSamplesForVOs(@RequestBody String text){
+    public List<VOToGSM> queryGSMDataForVOs(@RequestBody String text){
     	if(text == null || text.trim().length() == 0)
     		return new ArrayList<>();
     	String[] lines = text.split("\n");
@@ -71,7 +71,7 @@ public class ImmportWSController {
     	
     	Collection<String> voIds = Arrays.asList(lines[0].split(","));
     	Collection<String> genderList = Arrays.asList(lines[1].split(","));
-    	return studyDAO.queryExpSamplesForVO(voIds, genderList);
+    	return studyDAO.queryGSMDataForVO(voIds, genderList);
     }
     
 }

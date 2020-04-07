@@ -55,7 +55,7 @@ public class ImmportDAO {
     }
 
     @Transactional(readOnly = true)
-    public List<VOToGSM> queryExpSamplesForVO(Collection<String>voIds, Collection<String> gender){
+    public List<VOToGSM> queryGSMDataForVO(Collection<String>voIds, Collection<String> gender){
 		 String queryText = "SELECT DISTINCT ge.repositoryAccession, bs.subject.race FROM SampleGeneExpression ge " +
 				 "INNER JOIN ge.expSample es " +
 				 "INNER JOIN es.experiment ex " + 
