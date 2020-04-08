@@ -65,6 +65,23 @@ public class WSTests {
     	outputJSON(rtn);
     }
     
+    @Test
+    public void testQueryTimesForVO() throws Exception {
+    	String url  = HOST_URL + "/collectionTimes/vaccine/VO_0000642";
+    	String rtn = callHttp(url,HTTP_GET, null);
+    	outputJSON(rtn);
+    }
+    
+    @Test
+    public void testQueryTimesForVOs() throws Exception {
+    	String url  = HOST_URL + "/collectionTimes/vaccine";
+    	String query = "VO_0000642,VO_0000044,VO_0004809,VO_0000045,VO_0000046,VO_0000047"+"\n"+"male,female";
+    	String rtn = callHttp(url, HTTP_POST, query);
+    	outputJSON(rtn);
+    }
+    
+    
+    
     private String outputJSON(String json) throws JsonProcessingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         Object obj = mapper.readValue(json, Object.class);

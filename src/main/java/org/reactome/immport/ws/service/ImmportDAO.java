@@ -12,6 +12,7 @@ import org.reactome.immport.ws.model.ExpSample;
 import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
+import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,7 +57,8 @@ public class ImmportDAO {
 
     @Transactional(readOnly = true)
     public List<VOToGSM> queryGSMDataForVO(Collection<String>voIds, Collection<String> gender){
-    	String queryText = "SELECT bs.study.id, ge.repositoryAccession, ie.exposureMaterialId, bs.studyTimeCollected, bs.studyTimeCollectedUnit, sub.race, sub.gender FROM Subject sub " + 
+    	String queryText = "SELECT bs.study.id, ge.repositoryAccession, ie.exposureMaterialId, " +
+    					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit, sub.race, sub.gender FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
     					   "INNER JOIN sub.biosamples bs " + 
     					   "INNER JOIN bs.expSamples es " +
@@ -73,6 +75,30 @@ public class ImmportDAO {
 			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString(), obj[4].toString(), obj[5].toString(), obj[6].toString()));
 		}
     	return result;
+    }
+    
+    @Transactional(readOnly = true)
+    public List<BioSampleCollectionTime> queryStudyTimeCollectedForVO(String voId){
+    	return queryStudyTimeCollectedForVO(Collections.singleton(voId));
+    }
+    
+    @Transactional(readOnly = true)
+    public List<BioSampleCollectionTime> queryStudyTimeCollectedForVO(Collection<String> voIds){
+    	String queryText = "SELECT DISTINCT bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM BioSample bs " +
+    					   "INNER JOIN bs.subject sub " + 
+    					   "INNER JOIN sub.immuneExposures ie " +
+    					   "WHERE ie.exposureMaterialId in :voIds";
+    	Session session = sessionFactory.getCurrentSession();
+    	List<Object[]> times = session.createQuery(queryText, Object[].class)
+    								  .setParameter("voIds", voIds)
+    								  .list();
+    	
+    	List<BioSampleCollectionTime> rtn = new ArrayList<>();
+    	for(Object[] obj : times) {
+    		rtn.add(new BioSampleCollectionTime(Double.parseDouble(obj[0].toString()), obj[1].toString()));
+    	}
+    	
+    	return rtn;
     }
     
     

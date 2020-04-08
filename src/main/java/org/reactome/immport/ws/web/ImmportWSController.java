@@ -10,6 +10,7 @@ import org.reactome.immport.ws.model.ExpSample;
 import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
+import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.service.ImmportDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,24 @@ public class ImmportWSController {
     	Collection<String> voIds = Arrays.asList(lines[0].split(","));
     	Collection<String> genderList = Arrays.asList(lines[1].split(","));
     	return studyDAO.queryGSMDataForVO(voIds, genderList);
+    }
+    
+    @GetMapping("collectionTimes/vaccine/{voId}")
+    public List<BioSampleCollectionTime> queryTimesCollectedForVO(@PathVariable("voId") String voId){
+    	return studyDAO.queryStudyTimeCollectedForVO(voId);
+    }
+    
+    /**
+     * voIds should be delimited by "," in the request body text.
+     * @param text
+     * @return
+     */
+    @PostMapping("collectionTimes/vaccine")
+    public List<BioSampleCollectionTime> queryTimesCollectedForVOs(@RequestBody String text){
+    	Collection<String> voIds = Arrays.asList(text.split(","));
+    	if(voIds == null || voIds.size() == 0)
+    		return new ArrayList<>();
+    	return studyDAO.queryStudyTimeCollectedForVO(voIds);
     }
     
 }
