@@ -14,6 +14,7 @@ import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.VOToGSM;
+import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,7 @@ public class ImmportDAO {
     }
 
     @Transactional(readOnly = true)
-    public List<VOToGSM> queryGSMDataForVO(Collection<String>voIds, Collection<String> gender){
+    public List<VOToGSM> queryGSMDataForVO(GSMForVOs gSMForVOs){
     	String queryText = "SELECT bs.study.id, ge.repositoryAccession, ie.exposureMaterialId, " +
     					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit, sub.race, sub.gender FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
@@ -67,8 +68,8 @@ public class ImmportDAO {
     					   "AND sub.gender in :sjGender";
 		Session session = sessionFactory.getCurrentSession();
 		List<Object[]> repositoryAccessions = session.createQuery(queryText, Object[].class)
-						                           .setParameter("voIds", voIds)
-						                           .setParameter("sjGender", gender)
+						                           .setParameter("voIds", gSMForVOs.getVoIds())
+						                           .setParameter("sjGender", gSMForVOs.getGenderList())
 						                           .list();
 		List<VOToGSM> result = new ArrayList<>();
 		for(Object[] obj : repositoryAccessions) {
