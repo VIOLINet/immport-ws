@@ -115,4 +115,5 @@ public class ImmportDAO {
         Session session = sessionFactory.getCurrentSession();
         return session.get(cls, accession);
     }
+    
 }

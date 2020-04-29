@@ -1,0 +1,521 @@
+"ID"	"Gene.Symbol"	"Gene.Title"	"logFC"	"P.Value"	"adj.P.Val"
+"220532_PM_s_at"	"220532_PM_s_at"	"TMEM176B"	"transmembrane protein 176B"	3.02202	8.99185122441444e-06	0.491989139743836
+"205048_PM_s_at"	"205048_PM_s_at"	"PSPH"	"phosphoserine phosphatase"	-3.65582	2.3056215466606e-05	0.494741903803805
+"209480_PM_at"	"209480_PM_at"	"HLA-DQB1"	"major histocompatibility complex, class II, DQ beta 1"	-3.60007	4.16994458306705e-05	0.494741903803805
+"227421_PM_at"	"227421_PM_at"	"C21orf57"	"chromosome 21 open reading frame 57"	-2.344645	4.19293388910592e-05	0.494741903803805
+"202672_PM_s_at"	"202672_PM_s_at"	"ATF3"	"activating transcription factor 3"	1.964565	5.4176870439658e-05	0.494741903803805
+"226736_PM_at"	"226736_PM_at"	"CHURC1"	"churchill domain containing 1"	-2.85765	5.43731394732362e-05	0.494741903803805
+"211734_PM_s_at"	"211734_PM_s_at"	"FCER1A"	"Fc fragment of IgE, high affinity I, receptor for; alpha polypeptide"	-2.252025	6.4532380598373e-05	0.494741903803805
+"213831_PM_at"	"213831_PM_at"	"HLA-DQA1"	"major histocompatibility complex, class II, DQ alpha 1"	-2.791465	7.67305216071361e-05	0.494741903803805
+"204863_PM_s_at"	"204863_PM_s_at"	"IL6ST"	"interleukin 6 signal transducer (gp130, oncostatin M receptor)"	-1.773135	8.13794596405783e-05	0.494741903803805
+"211000_PM_s_at"	"211000_PM_s_at"	"IL6ST"	"interleukin 6 signal transducer (gp130, oncostatin M receptor)"	-1.92476	0.000145866594725516	0.536099867517122
+"231828_PM_at"	"231828_PM_at"	"LOC253039"	"hypothetical LOC253039"	-2.842165	0.000160342811222252	0.536099867517122
+"238900_PM_at"	"238900_PM_at"	"HLA-DRB1 /// HLA-DRB3 /// HLA-DRB4 /// HLA-DRB5 /// LOC100294036"	"major histocompatibility complex, class II, DR beta 1 /// major histocompatibility complex, class II, DR beta 3 /// major histocompatibility complex, class II, DR beta 4 /// major histocompatibility complex, class II, DR beta 5 /// similar to HLA class II histocompatibility antigen, DRB1-7 beta chain"	-1.847295	0.000173641995303374	0.536099867517122
+"238455_PM_at"	"238455_PM_at"	""	""	1.54527	0.000179529705516409	0.536099867517122
+"241762_PM_at"	"241762_PM_at"	"FBXO32"	"F-box protein 32"	-2.090165	0.000185621580017116	0.536099867517122
+"203430_PM_at"	"203430_PM_at"	"HEBP2"	"heme binding protein 2"	1.693775	0.000187622202866775	0.536099867517122
+"203675_PM_at"	"203675_PM_at"	"NUCB2"	"nucleobindin 2"	-1.76652	0.000190229143827517	0.536099867517122
+"239278_PM_at"	"239278_PM_at"	""	""	-1.5696	0.000190711256873291	0.536099867517122
+"208580_PM_x_at"	"208580_PM_x_at"	"HIST1H4J /// HIST1H4K"	"histone cluster 1, H4j /// histone cluster 1, H4k"	-3.32485	0.000200337233986969	0.536099867517122
+"214723_PM_x_at"	"214723_PM_x_at"	"ANKRD36"	"ankyrin repeat domain 36"	-1.47782	0.000201191961533207	0.536099867517122
+"1560263_PM_at"	"1560263_PM_at"	""	""	1.78532	0.000203414094286345	0.536099867517122
+"235059_PM_at"	"235059_PM_at"	"RAB12"	"RAB12, member RAS oncogene family"	-2.13749	0.000213739901665339	0.536099867517122
+"221634_PM_at"	"221634_PM_at"	"FLJ43681 /// MGC2752 /// RPL23AP53 /// RPL23AP7 /// RPL23AP82"	"ribosomal protein L23a pseudogene /// hypothetical LOC65996 /// ribosomal protein L23a pseudogene 53 /// ribosomal protein L23a pseudogene 7 /// ribosomal protein L23a pseudogene 82"	1.57869	0.00022462389059731	0.536099867517122
+"230333_PM_at"	"230333_PM_at"	""	""	2.62985	0.000225354965784407	0.536099867517122
+"204019_PM_s_at"	"204019_PM_s_at"	"SH3YL1"	"SH3 domain containing, Ysc84-like 1 (S. cerevisiae)"	-2.03342	0.000236376359565036	0.538888854733372
+"211654_PM_x_at"	"211654_PM_x_at"	"HLA-DQB1"	"major histocompatibility complex, class II, DQ beta 1"	-1.543095	0.0002661576509509	0.582512634871139
+"215118_PM_s_at"	"215118_PM_s_at"	"IGHA1"	"Immunoglobulin heavy constant alpha 1"	-1.39407	0.000287853556400127	0.605765666862806
+"205321_PM_at"	"205321_PM_at"	"EIF2S3"	"eukaryotic translation initiation factor 2, subunit 3 gamma, 52kDa"	2.65145	0.000312038621564471	0.6151739939441
+"225551_PM_at"	"225551_PM_at"	"CNST"	"consortin, connexin sorting protein"	-1.36414	0.000314810780049983	0.6151739939441
+"201363_PM_s_at"	"201363_PM_s_at"	"IVNS1ABP"	"influenza virus NS1A binding protein"	1.529925	0.000331503845330317	0.625456306801666
+"220987_PM_s_at"	"220987_PM_s_at"	"C11orf17 /// NUAK2"	"chromosome 11 open reading frame 17 /// NUAK family, SNF1-like kinase, 2"	1.45552	0.000358596044211848	0.637401427628069
+"1552773_PM_at"	"1552773_PM_at"	"CLEC4D"	"C-type lectin domain family 4, member D"	1.25736	0.000372429843084464	0.637401427628069
+"225803_PM_at"	"225803_PM_at"	"FBXO32"	"F-box protein 32"	-1.853965	0.000373504979953913	0.637401427628069
+"224860_PM_at"	"224860_PM_at"	"C9orf123"	"chromosome 9 open reading frame 123"	-1.302325	0.000391793026989662	0.637401427628069
+"214463_PM_x_at"	"214463_PM_x_at"	"HIST1H4J"	"histone cluster 1, H4j"	-3.21283	0.000396082400426836	0.637401427628069
+"1555766_PM_a_at"	"1555766_PM_a_at"	"GNG2"	"guanine nucleotide binding protein (G protein), gamma 2"	1.26048	0.000415507150772111	0.649556392985601
+"224406_PM_s_at"	"224406_PM_s_at"	"FCRL5"	"Fc receptor-like 5"	-1.12328	0.000465379272618896	0.702867013563769
+"207075_PM_at"	"207075_PM_at"	"NLRP3"	"NLR family, pyrin domain containing 3"	1.69528	0.000506322515904168	0.702867013563769
+"216183_PM_at"	"216183_PM_at"	"TGM2"	"transglutaminase 2 (C polypeptide, protein-glutamine-gamma-glutamyltransferase)"	1.201225	0.000538589571129644	0.702867013563769
+"236495_PM_at"	"236495_PM_at"	""	""	1.46285	0.000545945034702792	0.702867013563769
+"223539_PM_s_at"	"223539_PM_s_at"	"SERF1A /// SERF1B"	"small EDRK-rich factor 1A (telomeric) /// small EDRK-rich factor 1B (centromeric)"	-1.377695	0.000548567753410091	0.702867013563769
+"225613_PM_at"	"225613_PM_at"	"MAST4"	"microtubule associated serine/threonine kinase family member 4"	-1.29845	0.000565262645197045	0.702867013563769
+"216557_PM_x_at"	"216557_PM_x_at"	"IGHA1 /// IGHD /// IGHG1 /// IGHG3 /// IGHM /// IGHV4-31 /// LOC100290320 /// LOC100291190"	"immunoglobulin heavy constant alpha 1 /// immunoglobulin heavy constant delta /// immunoglobulin heavy constant gamma 1 (G1m marker) /// immunoglobulin heavy constant gamma 3 (G3m marker) /// immunoglobulin heavy constant mu /// immunoglobulin heavy variable 4-31 /// similar to hCG2042717 /// similar to immunoglobulin heavy locus"	-1.08926	0.000573783749390153	0.702867013563769
+"213353_PM_at"	"213353_PM_at"	"ABCA5"	"ATP-binding cassette, sub-family A (ABC1), member 5"	-1.393885	0.000577417405882808	0.702867013563769
+"207993_PM_s_at"	"207993_PM_s_at"	"CHP"	"calcium binding protein P22"	1.27765	0.000578277625542217	0.702867013563769
+"217521_PM_at"	"217521_PM_at"	""	""	1.33903	0.000620557208075884	0.702867013563769
+"201683_PM_x_at"	"201683_PM_x_at"	"TOX4"	"TOX high mobility group box family member 4"	1.047615	0.000642373887697226	0.702867013563769
+"212195_PM_at"	"212195_PM_at"	"IL6ST"	"interleukin 6 signal transducer (gp130, oncostatin M receptor)"	-1.23179	0.000662503972458672	0.702867013563769
+"206643_PM_at"	"206643_PM_at"	"HAL"	"histidine ammonia-lyase"	1.244245	0.000668396120267261	0.702867013563769
+"209585_PM_s_at"	"209585_PM_s_at"	"MINPP1"	"multiple inositol-polyphosphate phosphatase 1"	-1.256735	0.000688120040186707	0.702867013563769
+"231747_PM_at"	"231747_PM_at"	"CYSLTR1"	"cysteinyl leukotriene receptor 1"	1.202475	0.000691420887919146	0.702867013563769
+"235056_PM_at"	"235056_PM_at"	"ETV6"	"ets variant 6"	1.43441	0.000711592453636505	0.702867013563769
+"1553118_PM_at"	"1553118_PM_at"	"THEM4"	"thioesterase superfamily member 4"	-1.58536	0.00073040610617924	0.702867013563769
+"210370_PM_s_at"	"210370_PM_s_at"	"LY9"	"lymphocyte antigen 9"	-1.445795	0.000746471162533519	0.702867013563769
+"216348_PM_at"	"216348_PM_at"	"RPS17P5"	"ribosomal protein S17 pseudogene 5"	-1.3918	0.000764861700591469	0.702867013563769
+"211688_PM_x_at"	"211688_PM_x_at"	"KIR3DL1 /// KIR3DL2 /// LOC727787"	"killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 1 /// killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 2 /// similar to killer cell immunoglobulin-like receptor 3DL2 precursor (MHC class I NK cell receptor) (Natural killer-associated transcript 4) (NKAT-4) (p70 natural killer cell receptor clone CL-5) (CD158k antigen)"	-2.03083	0.000775182363954501	0.702867013563769
+"231484_PM_at"	"231484_PM_at"	""	""	-2.61226	0.000775717362856353	0.702867013563769
+"216054_PM_x_at"	"216054_PM_x_at"	"MYL4"	"myosin, light chain 4, alkali; atrial, embryonic"	-1.64139	0.000781925505899505	0.702867013563769
+"226542_PM_at"	"226542_PM_at"	""	""	1.25888	0.000795112801969978	0.702867013563769
+"221253_PM_s_at"	"221253_PM_s_at"	"MUTED /// TXNDC5"	"muted homolog (mouse) /// thioredoxin domain containing 5 (endoplasmic reticulum)"	-1.029595	0.000812316096303276	0.702867013563769
+"218599_PM_at"	"218599_PM_at"	"REC8"	"REC8 homolog (yeast)"	1.009005	0.000825357824844882	0.702867013563769
+"204493_PM_at"	"204493_PM_at"	"BID"	"BH3 interacting domain death agonist"	1.16338	0.000836327130262341	0.702867013563769
+"219147_PM_s_at"	"219147_PM_s_at"	"C9orf95"	"chromosome 9 open reading frame 95"	-1.199925	0.000839861225407628	0.702867013563769
+"209846_PM_s_at"	"209846_PM_s_at"	"BTN3A2"	"butyrophilin, subfamily 3, member A2"	-1.2771	0.000857425944177457	0.702867013563769
+"212224_PM_at"	"212224_PM_at"	"ALDH1A1"	"aldehyde dehydrogenase 1 family, member A1"	1.619875	0.000865555426809615	0.702867013563769
+"214012_PM_at"	"214012_PM_at"	"ERAP1"	"endoplasmic reticulum aminopeptidase 1"	-1.17103	0.0009146561614441	0.702867013563769
+"227492_PM_at"	"227492_PM_at"	"OCLN"	"occludin"	-2.2965	0.000916375429647666	0.702867013563769
+"1563431_PM_x_at"	"1563431_PM_x_at"	"LOC100287237"	"hypothetical protein LOC100287237"	-1.01505	0.000945228817207298	0.702867013563769
+"227807_PM_at"	"227807_PM_at"	"PARP9"	"poly (ADP-ribose) polymerase family, member 9"	1.26614	0.000992397991216017	0.702867013563769
+"225794_PM_s_at"	"225794_PM_s_at"	"C22orf32"	"chromosome 22 open reading frame 32"	1.248965	0.000995321909961824	0.702867013563769
+"205801_PM_s_at"	"205801_PM_s_at"	"RASGRP3"	"RAS guanyl releasing protein 3 (calcium and DAG-regulated)"	-1.15763	0.00104750378417419	0.702867013563769
+"201841_PM_s_at"	"201841_PM_s_at"	"HSPB1"	"heat shock 27kDa protein 1"	-1.306005	0.00105719158420786	0.702867013563769
+"212998_PM_x_at"	"212998_PM_x_at"	"HLA-DQB1 /// LOC100294318"	"major histocompatibility complex, class II, DQ beta 1 /// similar to major histocompatibility complex, class II, DQ beta 1"	-1.217495	0.00106416491404244	0.702867013563769
+"230795_PM_at"	"230795_PM_at"	""	""	-1.701115	0.00107560145162125	0.702867013563769
+"212196_PM_at"	"212196_PM_at"	"IL6ST"	"interleukin 6 signal transducer (gp130, oncostatin M receptor)"	-1.202235	0.00111754936790224	0.702867013563769
+"222155_PM_s_at"	"222155_PM_s_at"	"GPR172A"	"G protein-coupled receptor 172A"	1.005085	0.00113462333909855	0.702867013563769
+"218064_PM_s_at"	"218064_PM_s_at"	"AKAP8L"	"A kinase (PRKA) anchor protein 8-like"	-1.0841	0.00115794042258254	0.702867013563769
+"220001_PM_at"	"220001_PM_at"	"PADI4"	"peptidyl arginine deiminase, type IV"	1.854405	0.00118106452907465	0.702867013563769
+"202799_PM_at"	"202799_PM_at"	"CLPP"	"ClpP caseinolytic peptidase, ATP-dependent, proteolytic subunit homolog (E. coli)"	-1.002745	0.0011882668029679	0.702867013563769
+"202888_PM_s_at"	"202888_PM_s_at"	"ANPEP"	"alanyl (membrane) aminopeptidase"	1.79322	0.00119156398784971	0.702867013563769
+"211430_PM_s_at"	"211430_PM_s_at"	"IGH@ /// IGHG1 /// IGHM /// IGHV4-31 /// LOC100290146"	"immunoglobulin heavy locus /// immunoglobulin heavy constant gamma 1 (G1m marker) /// immunoglobulin heavy constant mu /// immunoglobulin heavy variable 4-31 /// hypothetical protein LOC100290146"	-2.331175	0.00119622189273173	0.702867013563769
+"1569110_PM_x_at"	"1569110_PM_x_at"	"LOC728613"	"programmed cell death 6 pseudogene"	2.384095	0.00120416704888126	0.702867013563769
+"215540_PM_at"	"215540_PM_at"	"TRA@"	"T cell receptor alpha locus"	-1.17434	0.00122610635304279	0.702867013563769
+"200610_PM_s_at"	"200610_PM_s_at"	"NCL"	"nucleolin"	-1.036485	0.00123289922135376	0.702867013563769
+"208406_PM_s_at"	"208406_PM_s_at"	"GRAP2"	"GRB2-related adaptor protein 2"	-1.15531	0.0012728230173948	0.702867013563769
+"1565913_PM_at"	"1565913_PM_at"	""	""	1.264445	0.00127332607234586	0.702867013563769
+"227868_PM_at"	"227868_PM_at"	"LOC154761"	"hypothetical LOC154761"	1.51749	0.00128598355687688	0.702867013563769
+"1554767_PM_s_at"	"1554767_PM_s_at"	"CRYZL1"	"crystallin, zeta (quinone reductase)-like 1"	-1.032395	0.00130369334748866	0.702867013563769
+"213587_PM_s_at"	"213587_PM_s_at"	"ATP6V0E2"	"ATPase, H+ transporting V0 subunit e2"	-1.082385	0.00130722832650355	0.702867013563769
+"201192_PM_s_at"	"201192_PM_s_at"	"PITPNA"	"phosphatidylinositol transfer protein, alpha"	1.492435	0.00131838369425754	0.702867013563769
+"225219_PM_at"	"225219_PM_at"	"SMAD5"	"SMAD family member 5"	-1.231325	0.00132586822352478	0.702867013563769
+"212999_PM_x_at"	"212999_PM_x_at"	"HLA-DQB1 /// HLA-DQB2 /// LOC100294318"	"major histocompatibility complex, class II, DQ beta 1 /// major histocompatibility complex, class II, DQ beta 2 /// similar to major histocompatibility complex, class II, DQ beta 1"	-1.975355	0.00133328607811987	0.702867013563769
+"1555892_PM_s_at"	"1555892_PM_s_at"	"LOC253039"	"hypothetical LOC253039"	-1.375245	0.00141437202179908	0.702867013563769
+"209871_PM_s_at"	"209871_PM_s_at"	"APBA2"	"amyloid beta (A4) precursor protein-binding, family A, member 2"	-1.14778	0.00144211091042216	0.702867013563769
+"229070_PM_at"	"229070_PM_at"	"C6orf105"	"chromosome 6 open reading frame 105"	-1.208865	0.00145955503759006	0.702867013563769
+"209344_PM_at"	"209344_PM_at"	"TPM4"	"tropomyosin 4"	-1.006475	0.00147393163580859	0.702867013563769
+"208024_PM_s_at"	"208024_PM_s_at"	"DGCR6 /// DGCR6L"	"DiGeorge syndrome critical region gene 6 /// DiGeorge syndrome critical region gene 6-like"	-1.172795	0.00154430004972655	0.702867013563769
+"225795_PM_at"	"225795_PM_at"	"C22orf32"	"chromosome 22 open reading frame 32"	1.012085	0.00156819774590356	0.702867013563769
+"222573_PM_s_at"	"222573_PM_s_at"	"SAV1"	"salvador homolog 1 (Drosophila)"	-1.044095	0.00158550705277858	0.702867013563769
+"218346_PM_s_at"	"218346_PM_s_at"	"SESN1"	"sestrin 1"	-1.42454	0.00158612517997906	0.702867013563769
+"213327_PM_s_at"	"213327_PM_s_at"	"USP12"	"ubiquitin specific peptidase 12"	-1.127955	0.00158814681360347	0.702867013563769
+"234761_PM_at"	"234761_PM_at"	""	""	1.02492	0.00161469856280584	0.702867013563769
+"236439_PM_at"	"236439_PM_at"	""	""	1.970845	0.00164468750925727	0.702867013563769
+"232173_PM_at"	"232173_PM_at"	"CLEC2L"	"C-type lectin domain family 2, member L"	-1.19711	0.00164635772653393	0.702867013563769
+"202732_PM_at"	"202732_PM_at"	"PKIG"	"protein kinase (cAMP-dependent, catalytic) inhibitor gamma"	-1.476225	0.00164962178711758	0.702867013563769
+"200999_PM_s_at"	"200999_PM_s_at"	"CKAP4"	"cytoskeleton-associated protein 4"	1.100805	0.00168051313303636	0.702867013563769
+"220112_PM_at"	"220112_PM_at"	"ANKRD55"	"ankyrin repeat domain 55"	-1.28614	0.00168801922093906	0.702867013563769
+"1567107_PM_s_at"	"1567107_PM_s_at"	"TPM4"	"tropomyosin 4"	-1.004615	0.00169346258149433	0.702867013563769
+"1556047_PM_s_at"	"1556047_PM_s_at"	"MAGEE1"	"melanoma antigen family E, 1"	-1.026205	0.00170096038586778	0.702867013563769
+"201362_PM_at"	"201362_PM_at"	"IVNS1ABP"	"influenza virus NS1A binding protein"	1.393875	0.00170241786214346	0.702867013563769
+"227548_PM_at"	"227548_PM_at"	"ORMDL1"	"ORM1-like 1 (S. cerevisiae)"	-1.179355	0.00172269728640679	0.702867013563769
+"244546_PM_at"	"244546_PM_at"	"CYCS"	"cytochrome c, somatic"	-1.276685	0.00175481224467455	0.702867013563769
+"204079_PM_at"	"204079_PM_at"	"TPST2"	"tyrosylprotein sulfotransferase 2"	-1.043765	0.00176569897598875	0.702867013563769
+"225987_PM_at"	"225987_PM_at"	"STEAP4"	"STEAP family member 4"	2.397235	0.0017709446139561	0.702867013563769
+"224818_PM_at"	"224818_PM_at"	"SORT1"	"sortilin 1"	1.0753	0.00177274326732706	0.702867013563769
+"239287_PM_at"	"239287_PM_at"	""	""	-1.200295	0.00183191035727587	0.709230148335883
+"228357_PM_at"	"228357_PM_at"	"UNK"	"unkempt homolog (Drosophila)"	-1.224895	0.00184139124371594	0.709230148335883
+"236506_PM_at"	"236506_PM_at"	""	""	-1.20054	0.00185784325934089	0.709230148335883
+"225123_PM_at"	"225123_PM_at"	""	""	-1.19913	0.00188234756614462	0.709230148335883
+"207840_PM_at"	"207840_PM_at"	"CD160"	"CD160 molecule"	-1.486505	0.00192468986868631	0.709230148335883
+"201980_PM_s_at"	"201980_PM_s_at"	"RSU1"	"Ras suppressor protein 1"	-1.13615	0.00194064802358104	0.709230148335883
+"205826_PM_at"	"205826_PM_at"	"MYOM2"	"myomesin (M-protein) 2, 165kDa"	-1.94844	0.0019577162988009	0.709230148335883
+"204981_PM_at"	"204981_PM_at"	"SLC22A18"	"solute carrier family 22, member 18"	1.14557	0.00196246648058267	0.709230148335883
+"201897_PM_s_at"	"201897_PM_s_at"	"CKS1B"	"CDC28 protein kinase regulatory subunit 1B"	-1.04236	0.00196345733709674	0.709230148335883
+"225802_PM_at"	"225802_PM_at"	"TOP1MT"	"topoisomerase (DNA) I, mitochondrial"	-1.3246	0.00197302032366559	0.709230148335883
+"208650_PM_s_at"	"208650_PM_s_at"	"CD24"	"CD24 molecule"	-1.65804	0.00204706179019785	0.709230148335883
+"1555976_PM_s_at"	"1555976_PM_s_at"	""	""	-1.34754	0.00205745568800043	0.709230148335883
+"224331_PM_s_at"	"224331_PM_s_at"	"MRPL36"	"mitochondrial ribosomal protein L36"	-1.05829	0.0020913087583426	0.709230148335883
+"236620_PM_at"	"236620_PM_at"	"RIF1"	"RAP1 interacting factor homolog (yeast)"	-1.34908	0.00211793370907765	0.709230148335883
+"224786_PM_at"	"224786_PM_at"	"SCOC"	"short coiled-coil protein"	-1.108725	0.00214716127765796	0.709230148335883
+"1563397_PM_at"	"1563397_PM_at"	""	""	-1.10853	0.00216096132999445	0.709230148335883
+"221555_PM_x_at"	"221555_PM_x_at"	"CDC14B"	"CDC14 cell division cycle 14 homolog B (S. cerevisiae)"	-1.14186	0.00220818152386538	0.709230148335883
+"209683_PM_at"	"209683_PM_at"	"FAM49A"	"family with sequence similarity 49, member A"	1.142565	0.0022160758457626	0.709230148335883
+"212190_PM_at"	"212190_PM_at"	"SERPINE2"	"serpin peptidase inhibitor, clade E (nexin, plasminogen activator inhibitor type 1), member 2"	-1.232615	0.00225552577168193	0.709230148335883
+"241824_PM_at"	"241824_PM_at"	""	""	1.055295	0.00225557692347749	0.709230148335883
+"239655_PM_at"	"239655_PM_at"	""	""	-1.117085	0.00231173086528548	0.709230148335883
+"221540_PM_x_at"	"221540_PM_x_at"	"GTF2H2 /// GTF2H2B /// GTF2H2C /// GTF2H2D"	"general transcription factor IIH, polypeptide 2, 44kDa /// general transcription factor IIH, polypeptide 2B /// general transcription factor IIH, polypeptide 2C /// general transcription factor IIH, polypeptide 2D"	-1.240685	0.0023505274079656	0.709230148335883
+"1555446_PM_s_at"	"1555446_PM_s_at"	"TRAPPC10"	"trafficking protein particle complex 10"	1.072795	0.00236463743421343	0.709230148335883
+"218135_PM_at"	"218135_PM_at"	"ERGIC2"	"ERGIC and golgi 2"	-1.112105	0.00237039539502026	0.709230148335883
+"225954_PM_s_at"	"225954_PM_s_at"	"MIDN"	"midnolin"	1.5398	0.00238010339311457	0.709230148335883
+"222583_PM_s_at"	"222583_PM_s_at"	"NUP50"	"nucleoporin 50kDa"	1.077055	0.00238122965199176	0.709230148335883
+"1554624_PM_a_at"	"1554624_PM_a_at"	"SIRPB1"	"signal-regulatory protein beta 1"	2.28428	0.00245019257119844	0.709230148335883
+"238513_PM_at"	"238513_PM_at"	"PRRG4"	"Proline rich Gla (G-carboxyglutamic acid) 4 (transmembrane)"	1.349755	0.00246974996491051	0.709230148335883
+"219090_PM_at"	"219090_PM_at"	"SLC24A3"	"solute carrier family 24 (sodium/potassium/calcium exchanger), member 3"	-1.276825	0.00249322184011345	0.709230148335883
+"202499_PM_s_at"	"202499_PM_s_at"	"SLC2A3"	"solute carrier family 2 (facilitated glucose transporter), member 3"	1.218695	0.00260050980667848	0.709230148335883
+"214779_PM_s_at"	"214779_PM_s_at"	"SGSM3"	"small G protein signaling modulator 3"	-1.044515	0.00264617819883406	0.709230148335883
+"218532_PM_s_at"	"218532_PM_s_at"	"FAM134B"	"family with sequence similarity 134, member B"	-1.9942	0.00268624154963738	0.709230148335883
+"227852_PM_at"	"227852_PM_at"	"RP9"	"retinitis pigmentosa 9 (autosomal dominant)"	-1.216075	0.00270967191705521	0.709230148335883
+"1560662_PM_s_at"	"1560662_PM_s_at"	"WHAMML1 /// WHAMML2"	"WAS protein homolog associated with actin, golgi membranes and microtubules-like 1 /// WAS protein homolog associated with actin, golgi membranes and microtubules-like 2 (pseudogene)"	-1.051415	0.00271861338403264	0.709230148335883
+"201906_PM_s_at"	"201906_PM_s_at"	"CTDSPL"	"CTD (carboxy-terminal domain, RNA polymerase II, polypeptide A) small phosphatase-like"	-1.03304	0.00272867518463583	0.709230148335883
+"210701_PM_at"	"210701_PM_at"	"CFDP1"	"craniofacial development protein 1"	-1.04258	0.00274481582922113	0.709230148335883
+"221541_PM_at"	"221541_PM_at"	"CRISPLD2"	"cysteine-rich secretory protein LCCL domain containing 2"	2.13537	0.00275375860140805	0.709230148335883
+"211900_PM_x_at"	"211900_PM_x_at"	"CD6"	"CD6 molecule"	-1.08966	0.00275402123171838	0.709230148335883
+"205442_PM_at"	"205442_PM_at"	"MFAP3L"	"microfibrillar-associated protein 3-like"	-1.96909	0.00277093909551281	0.709230148335883
+"227697_PM_at"	"227697_PM_at"	"SOCS3"	"suppressor of cytokine signaling 3"	1.304065	0.00280305962046274	0.709230148335883
+"1557116_PM_at"	"1557116_PM_at"	"APOL6"	"apolipoprotein L, 6"	1.00344	0.0029097057245109	0.709230148335883
+"217977_PM_at"	"217977_PM_at"	"SEPX1"	"selenoprotein X, 1"	1.78331	0.00291112518739976	0.709230148335883
+"AFFX-HUMISGF3A/M97935_MA_at"	"AFFX-HUMISGF3A/M97935_MA_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.454725	0.00294846915939794	0.709230148335883
+"228518_PM_at"	"228518_PM_at"	"IGHG1 /// IGHM"	"immunoglobulin heavy constant gamma 1 (G1m marker) /// immunoglobulin heavy constant mu"	-1.25936	0.00299137550072152	0.709230148335883
+"241916_PM_at"	"241916_PM_at"	""	""	1.052295	0.00310625693741076	0.72014871889638
+"1565852_PM_at"	"1565852_PM_at"	""	""	1.191225	0.00319280388681698	0.724991401116897
+"225468_PM_at"	"225468_PM_at"	"PATL1"	"protein associated with topoisomerase II homolog 1 (yeast)"	1.510095	0.00327509513617179	0.72528490145688
+"241133_PM_at"	"241133_PM_at"	"TRBV27"	"T cell receptor beta variable 27"	-1.86248	0.00333373874980983	0.72528490145688
+"202459_PM_s_at"	"202459_PM_s_at"	"LPIN2"	"lipin 2"	-1.05448	0.0033346925794446	0.72528490145688
+"236975_PM_at"	"236975_PM_at"	""	""	-1.156605	0.00336261011530651	0.72528490145688
+"1556769_PM_a_at"	"1556769_PM_a_at"	""	""	-1.47741	0.00337768209358343	0.72528490145688
+"208727_PM_s_at"	"208727_PM_s_at"	"CDC42"	"cell division cycle 42 (GTP binding protein, 25kDa)"	1.7099	0.00339897328044196	0.72528490145688
+"218510_PM_x_at"	"218510_PM_x_at"	"FAM134B"	"family with sequence similarity 134, member B"	-2.318845	0.00344486765563556	0.72528490145688
+"222527_PM_s_at"	"222527_PM_s_at"	"RBM22"	"RNA binding motif protein 22"	1.01398	0.00344789519510558	0.72528490145688
+"219717_PM_at"	"219717_PM_at"	"DCAF16"	"DDB1 and CUL4 associated factor 16"	-1.25507	0.00353646821946836	0.72528490145688
+"222862_PM_s_at"	"222862_PM_s_at"	"AK5"	"adenylate kinase 5"	-1.30098	0.00386313002544349	0.72657391264821
+"236266_PM_at"	"236266_PM_at"	"RORA"	"RAR-related orphan receptor A"	1.095365	0.00387385969148318	0.72657391264821
+"206359_PM_at"	"206359_PM_at"	"SOCS3"	"suppressor of cytokine signaling 3"	1.050605	0.00391444153953095	0.72657391264821
+"1553133_PM_at"	"1553133_PM_at"	"C9orf72"	"chromosome 9 open reading frame 72"	1.379935	0.00392760367569646	0.72657391264821
+"228283_PM_at"	"228283_PM_at"	"CMC1"	"COX assembly mitochondrial protein homolog (S. cerevisiae)"	-1.503365	0.00395697951642229	0.72657391264821
+"207324_PM_s_at"	"207324_PM_s_at"	"DSC1"	"desmocollin 1"	-1.067735	0.00405679648665612	0.72657391264821
+"209659_PM_s_at"	"209659_PM_s_at"	"CDC16"	"cell division cycle 16 homolog (S. cerevisiae)"	-1.11729	0.00412337708585266	0.72657391264821
+"203853_PM_s_at"	"203853_PM_s_at"	"GAB2"	"GRB2-associated binding protein 2"	1.29394	0.00414323645774359	0.72657391264821
+"229584_PM_at"	"229584_PM_at"	"LRRK2"	"leucine-rich repeat kinase 2"	2.208175	0.00420478895764092	0.728053885497858
+"1554481_PM_a_at"	"1554481_PM_a_at"	"EPB41"	"erythrocyte membrane protein band 4.1 (elliptocytosis 1, RH-linked)"	-1.16414	0.00425249849099883	0.729390140862072
+"244035_PM_at"	"244035_PM_at"	""	""	-1.584675	0.00433588012020634	0.734421032040176
+"1557166_PM_at"	"1557166_PM_at"	"PDCD4"	"programmed cell death 4 (neoplastic transformation inhibitor)"	1.394575	0.0043649009534111	0.734421032040176
+"209969_PM_s_at"	"209969_PM_s_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.62462	0.00440111542744441	0.734421032040176
+"203126_PM_at"	"203126_PM_at"	"IMPA2"	"inositol(myo)-1(or 4)-monophosphatase 2"	1.095745	0.00440470673707834	0.734421032040176
+"230170_PM_at"	"230170_PM_at"	"OSM"	"oncostatin M"	1.405985	0.00458220860723143	0.738506564210082
+"217761_PM_at"	"217761_PM_at"	"ADI1"	"acireductone dioxygenase 1"	1.01443	0.00459040529418215	0.738506564210082
+"221188_PM_s_at"	"221188_PM_s_at"	"CIDEB"	"cell death-inducing DFFA-like effector b"	1.17878	0.00461498709454017	0.738506564210082
+"1569263_PM_at"	"1569263_PM_at"	""	""	1.140665	0.00462361264513241	0.738506564210082
+"213022_PM_s_at"	"213022_PM_s_at"	"UTRN"	"utrophin"	1.05595	0.00466512156627496	0.738506564210082
+"213581_PM_at"	"213581_PM_at"	"PDCD2"	"programmed cell death 2"	-1.356375	0.00468550297913183	0.738506564210082
+"223592_PM_s_at"	"223592_PM_s_at"	"RNF135"	"ring finger protein 135"	1.32034	0.00469441662600356	0.738506564210082
+"209864_PM_at"	"209864_PM_at"	"FRAT2"	"frequently rearranged in advanced T-cell lymphomas 2"	1.00422	0.00472396060217538	0.738506564210082
+"205033_PM_s_at"	"205033_PM_s_at"	"DEFA1 /// DEFA1B /// DEFA3"	"defensin, alpha 1 /// defensin, alpha 1B /// defensin, alpha 3, neutrophil-specific"	-3.5094	0.00476259577646546	0.738506564210082
+"212592_PM_at"	"212592_PM_at"	"IGJ"	"immunoglobulin J polypeptide, linker protein for immunoglobulin alpha and mu polypeptides"	-1.55091	0.00483688806506609	0.738506564210082
+"227609_PM_at"	"227609_PM_at"	"EPSTI1"	"epithelial stromal interaction 1 (breast)"	1.058145	0.00489857443921741	0.738506564210082
+"202729_PM_s_at"	"202729_PM_s_at"	"LTBP1"	"latent transforming growth factor beta binding protein 1"	-1.280875	0.00493073319711444	0.738506564210082
+"215101_PM_s_at"	"215101_PM_s_at"	"CXCL5"	"chemokine (C-X-C motif) ligand 5"	-2.16416	0.00497598539733752	0.738506564210082
+"1560739_PM_a_at"	"1560739_PM_a_at"	""	""	-1.19255	0.00549329713265583	0.738506564210082
+"228443_PM_s_at"	"228443_PM_s_at"	""	""	1.179215	0.00556343924367548	0.738506564210082
+"234645_PM_at"	"234645_PM_at"	""	""	-1.34677	0.00557426234023804	0.738506564210082
+"207314_PM_x_at"	"207314_PM_x_at"	"KIR3DL2 /// LOC727787"	"killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 2 /// similar to killer cell immunoglobulin-like receptor 3DL2 precursor (MHC class I NK cell receptor) (Natural killer-associated transcript 4) (NKAT-4) (p70 natural killer cell receptor clone CL-5) (CD158k antigen)"	-1.965935	0.00565359855049394	0.738506564210082
+"201156_PM_s_at"	"201156_PM_s_at"	"RAB5C"	"RAB5C, member RAS oncogene family"	1.25004	0.0057125525678796	0.738506564210082
+"209258_PM_s_at"	"209258_PM_s_at"	"SMC3"	"structural maintenance of chromosomes 3"	-1.283505	0.0057356721044892	0.738506564210082
+"1554712_PM_a_at"	"1554712_PM_a_at"	"GLYATL2"	"glycine-N-acyltransferase-like 2"	-2.40626	0.00575720294745792	0.738506564210082
+"200864_PM_s_at"	"200864_PM_s_at"	"RAB11A"	"RAB11A, member RAS oncogene family"	-1.19968	0.00577768149122667	0.738506564210082
+"203305_PM_at"	"203305_PM_at"	"F13A1"	"coagulation factor XIII, A1 polypeptide"	-1.05468	0.00579328713213004	0.738506564210082
+"202503_PM_s_at"	"202503_PM_s_at"	"KIAA0101"	"KIAA0101"	-1.277625	0.00581769783924547	0.738506564210082
+"202018_PM_s_at"	"202018_PM_s_at"	"LTF"	"lactotransferrin"	-3.478725	0.00581877744520423	0.738506564210082
+"212509_PM_s_at"	"212509_PM_s_at"	"MXRA7"	"matrix-remodelling associated 7"	-1.51206	0.00594228105183934	0.738506564210082
+"1566989_PM_at"	"1566989_PM_at"	"ARID1B"	"AT rich interactive domain 1B (SWI1-like)"	1.14916	0.00601062198856141	0.738506564210082
+"221060_PM_s_at"	"221060_PM_s_at"	"TLR4"	"toll-like receptor 4"	1.26037	0.00609853287474907	0.738506564210082
+"207549_PM_x_at"	"207549_PM_x_at"	"CD46"	"CD46 molecule, complement regulatory protein"	1.31081	0.00611122707904303	0.738506564210082
+"221919_PM_at"	"221919_PM_at"	"HNRNPA1"	"heterogeneous nuclear ribonucleoprotein A1"	-1.403815	0.00617640796518039	0.738506564210082
+"209771_PM_x_at"	"209771_PM_x_at"	"CD24"	"CD24 molecule"	-2.3321	0.00619127138871205	0.738506564210082
+"205931_PM_s_at"	"205931_PM_s_at"	"CREB5"	"cAMP responsive element binding protein 5"	1.45109	0.00619244868633392	0.738506564210082
+"1555659_PM_a_at"	"1555659_PM_a_at"	"TREML1"	"triggering receptor expressed on myeloid cells-like 1"	-1.27056	0.00623238482647745	0.738506564210082
+"244313_PM_at"	"244313_PM_at"	"CR1"	"complement component (3b/4b) receptor 1 (Knops blood group)"	1.38629	0.00624292678673715	0.738506564210082
+"225328_PM_at"	"225328_PM_at"	""	""	-1.087445	0.00634851359492312	0.738506564210082
+"207206_PM_s_at"	"207206_PM_s_at"	"ALOX12"	"arachidonate 12-lipoxygenase"	-1.605955	0.00642040841839119	0.738506564210082
+"231996_PM_at"	"231996_PM_at"	"N4BP2"	"NEDD4 binding protein 2"	-1.33845	0.00651750116515189	0.738506564210082
+"243296_PM_at"	"243296_PM_at"	"NAMPT"	"Nicotinamide phosphoribosyltransferase"	1.1059	0.0066398656020853	0.738506564210082
+"232216_PM_at"	"232216_PM_at"	"YME1L1"	"YME1-like 1 (S. cerevisiae)"	1.058355	0.00664787450204388	0.738506564210082
+"222833_PM_at"	"222833_PM_at"	"LPCAT2"	"lysophosphatidylcholine acyltransferase 2"	1.08757	0.00667422621104333	0.738506564210082
+"238461_PM_at"	"238461_PM_at"	"EIF4E3"	"eukaryotic translation initiation factor 4E family member 3"	1.18955	0.00669103327159008	0.738506564210082
+"200948_PM_at"	"200948_PM_at"	"MLF2"	"myeloid leukemia factor 2"	1.160505	0.00673835743961089	0.738506564210082
+"219622_PM_at"	"219622_PM_at"	"RAB20"	"RAB20, member RAS oncogene family"	1.92106	0.0067649077347837	0.738506564210082
+"211389_PM_x_at"	"211389_PM_x_at"	"KIR3DS1"	"killer cell immunoglobulin-like receptor, three domains, short cytoplasmic tail, 1"	-1.36804	0.00679714880151939	0.738506564210082
+"213645_PM_at"	"213645_PM_at"	"ENOSF1"	"enolase superfamily member 1"	-1.077585	0.00699002685647961	0.738506564210082
+"205627_PM_at"	"205627_PM_at"	"CDA"	"cytidine deaminase"	1.052815	0.007026467788372	0.738506564210082
+"220832_PM_at"	"220832_PM_at"	"TLR8"	"toll-like receptor 8"	2.07244	0.0070518193400545	0.738506564210082
+"226310_PM_at"	"226310_PM_at"	"RICTOR"	"RPTOR independent companion of MTOR, complex 2"	1.018275	0.0070590830928675	0.738506564210082
+"225767_PM_at"	"225767_PM_at"	""	""	-1.184315	0.00707627632731556	0.738506564210082
+"224576_PM_at"	"224576_PM_at"	"ERGIC1"	"endoplasmic reticulum-golgi intermediate compartment (ERGIC) 1"	1.292105	0.00727747281721651	0.738506564210082
+"223502_PM_s_at"	"223502_PM_s_at"	"TNFSF13B"	"tumor necrosis factor (ligand) superfamily, member 13b"	1.294405	0.00731392381788904	0.738506564210082
+"1552772_PM_at"	"1552772_PM_at"	"CLEC4D"	"C-type lectin domain family 4, member D"	1.107475	0.00734848135974055	0.738506564210082
+"231929_PM_at"	"231929_PM_at"	"IKZF2"	"IKAROS family zinc finger 2 (Helios)"	-1.20938	0.00736717378963991	0.738506564210082
+"225899_PM_x_at"	"225899_PM_x_at"	"FLJ45340 /// FLJ45445 /// LOC100133150 /// LOC100287274 /// LOC653340"	"hypothetical LOC402483 /// hypothetical LOC399844 /// hypothetical LOC100133150 /// hypothetical LOC100287274 /// hypothetical LOC653340"	1.448825	0.00745943058226845	0.738506564210082
+"208782_PM_at"	"208782_PM_at"	"FSTL1"	"follistatin-like 1"	-1.38869	0.00755860654755042	0.738506564210082
+"208792_PM_s_at"	"208792_PM_s_at"	"CLU"	"clusterin"	-1.075735	0.00763829702291389	0.738506564210082
+"221491_PM_x_at"	"221491_PM_x_at"	"HLA-DRB1 /// HLA-DRB3 /// HLA-DRB4 /// HLA-DRB5 /// LOC100133661 /// LOC100294036"	"major histocompatibility complex, class II, DR beta 1 /// major histocompatibility complex, class II, DR beta 3 /// major histocompatibility complex, class II, DR beta 4 /// major histocompatibility complex, class II, DR beta 5 /// similar to HLA class II histocompatibility antigen, DR-W53 beta chain /// similar to HLA class II histocompatibility antigen, DRB1-7 beta chain"	1.52094	0.00765458967014499	0.738506564210082
+"217147_PM_s_at"	"217147_PM_s_at"	"TRAT1"	"T cell receptor associated transmembrane adaptor 1"	-1.169685	0.00769447200992283	0.738506564210082
+"208651_PM_x_at"	"208651_PM_x_at"	"CD24"	"CD24 molecule"	-1.862195	0.00769535672436848	0.738506564210082
+"1553297_PM_a_at"	"1553297_PM_a_at"	"CSF3R"	"colony stimulating factor 3 receptor (granulocyte)"	1.658905	0.00776379037680946	0.738506564210082
+"230177_PM_at"	"230177_PM_at"	"GTF2H2B"	"general transcription factor IIH, polypeptide 2B"	-1.1332	0.00776935192208859	0.738506564210082
+"220496_PM_at"	"220496_PM_at"	"CLEC1B"	"C-type lectin domain family 1, member B"	-2.15297	0.00796233738004681	0.738506564210082
+"235670_PM_at"	"235670_PM_at"	"STX11"	"syntaxin 11"	1.314075	0.00811488425131885	0.738506564210082
+"239646_PM_at"	"239646_PM_at"	""	""	-1.639865	0.00812282894823167	0.738506564210082
+"208146_PM_s_at"	"208146_PM_s_at"	"CPVL"	"carboxypeptidase, vitellogenic-like"	1.47031	0.00820574523067218	0.738506564210082
+"223777_PM_at"	"223777_PM_at"	"DDX11L2"	"DEAD/H (Asp-Glu-Ala-Asp/His) box polypeptide 11 like 2"	-1.349605	0.00822367583506411	0.738506564210082
+"211644_PM_x_at"	"211644_PM_x_at"	"IGK@ /// IGKC /// IGKV3-20 /// LOC100291682"	"immunoglobulin kappa locus /// immunoglobulin kappa constant /// immunoglobulin kappa variable 3-20 /// similar to hCG1686089"	-1.25542	0.00855893988961042	0.738506564210082
+"213908_PM_at"	"213908_PM_at"	"WHAMML1 /// WHAMML2"	"WAS protein homolog associated with actin, golgi membranes and microtubules-like 1 /// WAS protein homolog associated with actin, golgi membranes and microtubules-like 2 (pseudogene)"	-1.11682	0.00856510702263931	0.738506564210082
+"1569607_PM_s_at"	"1569607_PM_s_at"	"ANKRD20A1 /// ANKRD20A2 /// ANKRD20A3 /// ANKRD20A4 /// ANKRD20A5 /// C21orf81 /// LOC100132733 /// LOC644339"	"ankyrin repeat domain 20 family, member A1 /// ankyrin repeat domain 20 family, member A2 /// ankyrin repeat domain 20 family, member A3 /// ankyrin repeat domain 20 family, member A4 /// ankyrin repeat domain 20 family, member A5 /// ankyrin repeat domain 20 family, member A3 pseudogene /// similar to FLJ00310 protein /// similar to ANKRD20A2 protein"	-1.699495	0.00866209631397533	0.738506564210082
+"211798_PM_x_at"	"211798_PM_x_at"	"IGLJ3"	"immunoglobulin lambda joining 3"	-1.16299	0.00873026132258594	0.738506564210082
+"226646_PM_at"	"226646_PM_at"	"KLF2"	"Kruppel-like factor 2 (lung)"	1.204225	0.00906024496265639	0.738506564210082
+"226388_PM_at"	"226388_PM_at"	"TCEA3"	"transcription elongation factor A (SII), 3"	-1.1094	0.00916679969489932	0.738506564210082
+"223553_PM_s_at"	"223553_PM_s_at"	"DOK3"	"docking protein 3"	1.15277	0.00920828812656288	0.738506564210082
+"203852_PM_s_at"	"203852_PM_s_at"	"SMN1 /// SMN2"	"survival of motor neuron 1, telomeric /// survival of motor neuron 2, centromeric"	-1.35127	0.00921713838145205	0.738506564210082
+"239888_PM_at"	"239888_PM_at"	""	""	1.04777	0.00932498800950174	0.738506564210082
+"230748_PM_at"	"230748_PM_at"	"SLC16A6"	"solute carrier family 16, member 6 (monocarboxylic acid transporter 7)"	1.033485	0.00941312305090519	0.738506564210082
+"1568763_PM_s_at"	"1568763_PM_s_at"	"LOC728613 /// PDCD6"	"programmed cell death 6 pseudogene /// programmed cell death 6"	1.06636	0.00948405928758218	0.738506564210082
+"AFFX-HUMISGF3A/M97935_5_at"	"AFFX-HUMISGF3A/M97935_5_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.18121	0.00949877682276898	0.738506564210082
+"234491_PM_s_at"	"234491_PM_s_at"	"SAV1"	"salvador homolog 1 (Drosophila)"	-1.29129	0.00956079357939773	0.738506564210082
+"200700_PM_s_at"	"200700_PM_s_at"	"KDELR2"	"KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 2"	1.46923	0.00971811169562761	0.738506564210082
+"225710_PM_at"	"225710_PM_at"	"GNB4"	"guanine nucleotide binding protein (G protein), beta polypeptide 4"	1.141085	0.00974946073756108	0.738506564210082
+"202728_PM_s_at"	"202728_PM_s_at"	"LTBP1"	"latent transforming growth factor beta binding protein 1"	-1.02595	0.00976512447112043	0.738506564210082
+"205174_PM_s_at"	"205174_PM_s_at"	"QPCT"	"glutaminyl-peptide cyclotransferase"	1.01554	0.00987938768449441	0.738506564210082
+"229228_PM_at"	"229228_PM_at"	"CREB5"	"cAMP responsive element binding protein 5"	1.79374	0.00990292200337807	0.738506564210082
+"216576_PM_x_at"	"216576_PM_x_at"	"IGK@ /// IGKC /// LOC652493 /// LOC652694"	"immunoglobulin kappa locus /// immunoglobulin kappa constant /// similar to Ig kappa chain V-I region HK102 precursor /// similar to Ig kappa chain V-I region HK102 precursor"	-1.05716	0.00992217370143032	0.738506564210082
+"1558877_PM_at"	"1558877_PM_at"	""	""	1.15926	0.0100022788171396	0.738506564210082
+"218153_PM_at"	"218153_PM_at"	"CARS2"	"cysteinyl-tRNA synthetase 2, mitochondrial (putative)"	1.628735	0.0100728958968762	0.738506564210082
+"209949_PM_at"	"209949_PM_at"	"NCF2"	"neutrophil cytosolic factor 2"	1.0665	0.0101024423460003	0.738506564210082
+"228084_PM_at"	"228084_PM_at"	"PLA2G12A"	"phospholipase A2, group XIIA"	-1.161645	0.0101086435485814	0.738506564210082
+"232375_PM_at"	"232375_PM_at"	""	""	1.281905	0.0101374343375154	0.738506564210082
+"236223_PM_s_at"	"236223_PM_s_at"	"RIT1"	"Ras-like without CAAX 1"	1.23551	0.0101635943844951	0.738506564210082
+"211924_PM_s_at"	"211924_PM_s_at"	"PLAUR"	"plasminogen activator, urokinase receptor"	1.459105	0.0101842949650338	0.738506564210082
+"215990_PM_s_at"	"215990_PM_s_at"	"BCL6"	"B-cell CLL/lymphoma 6"	1.74153	0.0102154512985712	0.738506564210082
+"223631_PM_s_at"	"223631_PM_s_at"	"C19orf33"	"chromosome 19 open reading frame 33"	-1.830665	0.0102649041367224	0.738506564210082
+"203543_PM_s_at"	"203543_PM_s_at"	"KLF9"	"Kruppel-like factor 9"	-1.4417	0.0103158039914422	0.738506564210082
+"202446_PM_s_at"	"202446_PM_s_at"	"PLSCR1"	"phospholipid scramblase 1"	1.05359	0.010348929789606	0.738506564210082
+"235542_PM_at"	"235542_PM_at"	"TET3"	"tet oncogene family member 3"	1.280065	0.0103866617534096	0.738506564210082
+"AFFX-HUMISGF3A/M97935_MB_at"	"AFFX-HUMISGF3A/M97935_MB_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.31283	0.010424949601116	0.738506564210082
+"224917_PM_at"	"224917_PM_at"	"MIR21"	"microRNA 21"	1.232955	0.0104785960778016	0.738506564210082
+"227889_PM_at"	"227889_PM_at"	"LPCAT2"	"lysophosphatidylcholine acyltransferase 2"	1.36759	0.0105437160913919	0.738506564210082
+"207269_PM_at"	"207269_PM_at"	"DEFA4"	"defensin, alpha 4, corticostatin"	-2.74892	0.0108715525084865	0.738506564210082
+"214366_PM_s_at"	"214366_PM_s_at"	"ALOX5"	"arachidonate 5-lipoxygenase"	1.273095	0.01089737753144	0.738506564210082
+"212185_PM_x_at"	"212185_PM_x_at"	"MT2A"	"metallothionein 2A"	1.093955	0.0109807618955269	0.738506564210082
+"205159_PM_at"	"205159_PM_at"	"CSF2RB"	"colony stimulating factor 2 receptor, beta, low-affinity (granulocyte-macrophage)"	1.317165	0.0109925090660092	0.738506564210082
+"243888_PM_at"	"243888_PM_at"	""	""	-1.02715	0.0111389441196522	0.738506564210082
+"200604_PM_s_at"	"200604_PM_s_at"	"PRKAR1A"	"protein kinase, cAMP-dependent, regulatory, type I, alpha (tissue specific extinguisher 1)"	1.165635	0.011155882244437	0.738506564210082
+"207426_PM_s_at"	"207426_PM_s_at"	"TNFSF4"	"tumor necrosis factor (ligand) superfamily, member 4"	-1.36657	0.0111925477970858	0.738506564210082
+"216379_PM_x_at"	"216379_PM_x_at"	"CD24"	"CD24 molecule"	-1.87913	0.0113640400991011	0.738506564210082
+"203290_PM_at"	"203290_PM_at"	"HLA-DQA1"	"major histocompatibility complex, class II, DQ alpha 1"	2.62361	0.0114378398120098	0.738506564210082
+"226188_PM_at"	"226188_PM_at"	"HSPC159"	"galectin-related protein"	-1.70595	0.0114604127443099	0.738506564210082
+"237839_PM_at"	"237839_PM_at"	""	""	-1.17023	0.011482141865683	0.738506564210082
+"209138_PM_x_at"	"209138_PM_x_at"	"IGL@"	"Immunoglobulin lambda locus"	-1.08606	0.0115398098834344	0.738506564210082
+"207808_PM_s_at"	"207808_PM_s_at"	"PROS1"	"protein S (alpha)"	-1.10966	0.0116054612769792	0.738506564210082
+"222483_PM_at"	"222483_PM_at"	"EFHD2"	"EF-hand domain family, member D2"	1.2239	0.0116128839943119	0.738506564210082
+"216243_PM_s_at"	"216243_PM_s_at"	"IL1RN"	"interleukin 1 receptor antagonist"	1.08598	0.0116129918302331	0.738506564210082
+"222326_PM_at"	"222326_PM_at"	""	""	1.34164	0.0118183900016445	0.738506564210082
+"220005_PM_at"	"220005_PM_at"	"P2RY13"	"purinergic receptor P2Y, G-protein coupled, 13"	2.438865	0.0119150122511655	0.738506564210082
+"218014_PM_at"	"218014_PM_at"	"NUP85"	"nucleoporin 85kDa"	-1.08826	0.0120738090330999	0.738506564210082
+"1553043_PM_a_at"	"1553043_PM_a_at"	"CD300LF"	"CD300 molecule-like family member f"	1.365005	0.0121040805722968	0.738506564210082
+"208092_PM_s_at"	"208092_PM_s_at"	"FAM49A"	"family with sequence similarity 49, member A"	1.016535	0.012118758360122	0.738506564210082
+"220066_PM_at"	"220066_PM_at"	"NOD2"	"nucleotide-binding oligomerization domain containing 2"	1.14214	0.0121632366334304	0.738506564210082
+"243495_PM_s_at"	"243495_PM_s_at"	""	""	1.25593	0.012236905344487	0.738506564210082
+"238365_PM_s_at"	"238365_PM_s_at"	"C1orf228"	"chromosome 1 open reading frame 228"	-1.021025	0.0122532160362935	0.738506564210082
+"206110_PM_at"	"206110_PM_at"	"HIST1H3H"	"histone cluster 1, H3h"	-1.888535	0.0122680338725318	0.738506564210082
+"233289_PM_at"	"233289_PM_at"	""	""	1.256275	0.0122695729468289	0.738506564210082
+"1552309_PM_a_at"	"1552309_PM_a_at"	"NEXN"	"nexilin (F actin binding protein)"	-1.373675	0.0123858547030367	0.738506564210082
+"229746_PM_x_at"	"229746_PM_x_at"	""	""	-1.14078	0.0125912217306178	0.738506564210082
+"215176_PM_x_at"	"215176_PM_x_at"	"IGK@ /// IGKC /// LOC100291464"	"immunoglobulin kappa locus /// immunoglobulin kappa constant /// similar to hCG26659"	-1.08029	0.012606263869029	0.738506564210082
+"239861_PM_at"	"239861_PM_at"	""	""	1.02483	0.0126098243381638	0.738506564210082
+"1554997_PM_a_at"	"1554997_PM_a_at"	"PTGS2"	"prostaglandin-endoperoxide synthase 2 (prostaglandin G/H synthase and cyclooxygenase)"	1.766435	0.0126365496575933	0.738506564210082
+"206632_PM_s_at"	"206632_PM_s_at"	"APOBEC3B"	"apolipoprotein B mRNA editing enzyme, catalytic polypeptide-like 3B"	1.404235	0.0126697316324217	0.738506564210082
+"225577_PM_at"	"225577_PM_at"	"HCG18"	"HLA complex group 18"	-1.00474	0.0126972475611121	0.738506564210082
+"225647_PM_s_at"	"225647_PM_s_at"	"CTSC"	"cathepsin C"	1.021415	0.0127167497526302	0.738506564210082
+"1552788_PM_a_at"	"1552788_PM_a_at"	"HELB"	"helicase (DNA) B"	-1.292995	0.0127984786130168	0.738506564210082
+"228758_PM_at"	"228758_PM_at"	"BCL6"	"B-cell CLL/lymphoma 6"	1.351315	0.0129483981739254	0.738506564210082
+"232629_PM_at"	"232629_PM_at"	"PROK2"	"prokineticin 2"	1.62707	0.0129549403531936	0.738506564210082
+"202746_PM_at"	"202746_PM_at"	"ITM2A"	"integral membrane protein 2A"	-1.46441	0.0130138217762963	0.738506564210082
+"227129_PM_x_at"	"227129_PM_x_at"	"FLJ45340"	"hypothetical LOC402483"	1.405235	0.013064130852297	0.738506564210082
+"206337_PM_at"	"206337_PM_at"	"CCR7"	"chemokine (C-C motif) receptor 7"	-1.026105	0.0130879333507906	0.738506564210082
+"215838_PM_at"	"215838_PM_at"	"LILRA5"	"leukocyte immunoglobulin-like receptor, subfamily A (with TM domain), member 5"	1.399985	0.0131688446124265	0.738506564210082
+"207691_PM_x_at"	"207691_PM_x_at"	"ENTPD1"	"ectonucleoside triphosphate diphosphohydrolase 1"	1.13631	0.0134597117466048	0.738506564210082
+"204115_PM_at"	"204115_PM_at"	"GNG11"	"guanine nucleotide binding protein (G protein), gamma 11"	-1.216115	0.0135227503532061	0.738506564210082
+"1554999_PM_at"	"1554999_PM_at"	"RASGEF1B"	"RasGEF domain family, member 1B"	1.06654	0.013832720881822	0.738506564210082
+"233734_PM_s_at"	"233734_PM_s_at"	"OSBPL5"	"oxysterol binding protein-like 5"	-1.03233	0.0138624402414763	0.738506564210082
+"242836_PM_at"	"242836_PM_at"	""	""	1.48172	0.0140663164196618	0.738506564210082
+"242770_PM_at"	"242770_PM_at"	"LOC642236"	"similar to FRG1 protein (FSHD region gene 1 protein)"	1.177655	0.0141662143961151	0.738506564210082
+"201108_PM_s_at"	"201108_PM_s_at"	"THBS1"	"thrombospondin 1"	-1.15407	0.0141767734663376	0.738506564210082
+"203685_PM_at"	"203685_PM_at"	"BCL2"	"B-cell CLL/lymphoma 2"	-1.086485	0.014343247575879	0.738506564210082
+"203751_PM_x_at"	"203751_PM_x_at"	"JUND"	"jun D proto-oncogene"	-1.068915	0.0143485474180657	0.738506564210082
+"229770_PM_at"	"229770_PM_at"	"GLT1D1"	"glycosyltransferase 1 domain containing 1"	1.15382	0.0144500790672606	0.738506564210082
+"208527_PM_x_at"	"208527_PM_x_at"	"HIST1H2BE"	"histone cluster 1, H2be"	-1.0391	0.0144793448203769	0.738506564210082
+"218935_PM_at"	"218935_PM_at"	"EHD3"	"EH-domain containing 3"	-1.129045	0.0146220346353671	0.738506564210082
+"208703_PM_s_at"	"208703_PM_s_at"	"APLP2"	"amyloid beta (A4) precursor-like protein 2"	1.11953	0.0147129174222581	0.738506564210082
+"227301_PM_at"	"227301_PM_at"	"CCT6P1 /// CCT6P3"	"chaperonin containing TCP1, subunit 6 (zeta) pseudogene 1 /// chaperonin containing TCP1, subunit 6 (zeta) pseudogene 3"	-1.017775	0.0147192612676089	0.738506564210082
+"210904_PM_s_at"	"210904_PM_s_at"	"IL13RA1"	"interleukin 13 receptor, alpha 1"	1.12383	0.0148499753597214	0.738506564210082
+"206492_PM_at"	"206492_PM_at"	"FHIT"	"fragile histidine triad gene"	-1.18943	0.0150471630004943	0.738506564210082
+"210992_PM_x_at"	"210992_PM_x_at"	"FCGR2C"	"Fc fragment of IgG, low affinity IIc, receptor for (CD32) (gene/pseudogene)"	1.64295	0.015052591289609	0.738506564210082
+"221841_PM_s_at"	"221841_PM_s_at"	"KLF4"	"Kruppel-like factor 4 (gut)"	1.07007	0.0150694311754038	0.738506564210082
+"235479_PM_at"	"235479_PM_at"	"CPEB2"	"cytoplasmic polyadenylation element binding protein 2"	1.216825	0.0150869721972933	0.738506564210082
+"225001_PM_at"	"225001_PM_at"	"RAB3D"	"RAB3D, member RAS oncogene family"	1.327345	0.0155344356975317	0.742372569935263
+"201971_PM_s_at"	"201971_PM_s_at"	"ATP6V1A"	"ATPase, H+ transporting, lysosomal 70kDa, V1 subunit A"	1.629635	0.0155358495746454	0.742372569935263
+"214974_PM_x_at"	"214974_PM_x_at"	"CXCL5"	"chemokine (C-X-C motif) ligand 5"	-1.841995	0.0157187654635053	0.742372569935263
+"218035_PM_s_at"	"218035_PM_s_at"	"RBM47"	"RNA binding motif protein 47"	1.4812	0.0157399652887921	0.742372569935263
+"1558028_PM_x_at"	"1558028_PM_x_at"	"LOC647979"	"hypothetical LOC647979"	-1.077585	0.0157598570739633	0.742372569935263
+"1570338_PM_at"	"1570338_PM_at"	""	""	-1.127945	0.0159030806286182	0.742372569935263
+"211532_PM_x_at"	"211532_PM_x_at"	"KIR2DS2 /// KIR2DS4"	"killer cell immunoglobulin-like receptor, two domains, short cytoplasmic tail, 2 /// killer cell immunoglobulin-like receptor, two domains, short cytoplasmic tail, 4"	-1.834475	0.0159756865463555	0.742372569935263
+"231093_PM_at"	"231093_PM_at"	"FCRL3"	"Fc receptor-like 3"	-1.46429	0.016107014812829	0.742372569935263
+"211727_PM_s_at"	"211727_PM_s_at"	"COX11"	"COX11 cytochrome c oxidase assembly homolog (yeast)"	-1.01343	0.0161260721190812	0.742372569935263
+"205653_PM_at"	"205653_PM_at"	"CTSG"	"cathepsin G"	-1.69573	0.0161465282238176	0.742372569935263
+"203817_PM_at"	"203817_PM_at"	"GUCY1B3"	"guanylate cyclase 1, soluble, beta 3"	-1.467415	0.0162642683928773	0.742372569935263
+"206715_PM_at"	"206715_PM_at"	"TFEC"	"transcription factor EC"	1.00628	0.0165645873369423	0.742372569935263
+"231644_PM_at"	"231644_PM_at"	""	""	1.5023	0.0167072321706393	0.742372569935263
+"218132_PM_s_at"	"218132_PM_s_at"	"TSEN34"	"tRNA splicing endonuclease 34 homolog (S. cerevisiae)"	1.300075	0.0167406864825047	0.742372569935263
+"210423_PM_s_at"	"210423_PM_s_at"	"SLC11A1"	"solute carrier family 11 (proton-coupled divalent metal ion transporters), member 1"	1.11931	0.01676547013173	0.742372569935263
+"205241_PM_at"	"205241_PM_at"	"SCO2"	"SCO cytochrome oxidase deficient homolog 2 (yeast)"	1.286435	0.0168720759136138	0.742372569935263
+"212041_PM_at"	"212041_PM_at"	"ATP6V0D1"	"ATPase, H+ transporting, lysosomal 38kDa, V0 subunit d1"	1.07223	0.0170260130687469	0.742372569935263
+"229389_PM_at"	"229389_PM_at"	"ATG16L2"	"ATG16 autophagy related 16-like 2 (S. cerevisiae)"	1.61522	0.017068294784254	0.742372569935263
+"202708_PM_s_at"	"202708_PM_s_at"	"HIST2H2BE"	"histone cluster 2, H2be"	-1.076245	0.0171112504846284	0.74241733839361
+"200998_PM_s_at"	"200998_PM_s_at"	"CKAP4"	"cytoskeleton-associated protein 4"	1.207305	0.0177033243766416	0.74353660179968
+"225354_PM_s_at"	"225354_PM_s_at"	"SH3BGRL2"	"SH3 domain binding glutamic acid-rich protein like 2"	-1.069365	0.0178412874963767	0.74353660179968
+"202747_PM_s_at"	"202747_PM_s_at"	"ITM2A"	"integral membrane protein 2A"	-1.188095	0.0179803409787186	0.74353660179968
+"213515_PM_x_at"	"213515_PM_x_at"	"HBG1 /// HBG2"	"hemoglobin, gamma A /// hemoglobin, gamma G"	2.33811	0.0180668756225684	0.74353660179968
+"217022_PM_s_at"	"217022_PM_s_at"	"IGH@ /// IGHA1 /// IGHA2 /// LOC100126583"	"immunoglobulin heavy locus /// immunoglobulin heavy constant alpha 1 /// immunoglobulin heavy constant alpha 2 (A2m marker) /// hypothetical LOC100126583"	-1.472855	0.0183469671870395	0.743637958232626
+"226278_PM_at"	"226278_PM_at"	"SVIP"	"small VCP/p97-interacting protein"	-1.55881	0.0188385195701505	0.743998305846537
+"1557543_PM_at"	"1557543_PM_at"	""	""	1.091665	0.0189147136838178	0.743998305846537
+"229543_PM_at"	"229543_PM_at"	""	""	1.17677	0.0190261271499477	0.743998305846537
+"210790_PM_s_at"	"210790_PM_s_at"	"SAR1A"	"SAR1 homolog A (S. cerevisiae)"	1.169825	0.0192266065291182	0.743998305846537
+"200985_PM_s_at"	"200985_PM_s_at"	"CD59"	"CD59 molecule, complement regulatory protein"	-1.00226	0.0197005754511618	0.746686030816038
+"228708_PM_at"	"228708_PM_at"	"RAB27B"	"RAB27B, member RAS oncogene family"	-1.261425	0.0199339875242546	0.746686030816038
+"213060_PM_s_at"	"213060_PM_s_at"	"CHI3L2"	"chitinase 3-like 2"	-1.0493	0.0199818679908149	0.746686030816038
+"227184_PM_at"	"227184_PM_at"	"PTAFR"	"platelet-activating factor receptor"	1.32437	0.0200569035426353	0.746686030816038
+"216015_PM_s_at"	"216015_PM_s_at"	"NLRP3"	"NLR family, pyrin domain containing 3"	1.019545	0.0201675668773885	0.746686030816038
+"211661_PM_x_at"	"211661_PM_x_at"	"PTAFR"	"platelet-activating factor receptor"	1.399035	0.0205487593383008	0.746686030816038
+"212777_PM_at"	"212777_PM_at"	"SOS1"	"son of sevenless homolog 1 (Drosophila)"	-1.074695	0.0206054619916061	0.746686030816038
+"224060_PM_s_at"	"224060_PM_s_at"	"DPH5"	"DPH5 homolog (S. cerevisiae)"	-1.05268	0.0206232524383749	0.746686030816038
+"230833_PM_at"	"230833_PM_at"	"ACRBP"	"acrosin binding protein"	-1.427965	0.0207619421360411	0.746686030816038
+"233555_PM_s_at"	"233555_PM_s_at"	"SULF2"	"sulfatase 2"	1.245345	0.0209266837632358	0.748336264785397
+"205639_PM_at"	"205639_PM_at"	"AOAH"	"acyloxyacyl hydrolase (neutrophil)"	1.300685	0.0210657072553056	0.749832029371461
+"226482_PM_s_at"	"226482_PM_s_at"	"TSTD1"	"thiosulfate sulfurtransferase (rhodanese)-like domain containing 1"	-1.041245	0.0211589465918005	0.749832029371461
+"210202_PM_s_at"	"210202_PM_s_at"	"BIN1"	"bridging integrator 1"	-1.00485	0.0212358455724607	0.749832029371461
+"235568_PM_at"	"235568_PM_at"	"C19orf59"	"chromosome 19 open reading frame 59"	1.2436	0.0213094575437231	0.749832029371461
+"206676_PM_at"	"206676_PM_at"	"CEACAM8"	"carcinoembryonic antigen-related cell adhesion molecule 8"	-2.176575	0.0214798605100815	0.749832029371461
+"216945_PM_x_at"	"216945_PM_x_at"	"PASK"	"PAS domain containing serine/threonine kinase"	1.261545	0.0214805190838131	0.749832029371461
+"207723_PM_s_at"	"207723_PM_s_at"	"KLRC3"	"killer cell lectin-like receptor subfamily C, member 3"	-1.644135	0.0216293156011891	0.749832029371461
+"1557736_PM_at"	"1557736_PM_at"	"NKTR"	"natural killer-tumor recognition sequence"	-1.05365	0.0216497348088704	0.749832029371461
+"203561_PM_at"	"203561_PM_at"	"FCGR2A"	"Fc fragment of IgG, low affinity IIa, receptor (CD32)"	1.42986	0.0216742063443814	0.749832029371461
+"214323_PM_s_at"	"214323_PM_s_at"	"UPF3A"	"UPF3 regulator of nonsense transcripts homolog A (yeast)"	-1.007395	0.0218292603698948	0.749832029371461
+"1568768_PM_s_at"	"1568768_PM_s_at"	"LOC100302650"	"hypothetical LOC100302650"	1.27535	0.0219498550834276	0.749832029371461
+"226354_PM_at"	"226354_PM_at"	"LACTB"	"lactamase, beta"	1.06843	0.0220613232086473	0.749832029371461
+"229560_PM_at"	"229560_PM_at"	"TLR8"	"toll-like receptor 8"	2.141805	0.0220757371066355	0.749832029371461
+"229101_PM_at"	"229101_PM_at"	"IL17RA"	"interleukin 17 receptor A"	1.107195	0.0222097721103667	0.749832029371461
+"240859_PM_at"	"240859_PM_at"	""	""	1.128055	0.0222147074771294	0.749832029371461
+"200887_PM_s_at"	"200887_PM_s_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.049725	0.0222948393909033	0.750139693386602
+"205896_PM_at"	"205896_PM_at"	"SLC22A4"	"solute carrier family 22 (organic cation/ergothioneine transporter), member 4"	1.289445	0.0226777163218016	0.750667739563855
+"219259_PM_at"	"219259_PM_at"	"SEMA4A"	"sema domain, immunoglobulin domain (Ig), transmembrane domain (TM) and short cytoplasmic domain, (semaphorin) 4A"	1.02788	0.0227615797625664	0.750667739563855
+"211404_PM_s_at"	"211404_PM_s_at"	"APLP2"	"amyloid beta (A4) precursor-like protein 2"	1.020715	0.0233331812973399	0.750667739563855
+"223501_PM_at"	"223501_PM_at"	"TNFSF13B"	"tumor necrosis factor (ligand) superfamily, member 13b"	1.15822	0.0234358100033151	0.750667739563855
+"206059_PM_at"	"206059_PM_at"	"ZNF91"	"zinc finger protein 91"	-1.4463	0.0234741872624532	0.750667739563855
+"203016_PM_s_at"	"203016_PM_s_at"	"SSX2IP"	"synovial sarcoma, X breakpoint 2 interacting protein"	-1.018675	0.0236622267880554	0.750667739563855
+"221211_PM_s_at"	"221211_PM_s_at"	"C21orf7"	"chromosome 21 open reading frame 7"	-1.38886	0.0239269500272045	0.751147932571828
+"226275_PM_at"	"226275_PM_at"	"MXD1"	"MAX dimerization protein 1"	1.34946	0.0239317075787801	0.751147932571828
+"215470_PM_at"	"215470_PM_at"	"GTF2H2B"	"general transcription factor IIH, polypeptide 2B"	-1.38149	0.0241921226376873	0.751147932571828
+"201942_PM_s_at"	"201942_PM_s_at"	"CPD"	"carboxypeptidase D"	1.483315	0.0243917527341036	0.752404860669926
+"211207_PM_s_at"	"211207_PM_s_at"	"ACSL6"	"acyl-CoA synthetase long-chain family member 6"	-1.103245	0.0243977769883121	0.752404860669926
+"210314_PM_x_at"	"210314_PM_x_at"	"TNFSF13"	"tumor necrosis factor (ligand) superfamily, member 13"	1.054105	0.0244026393585597	0.752404860669926
+"206555_PM_s_at"	"206555_PM_s_at"	"THUMPD1"	"THUMP domain containing 1"	-1.50576	0.0245052368960965	0.752647472962581
+"230006_PM_s_at"	"230006_PM_s_at"	"SVIP"	"small VCP/p97-interacting protein"	-1.22618	0.024563926704216	0.752647472962581
+"239944_PM_at"	"239944_PM_at"	""	""	1.09618	0.0245666820651212	0.752647472962581
+"218100_PM_s_at"	"218100_PM_s_at"	"IFT57"	"intraflagellar transport 57 homolog (Chlamydomonas)"	-1.133565	0.0245902821284669	0.752647472962581
+"200799_PM_at"	"200799_PM_at"	"HSPA1A"	"heat shock 70kDa protein 1A"	1.120965	0.024665479537384	0.752647472962581
+"201110_PM_s_at"	"201110_PM_s_at"	"THBS1"	"thrombospondin 1"	-2.47617	0.0249756419655541	0.75435601972823
+"201109_PM_s_at"	"201109_PM_s_at"	"THBS1"	"thrombospondin 1"	-2.028925	0.0250632880627477	0.75435601972823
+"224724_PM_at"	"224724_PM_at"	"SULF2"	"sulfatase 2"	1.181435	0.0252393016835572	0.754580371698563
+"219540_PM_at"	"219540_PM_at"	"ZNF267"	"zinc finger protein 267"	1.29476	0.0255698965114139	0.758027329990027
+"201222_PM_s_at"	"201222_PM_s_at"	"RAD23B"	"RAD23 homolog B (S. cerevisiae)"	1.55571	0.0256199072653438	0.758027329990027
+"205483_PM_s_at"	"205483_PM_s_at"	"ISG15"	"ISG15 ubiquitin-like modifier"	1.42248	0.0257732022853004	0.759337201541425
+"1562194_PM_at"	"1562194_PM_at"	""	""	1.24977	0.0257977794439329	0.759337201541425
+"209658_PM_at"	"209658_PM_at"	"CDC16"	"cell division cycle 16 homolog (S. cerevisiae)"	-1.076575	0.0259918541343723	0.759337201541425
+"232001_PM_at"	"232001_PM_at"	"LOC439949"	"hypothetical protein LOC439949"	-1.21391	0.0260126462198456	0.759337201541425
+"234764_PM_x_at"	"234764_PM_x_at"	"IGLV1-44"	"Immunoglobulin lambda variable 1-44"	-1.098415	0.0261864745492091	0.759337201541425
+"217602_PM_at"	"217602_PM_at"	"PPIA"	"peptidylprolyl isomerase A (cyclophilin A)"	-1.57107	0.0262473610730542	0.759337201541425
+"209728_PM_at"	"209728_PM_at"	"HLA-DRB4"	"major histocompatibility complex, class II, DR beta 4"	1.00678	0.0262601809284359	0.759337201541425
+"205119_PM_s_at"	"205119_PM_s_at"	"FPR1"	"formyl peptide receptor 1"	1.233645	0.02638311384688	0.759721182798362
+"1554241_PM_at"	"1554241_PM_at"	"COCH"	"coagulation factor C homolog, cochlin (Limulus polyphemus)"	-1.07276	0.0266598563584646	0.761357594069415
+"227867_PM_at"	"227867_PM_at"	"C2orf89"	"chromosome 2 open reading frame 89"	-1.042975	0.0268559301109486	0.761915256825651
+"223809_PM_at"	"223809_PM_at"	"RGS18"	"regulator of G-protein signaling 18"	-1.03235	0.0269006627039097	0.761915256825651
+"203821_PM_at"	"203821_PM_at"	"HBEGF"	"heparin-binding EGF-like growth factor"	1.742915	0.0269207433821929	0.761915256825651
+"210395_PM_x_at"	"210395_PM_x_at"	"MYL4"	"myosin, light chain 4, alkali; atrial, embryonic"	-1.46052	0.0269905663445214	0.761915256825651
+"217950_PM_at"	"217950_PM_at"	"NOSIP"	"nitric oxide synthase interacting protein"	-1.30576	0.0271001681564139	0.761966864236836
+"232045_PM_at"	"232045_PM_at"	"PHACTR1"	"phosphatase and actin regulator 1"	1.786115	0.0275138795447215	0.763937650535426
+"221790_PM_s_at"	"221790_PM_s_at"	"LDLRAP1"	"low density lipoprotein receptor adaptor protein 1"	-1.1236	0.0275608257927801	0.763937650535426
+"228802_PM_at"	"228802_PM_at"	"RBPMS2"	"RNA binding protein with multiple splicing 2"	-1.12192	0.0277252945190077	0.763937650535426
+"242191_PM_at"	"242191_PM_at"	"NBPF10"	"neuroblastoma breakpoint family, member 10"	-1.09019	0.0280460942768162	0.764118111714188
+"1554154_PM_at"	"1554154_PM_at"	"GDAP2"	"ganglioside induced differentiation associated protein 2"	1.072095	0.0280916819517388	0.764118111714188
+"202270_PM_at"	"202270_PM_at"	"GBP1"	"guanylate binding protein 1, interferon-inducible, 67kDa"	1.574325	0.0285309753636239	0.764118111714188
+"222496_PM_s_at"	"222496_PM_s_at"	"RBM47"	"RNA binding motif protein 47"	1.6569	0.0286502500049808	0.766213521925654
+"238469_PM_at"	"238469_PM_at"	"OGFRL1"	"opioid growth factor receptor-like 1"	1.31645	0.0286516104516108	0.766213521925654
+"213418_PM_at"	"213418_PM_at"	"HSPA6"	"heat shock 70kDa protein 6 (HSP70B')"	1.333625	0.0292851186170842	0.767171545295445
+"235798_PM_at"	"235798_PM_at"	"TMEM170B"	"transmembrane protein 170B"	1.64659	0.0296442727917193	0.767171545295445
+"230263_PM_s_at"	"230263_PM_s_at"	"DOCK5"	"Dedicator of cytokinesis 5"	1.807945	0.0297327186738331	0.767171545295445
+"211106_PM_at"	"211106_PM_at"	""	""	-1.21165	0.0298070316680008	0.767171545295445
+"202269_PM_x_at"	"202269_PM_x_at"	"GBP1"	"guanylate binding protein 1, interferon-inducible, 67kDa"	1.76913	0.0298187891000395	0.767171545295445
+"1554764_PM_a_at"	"1554764_PM_a_at"	"C11orf64"	"chromosome 11 open reading frame 64"	1.002795	0.0300619678466811	0.767171545295445
+"223717_PM_s_at"	"223717_PM_s_at"	"ACRBP"	"acrosin binding protein"	-1.092275	0.030610761471546	0.767171545295445
+"201465_PM_s_at"	"201465_PM_s_at"	"JUN"	"jun oncogene"	-1.30324	0.0306233935759	0.767171545295445
+"206472_PM_s_at"	"206472_PM_s_at"	"TLE3"	"transducin-like enhancer of split 3 (E(sp1) homolog, Drosophila)"	1.121955	0.0307118168467664	0.767171545295445
+"208488_PM_s_at"	"208488_PM_s_at"	"CR1"	"complement component (3b/4b) receptor 1 (Knops blood group)"	1.187755	0.0309663545087665	0.767171545295445
+"219403_PM_s_at"	"219403_PM_s_at"	"HPSE"	"heparanase"	1.08448	0.031209046577651	0.768054414246332
+"1557100_PM_s_at"	"1557100_PM_s_at"	"HECTD1"	"HECT domain containing 1"	-1.138945	0.0312523439560819	0.768054414246332
+"202510_PM_s_at"	"202510_PM_s_at"	"TNFAIP2"	"tumor necrosis factor, alpha-induced protein 2"	1.861575	0.0318480978721419	0.768054414246332
+"AFFX-HUMRGE/M10098_M_at"	"AFFX-HUMRGE/M10098_M_at"	""	""	-1.089975	0.0318495249075038	0.768054414246332
+"239143_PM_x_at"	"239143_PM_x_at"	"RNF138"	"ring finger protein 138"	-1.0628	0.0318724102914022	0.768054414246332
+"38037_PM_at"	"38037_PM_at"	"HBEGF"	"heparin-binding EGF-like growth factor"	1.18039	0.0319950696060373	0.768054414246332
+"201943_PM_s_at"	"201943_PM_s_at"	"CPD"	"carboxypeptidase D"	1.00841	0.0320478020899527	0.768054414246332
+"216950_PM_s_at"	"216950_PM_s_at"	"FCGR1A /// FCGR1C"	"Fc fragment of IgG, high affinity Ia, receptor (CD64) /// Fc fragment of IgG, high affinity Ic, receptor (CD64)"	1.773365	0.0321586093794646	0.768054414246332
+"266_PM_s_at"	"266_PM_s_at"	"CD24"	"CD24 molecule"	-1.33792	0.0326568746179867	0.770195328524295
+"214084_PM_x_at"	"214084_PM_x_at"	"LOC100289727 /// NCF1 /// NCF1B /// NCF1C"	"hypothetical protein LOC100289727 /// neutrophil cytosolic factor 1 /// neutrophil cytosolic factor 1B pseudogene /// neutrophil cytosolic factor 1C pseudogene"	1.272265	0.0326715408481201	0.770195328524295
+"208546_PM_x_at"	"208546_PM_x_at"	"HIST1H2BB /// HIST1H2BC /// HIST1H2BD /// HIST1H2BE /// HIST1H2BG /// HIST1H2BH /// HIST1H2BI"	"histone cluster 1, H2bb /// histone cluster 1, H2bc /// histone cluster 1, H2bd /// histone cluster 1, H2be /// histone cluster 1, H2bg /// histone cluster 1, H2bh /// histone cluster 1, H2bi"	-1.465295	0.033031614302832	0.772860089122046
+"217148_PM_x_at"	"217148_PM_x_at"	"LOC100293440"	"similar to Ig lambda chain"	-1.39677	0.0330388330157446	0.772860089122046
+"209840_PM_s_at"	"209840_PM_s_at"	"LRRN3"	"leucine rich repeat neuronal 3"	-1.03123	0.0334130125339731	0.773793040850342
+"201089_PM_at"	"201089_PM_at"	"ATP6V1B2"	"ATPase, H+ transporting, lysosomal 56/58kDa, V1 subunit B2"	1.02804	0.033594443400506	0.773793040850342
+"236224_PM_at"	"236224_PM_at"	"RIT1"	"Ras-like without CAAX 1"	1.21469	0.0336071992184007	0.773793040850342
+"207815_PM_at"	"207815_PM_at"	"PF4V1"	"platelet factor 4 variant 1"	-1.71345	0.0338981735093008	0.776366079347589
+"214224_PM_s_at"	"214224_PM_s_at"	"PIN4"	"protein (peptidylprolyl cis/trans isomerase) NIMA-interacting, 4 (parvulin)"	-1.05981	0.0344363572974751	0.780166508065476
+"1555643_PM_s_at"	"1555643_PM_s_at"	"LILRA5"	"leukocyte immunoglobulin-like receptor, subfamily A (with TM domain), member 5"	1.52418	0.0349177349304521	0.78240098109933
+"AFFX-HUMISGF3A/M97935_3_at"	"AFFX-HUMISGF3A/M97935_3_at"	"STAT1"	"signal transducer and activator of transcription 1, 91kDa"	1.00832	0.0355880020927978	0.78240098109933
+"1557409_PM_at"	"1557409_PM_at"	""	""	-1.33417	0.0356122971100463	0.78240098109933
+"204838_PM_s_at"	"204838_PM_s_at"	"MLH3"	"mutL homolog 3 (E. coli)"	-1.65124	0.0357609124708088	0.782663330336122
+"239740_PM_at"	"239740_PM_at"	"ETV6"	"ets variant 6"	1.24025	0.035996946691707	0.783207644310632
+"200648_PM_s_at"	"200648_PM_s_at"	"GLUL"	"glutamate-ammonia ligase"	1.37061	0.036077144111856	0.783484535474613
+"231579_PM_s_at"	"231579_PM_s_at"	"TIMP2"	"TIMP metallopeptidase inhibitor 2"	1.156825	0.0360887296433553	0.783484535474613
+"212570_PM_at"	"212570_PM_at"	"ENDOD1"	"endonuclease domain containing 1"	1.127275	0.0364943590332664	0.785827963205499
+"242080_PM_at"	"242080_PM_at"	""	""	-1.14871	0.0367753055149546	0.787156745900794
+"1554306_PM_at"	"1554306_PM_at"	"ITPKB"	"inositol 1,4,5-trisphosphate 3-kinase B"	-1.05242	0.0375529849193318	0.787352488780209
+"205098_PM_at"	"205098_PM_at"	"CCR1"	"chemokine (C-C motif) receptor 1"	1.25774	0.0376190745468444	0.787352488780209
+"222218_PM_s_at"	"222218_PM_s_at"	"PILRA"	"paired immunoglobin-like type 2 receptor alpha"	1.18843	0.0381024554788764	0.787352488780209
+"217480_PM_x_at"	"217480_PM_x_at"	"LOC100287723"	"similar to Ig kappa chain"	-1.137115	0.0382286871252476	0.787352488780209
+"217157_PM_x_at"	"217157_PM_x_at"	"IGK@ /// IGKC /// LOC652493"	"immunoglobulin kappa locus /// immunoglobulin kappa constant /// similar to Ig kappa chain V-I region HK102 precursor"	-1.13202	0.0383630628787297	0.787352488780209
+"206471_PM_s_at"	"206471_PM_s_at"	"PLXNC1"	"plexin C1"	1.05927	0.0388580895599831	0.787352488780209
+"213805_PM_at"	"213805_PM_at"	"ABHD5"	"abhydrolase domain containing 5"	1.70443	0.0393222590234316	0.787352488780209
+"214525_PM_x_at"	"214525_PM_x_at"	"MLH3"	"mutL homolog 3 (E. coli)"	-1.618835	0.0393666035128901	0.787352488780209
+"203140_PM_at"	"203140_PM_at"	"BCL6"	"B-cell CLL/lymphoma 6"	1.13119	0.0393749216475983	0.787352488780209
+"210184_PM_at"	"210184_PM_at"	"ITGAX"	"integrin, alpha X (complement component 3 receptor 4 subunit)"	1.087685	0.0394397815647383	0.787352488780209
+"202016_PM_at"	"202016_PM_at"	"MEST"	"mesoderm specific transcript homolog (mouse)"	-1.0563	0.0394690578692862	0.787352488780209
+"221484_PM_at"	"221484_PM_at"	"B4GALT5"	"UDP-Gal:betaGlcNAc beta 1,4- galactosyltransferase, polypeptide 5"	1.08246	0.0399442994643252	0.787352488780209
+"242797_PM_x_at"	"242797_PM_x_at"	""	""	-1.226445	0.040033306018125	0.787352488780209
+"211574_PM_s_at"	"211574_PM_s_at"	"CD46"	"CD46 molecule, complement regulatory protein"	1.247825	0.0403296711048173	0.787352488780209
+"231577_PM_s_at"	"231577_PM_s_at"	"GBP1"	"guanylate binding protein 1, interferon-inducible, 67kDa"	1.694825	0.0404041180092217	0.787352488780209
+"1565743_PM_at"	"1565743_PM_at"	""	""	-1.49448	0.0409911700275846	0.787352488780209
+"227647_PM_at"	"227647_PM_at"	"KCNE3"	"potassium voltage-gated channel, Isk-related family, member 3"	1.29322	0.0410838933561712	0.787352488780209
+"214438_PM_at"	"214438_PM_at"	"HLX"	"H2.0-like homeobox"	1.269235	0.0410895191863148	0.787352488780209
+"214308_PM_s_at"	"214308_PM_s_at"	"HGD"	"homogentisate 1,2-dioxygenase"	-1.401515	0.041159330558847	0.787352488780209
+"1555847_PM_a_at"	"1555847_PM_a_at"	"LOC284454"	"hypothetical protein LOC284454"	1.21981	0.0413322519767936	0.787352488780209
+"212975_PM_at"	"212975_PM_at"	"DENND3"	"DENN/MADD domain containing 3"	1.03098	0.0416349793303903	0.787352488780209
+"240456_PM_at"	"240456_PM_at"	"ANKRD55"	"Ankyrin repeat domain 55"	-1.322015	0.0416920634151958	0.787352488780209
+"203591_PM_s_at"	"203591_PM_s_at"	"CSF3R"	"colony stimulating factor 3 receptor (granulocyte)"	1.67253	0.0419537276881987	0.787352488780209
+"202717_PM_s_at"	"202717_PM_s_at"	"CDC16"	"cell division cycle 16 homolog (S. cerevisiae)"	-1.000095	0.0421491365106624	0.787352488780209
+"218711_PM_s_at"	"218711_PM_s_at"	"SDPR"	"serum deprivation response"	-1.080215	0.0421987079148253	0.787352488780209
+"220266_PM_s_at"	"220266_PM_s_at"	"KLF4"	"Kruppel-like factor 4 (gut)"	1.38845	0.0425930264268941	0.788664431498187
+"217274_PM_x_at"	"217274_PM_x_at"	"MYL4"	"myosin, light chain 4, alkali; atrial, embryonic"	-1.43177	0.0426372016308698	0.788664431498187
+"211038_PM_s_at"	"211038_PM_s_at"	"CROCCL1"	"ciliary rootlet coiled-coil, rootletin-like 1"	-1.186645	0.0430724274468795	0.788664431498187
+"220094_PM_s_at"	"220094_PM_s_at"	"CCDC90A"	"coiled-coil domain containing 90A"	-1.047325	0.0432265945523592	0.788664431498187
+"1557737_PM_s_at"	"1557737_PM_s_at"	"NKTR"	"natural killer-tumor recognition sequence"	-1.243965	0.0433529232214807	0.788664431498187
+"227554_PM_at"	"227554_PM_at"	""	""	-1.01235	0.0435092973745182	0.788664431498187
+"216676_PM_x_at"	"216676_PM_x_at"	"KIR3DL3"	"killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 3"	-1.20051	0.0444846260477571	0.788664431498187
+"217753_PM_s_at"	"217753_PM_s_at"	"RPS26"	"ribosomal protein S26"	-1.32865	0.0446291139220915	0.788664431498187
+"202687_PM_s_at"	"202687_PM_s_at"	"TNFSF10"	"tumor necrosis factor (ligand) superfamily, member 10"	1.016045	0.0448454117172715	0.789027025748994
+"200628_PM_s_at"	"200628_PM_s_at"	"WARS"	"tryptophanyl-tRNA synthetase"	1.033385	0.0454692737798377	0.789476998098306
+"232466_PM_at"	"232466_PM_at"	"CUL4A"	"Cullin 4A"	-1.07678	0.0458097922679033	0.789476998098306
+"204961_PM_s_at"	"204961_PM_s_at"	"NCF1 /// NCF1B /// NCF1C"	"neutrophil cytosolic factor 1 /// neutrophil cytosolic factor 1B pseudogene /// neutrophil cytosolic factor 1C pseudogene"	1.163765	0.0462420460695529	0.789699730214403
+"219892_PM_at"	"219892_PM_at"	"TM6SF1"	"transmembrane 6 superfamily member 1"	1.012655	0.0462479470946764	0.789699730214403
+"215123_PM_at"	"215123_PM_at"	"LOC100288332 /// LOC100288583 /// NPIPL3"	"similar to acyl-CoA synthetase medium-chain family member 2 /// hypothetical protein LOC100288583 /// nuclear pore complex interacting protein-like 3"	-1.39282	0.0463848725299871	0.789699730214403
+"204834_PM_at"	"204834_PM_at"	"FGL2"	"fibrinogen-like 2"	1.083205	0.0468606249498254	0.789699730214403
+"218919_PM_at"	"218919_PM_at"	"ZFAND1"	"zinc finger, AN1-type domain 1"	-1.01787	0.0470751291181994	0.789699730214403
+"1555745_PM_a_at"	"1555745_PM_a_at"	"LYZ"	"lysozyme"	1.31255	0.0472744610609191	0.789699730214403
+"231688_PM_at"	"231688_PM_at"	"MMP8"	"matrix metallopeptidase 8 (neutrophil collagenase)"	-1.23092	0.0476856019875971	0.789699730214403
+"223331_PM_s_at"	"223331_PM_s_at"	"DDX20"	"DEAD (Asp-Glu-Ala-Asp) box polypeptide 20"	-1.03626	0.0493663179670581	0.791852577840628
+"208594_PM_x_at"	"208594_PM_x_at"	"LILRA6"	"leukocyte immunoglobulin-like receptor, subfamily A (with TM domain), member 6"	1.236815	0.0497730683090753	0.791852577840628

@@ -14,6 +14,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 
 import java.util.Properties;
 
+import org.reactome.immport.ws.service.ReactomeAnalysisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +34,14 @@ public class AppConfig {
 
    @Autowired
    private Environment env;
+   
+   @Bean
+   public ReactomeAnalysisConfig getReactomeAnalysisConfig() {
+       ReactomeAnalysisConfig config = new ReactomeAnalysisConfig();
+       config.setReactomeAnalysisURL(env.getProperty("reactome.analysis.service"));
+       config.setReactomeFIServiceURL(env.getProperty("reactome.fi.service"));
+       return config;
+   }
 
    @Bean
    public LocalSessionFactoryBean getSessionFactory() {

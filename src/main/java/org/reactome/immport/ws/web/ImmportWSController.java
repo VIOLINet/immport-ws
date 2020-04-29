@@ -13,6 +13,7 @@ import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.reactome.immport.ws.service.ImmportDAO;
+import org.reactome.immport.ws.service.ReactomeAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +28,20 @@ public class ImmportWSController {
 
     @Autowired
     private ImmportDAO studyDAO;
+    @Autowired
+    private ReactomeAnalysisService reactomeService;
     
     public ImmportWSController() {
+    }
+    
+    @GetMapping("analysis/pathways")
+    public String getAnalysisResults() {
+        return reactomeService.doPathwayEnrichmentAnalysis();
+    }
+    
+    @GetMapping("analysis/fi_network") 
+    public String getFINetwork() {
+        return reactomeService.constructFINetwork();
     }
     
     @GetMapping("study/{accession}")
