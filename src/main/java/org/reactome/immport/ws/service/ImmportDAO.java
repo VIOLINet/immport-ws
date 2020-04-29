@@ -62,7 +62,7 @@ public class ImmportDAO {
     }
 
     @Transactional(readOnly = true)
-    public List<VOToGSM> queryGSMDataForVO(GSMForVOs gSMForVOs){
+    public Collection<String> queryGSMDataForVO(GSMForVOs gSMForVOs){
     	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, " +
     					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
@@ -83,10 +83,11 @@ public class ImmportDAO {
 					result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
 		}
 		Collection<String> geneIDs = getTestGeneSymbols();
-    	return result;
+		
+    	return geneIDs;
     }
     
-    private Collection<String> getTestGeneSymbols(){
+    public Collection<String> getTestGeneSymbols(){
     	Collection<String> geneIDs = new ArrayList<>();
     	
     	InputStream is = getClass().getClassLoader().getResourceAsStream("test.tsv");

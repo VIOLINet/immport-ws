@@ -34,7 +34,7 @@ public class ImmportWSController {
     
     @GetMapping("analysis/pathways")
     public String getAnalysisResults() {
-        return reactomeService.doPathwayEnrichmentAnalysis();
+        return reactomeService.doPathwayEnrichmentAnalysis(studyDAO.getTestGeneSymbols());
     }
     
     @GetMapping("analysis/fi_network") 
@@ -72,6 +72,7 @@ public class ImmportWSController {
      * Structure:
      * Line 1: comma separated list of voIds
      * Line 2: comma separated list of genders
+     * Line 3: comma separated list of times
      * @param voId
      * @return
      */
@@ -80,7 +81,8 @@ public class ImmportWSController {
     public List<VOToGSM> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null)
     		return new ArrayList<>();
-    	return studyDAO.queryGSMDataForVO(gsmForVOs);
+    	reactomeService.doPathwayEnrichmentAnalysis(studyDAO.queryGSMDataForVO(gsmForVOs));
+    	return null;
     }
     
     @GetMapping("collectionTimes/vaccine/{voId}")

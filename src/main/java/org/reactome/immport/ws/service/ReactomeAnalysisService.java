@@ -1,5 +1,7 @@
 package org.reactome.immport.ws.service;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,7 @@ public class ReactomeAnalysisService {
         return "{\"FIs\": [\"EGF\\tEGFR\"]}";
     }
     
-    public String doPathwayEnrichmentAnalysis() {
+    public String doPathwayEnrichmentAnalysis(Collection<String> collection) {
         System.out.println("Reactome URL: " + config.getReactomeAnalysisURL());
         return "{\n" + 
                 "  \"summary\": {\n" + 
