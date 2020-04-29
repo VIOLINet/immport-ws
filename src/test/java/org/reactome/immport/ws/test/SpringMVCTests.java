@@ -62,6 +62,18 @@ public class SpringMVCTests {
         String voIds = "VO_0000044,VO_0000642,VO_0004809,VO_0000045,VO_0000046,VO_0000047";
         testPost(url, voIds);
     }
+    
+    @Test
+    public void getAnalysisResults() throws Exception {
+        String url = "/analysis/pathways";
+        testGet(url);
+    }
+    
+    @Test
+    public void getFINetwork() throws Exception {
+        String url = "/analysis/fi_network";
+        testGet(url);
+    }
 
     private void testGet(String url) throws Exception {
         ResultActions actions = this.mockMVC.perform(get(url));
