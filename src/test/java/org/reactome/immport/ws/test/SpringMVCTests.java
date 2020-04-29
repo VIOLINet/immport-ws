@@ -3,11 +3,15 @@ package org.reactome.immport.ws.test;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -54,6 +58,20 @@ public class SpringMVCTests {
     public void queryStudyForVO() throws Exception {
         String url = "/study/vaccine/VO_0000044";
         testGet(url);
+    }
+    
+    @Test
+    public void testQueryExpSamplesForVOs() throws Exception {
+    	String url = "/expSample/vaccine";
+    	//jackson object mapper
+    	GSMForVOs postData = new GSMForVOs();
+    	postData.setVoIds(Arrays.asList("VO_0004809,VO_0000047,VO_0000642,VO_0000044,VO_0000045".split(",")));
+    	postData.setGenderList(Arrays.asList("male,female".split(",")));
+    	postData.setTimes(new HashSet<>(Arrays.asList("-7.0 Days,-168.0 Hours,0.0 Hours,0.0 Days,1.5 Hours".split(","))));
+    	ObjectMapper mapper = new ObjectMapper();
+    	String query = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(postData);
+    	ResultActions actions = mockMVC.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON).content(query));
+        outputResult(actions);
     }
     
     @Test

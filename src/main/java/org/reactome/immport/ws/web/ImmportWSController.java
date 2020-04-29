@@ -3,7 +3,9 @@ package org.reactome.immport.ws.web;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
@@ -14,7 +16,6 @@ import org.reactome.immport.ws.service.ImmportDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,9 +69,6 @@ public class ImmportWSController {
     public List<VOToGSM> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null)
     		return new ArrayList<>();
-    	
-//    	Collection<String> voIds = Arrays.asList(lines[0].split(","));
-//    	Collection<String> genderList = Arrays.asList(lines[1].split(","));
     	return studyDAO.queryGSMDataForVO(gsmForVOs);
     }
     

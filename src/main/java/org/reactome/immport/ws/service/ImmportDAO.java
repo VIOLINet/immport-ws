@@ -3,12 +3,12 @@ package org.reactome.immport.ws.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.reactome.immport.ws.model.ExpSample;
 import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
@@ -58,8 +58,8 @@ public class ImmportDAO {
 
     @Transactional(readOnly = true)
     public List<VOToGSM> queryGSMDataForVO(GSMForVOs gSMForVOs){
-    	String queryText = "SELECT bs.study.id, ge.repositoryAccession, ie.exposureMaterialId, " +
-    					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit, sub.race, sub.gender FROM Subject sub " + 
+    	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, " +
+    					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
     					   "INNER JOIN sub.biosamples bs " + 
     					   "INNER JOIN bs.expSamples es " +
@@ -73,8 +73,11 @@ public class ImmportDAO {
 						                           .list();
 		List<VOToGSM> result = new ArrayList<>();
 		for(Object[] obj : repositoryAccessions) {
-			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString(), obj[4].toString(), obj[5].toString(), obj[6].toString()));
+			String date = obj[2].toString() + " " + obj[3];
+			if(obj[0].toString().equals("Not available yet") || !gSMForVOs.getTimes().contains(date)) continue;
+					result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
 		}
+		//TODO: send to R script before returning
     	return result;
     }
     

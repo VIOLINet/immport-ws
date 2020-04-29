@@ -1,11 +1,13 @@
 package org.reactome.immport.ws.model.requests;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class GSMForVOs {
 
 	private Collection<String> voIds;
 	private Collection<String> genderList;
+	private Set<String> times;
 	
 	public GSMForVOs() {}
 
@@ -24,4 +26,13 @@ public class GSMForVOs {
 	public void setGenderList(Collection<String> genderList) {
 		this.genderList = genderList;
 	}
+
+	public Set<String> getTimes() {
+		return times;
+	}
+
+	public void setTimes(Set<String> times) {
+		this.times = times;
+	}
+	
 }

@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -14,6 +18,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.junit.Test;
+import org.reactome.immport.ws.model.requests.GSMForVOs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,14 +63,6 @@ public class WSTests {
     }
     
     @Test
-    public void testQueryExpSamplesForVOs() throws Exception {
-    	String url = HOST_URL + "/expSample/vaccine";
-    	String query = "VO_0004809,VO_0000047,VO_0000642,VO_0000044,VO_0000045"+"\n"+"male,female";
-    	String rtn = callHttp(url, HTTP_POST, query);
-    	outputJSON(rtn);
-    }
-    
-    @Test
     public void testQueryTimesForVO() throws Exception {
     	String url  = HOST_URL + "/collectionTimes/vaccine/VO_0000642";
     	String rtn = callHttp(url,HTTP_GET, null);
@@ -75,7 +72,7 @@ public class WSTests {
     @Test
     public void testQueryTimesForVOs() throws Exception {
     	String url  = HOST_URL + "/collectionTimes/vaccine";
-    	String query = "VO_0000642,VO_0000044,VO_0004809,VO_0000045,VO_0000046,VO_0000047"+"\n"+"male,female";
+    	String query = "VO_0004809,VO_0000047,VO_0000642,VO_0000044,VO_0000045"+"\n"+"male,female";
     	String rtn = callHttp(url, HTTP_POST, query);
     	outputJSON(rtn);
     }
