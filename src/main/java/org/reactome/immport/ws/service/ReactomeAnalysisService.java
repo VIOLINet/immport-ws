@@ -1,9 +1,6 @@
 package org.reactome.immport.ws.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collection;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -58,6 +55,16 @@ public class ReactomeAnalysisService {
         return analysisText;
     }
     
+    /**
+     * Perform HTTP call to passed in URL. Currently only supports post requests
+     * with passed in String query. Returns a string of the response body,
+     * or an empty string on request error.
+     * @param url
+     * @param type
+     * @param query
+     * @return
+     * @throws IOException
+     */
     private String callHttp(String url, String type, String query) throws IOException {
     	PostMethod method = null;
     	HttpClient client = null;
