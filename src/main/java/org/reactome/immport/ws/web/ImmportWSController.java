@@ -78,12 +78,10 @@ public class ImmportWSController {
      */
     @PostMapping("expSample/vaccine")
     @CrossOrigin
-    public List<VOToGSM> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
+    public Collection<String> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null)
     		return new ArrayList<>();
-    	String analysisResult = reactomeService.doPathwayEnrichmentAnalysis(studyDAO.queryGSMDataForVO(gsmForVOs));
-    	String fiResult = reactomeService.constructFINetwork(studyDAO.queryGSMDataForVO(gsmForVOs));
-    	return null;
+    	return studyDAO.queryGSMDataForVO(gsmForVOs);
     }
     
     @GetMapping("collectionTimes/vaccine/{voId}")

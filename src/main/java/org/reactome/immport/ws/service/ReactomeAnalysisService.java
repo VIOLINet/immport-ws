@@ -4,14 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +38,8 @@ public class ReactomeAnalysisService {
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
-    	System.out.println(fiText);
         System.out.println("Reactome FI Url: " + config.getReactomeFIServiceURL());
-        return "{\"FIs\": [\"EGF\\tEGFR\"]}";
+        return fiText;
     }
     
     /**
@@ -56,21 +52,10 @@ public class ReactomeAnalysisService {
     	try {
     		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, genes.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println(analysisText);
         System.out.println("Reactome URL: " + config.getReactomeAnalysisURL());
-        return "{\n" + 
-                "  \"summary\": {\n" + 
-                "    \"token\": \"MjAyMDA0MjkwMzUyMDBfNDU3OQ%3D%3D\",\n" + 
-                "    \"projection\": false,\n" + 
-                "    \"interactors\": false,\n" + 
-                "    \"type\": \"OVERREPRESENTATION\",\n" + 
-                "    \"sampleName\": \"\",\n" + 
-                "    \"text\": true,\n" + 
-                "    \"includeDisease\": true\n" + 
-                "  }}";
+        return analysisText;
     }
     
     private String callHttp(String url, String type, String query) throws IOException {
@@ -85,27 +70,9 @@ public class ReactomeAnalysisService {
     	
     	int responseCode = client.executeMethod(method);
     	if(responseCode == HttpStatus.SC_OK) {
-    		InputStream is = method.getResponseBodyAsStream();
-    		return readMethodReturn(is);
+    		return method.getResponseBodyAsString();
     	}
     	else return "";
     	
-    }
-    protected String readMethodReturn(InputStream is) throws IOException {
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader reader = new BufferedReader(isr);
-        StringBuilder builder = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine()) != null)
-            builder.append(line).append("\n");
-        reader.close();
-        isr.close();
-        is.close();
-        // Remove the last new line
-        String rtn = builder.toString();
-        // Just in case an empty string is returned
-        if (rtn.length() == 0)
-            return rtn;
-        return rtn.substring(0, rtn.length() - 1);
     }
 }
