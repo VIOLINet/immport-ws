@@ -39,7 +39,7 @@ public class ImmportWSController {
     
     @GetMapping("analysis/fi_network") 
     public String getFINetwork() {
-        return reactomeService.constructFINetwork();
+        return reactomeService.constructFINetwork(studyDAO.getTestGeneSymbols());
     }
     
     @GetMapping("study/{accession}")
@@ -81,7 +81,8 @@ public class ImmportWSController {
     public List<VOToGSM> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null)
     		return new ArrayList<>();
-    	reactomeService.doPathwayEnrichmentAnalysis(studyDAO.queryGSMDataForVO(gsmForVOs));
+    	String analysisResult = reactomeService.doPathwayEnrichmentAnalysis(studyDAO.queryGSMDataForVO(gsmForVOs));
+    	String fiResult = reactomeService.constructFINetwork(studyDAO.queryGSMDataForVO(gsmForVOs));
     	return null;
     }
     

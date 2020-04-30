@@ -29,22 +29,38 @@ public class ReactomeAnalysisService {
     public ReactomeAnalysisService() {
     }
     
-    public String constructFINetwork() {
+    /**
+     * Query Reactome FI service 
+     * @param genes
+     * @return
+     */
+    public String constructFINetwork(Collection<String> genes) {
+    	String fiText = "";
+    	try {
+    		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/buildNetwork", HTTP_POST, genes.toString());
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	System.out.println(fiText);
         System.out.println("Reactome FI Url: " + config.getReactomeFIServiceURL());
         return "{\"FIs\": [\"EGF\\tEGFR\"]}";
     }
     
-    public String doPathwayEnrichmentAnalysis(Collection<String> collection) {
+    /**
+     * Query analysis service for a set of genes
+     * @param genes
+     * @return
+     */
+    public String doPathwayEnrichmentAnalysis(Collection<String> genes) {
     	String analysisText = "";
     	try {
-    		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, collection.toString());
+    		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, genes.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+    	System.out.println(analysisText);
         System.out.println("Reactome URL: " + config.getReactomeAnalysisURL());
-        System.out.println(analysisText);
         return "{\n" + 
                 "  \"summary\": {\n" + 
                 "    \"token\": \"MjAyMDA0MjkwMzUyMDBfNDU3OQ%3D%3D\",\n" + 
