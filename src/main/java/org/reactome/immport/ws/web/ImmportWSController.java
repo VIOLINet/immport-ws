@@ -78,7 +78,9 @@ public class ImmportWSController {
     @PostMapping("expSample/vaccine")
     @CrossOrigin
     public Collection<String> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
-    	if(gsmForVOs == null)
+    	if(gsmForVOs == null || gsmForVOs.getVoIds().size() == 0
+    	   || gsmForVOs.getGenderList().size() == 0
+    	   || gsmForVOs.getTimes().size() == 0)
     		return new ArrayList<>();
     	return studyDAO.queryGSMDataForVO(gsmForVOs);
     }
