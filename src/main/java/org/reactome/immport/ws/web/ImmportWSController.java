@@ -8,7 +8,6 @@ import java.util.List;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
-import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.reactome.immport.ws.service.ImmportDAO;
 import org.reactome.immport.ws.service.ReactomeAnalysisService;
