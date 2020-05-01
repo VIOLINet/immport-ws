@@ -1,7 +1,7 @@
 package org.reactome.immport.ws.service;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class ReactomeAnalysisService {
@@ -28,7 +29,7 @@ public class ReactomeAnalysisService {
      * @param genes
      * @return
      */
-    public String constructFINetwork(Collection<String> genes) {
+    public String constructFINetwork(Set<String> genes) {
     	String fiText = "";
     	try {
     		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, genes.toString());
@@ -44,7 +45,7 @@ public class ReactomeAnalysisService {
      * @param genes
      * @return
      */
-    public String doPathwayEnrichmentAnalysis(Collection<String> genes) {
+    public String doPathwayEnrichmentAnalysis(Set<String> genes) {
     	String analysisText = "";
     	try {
     		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, genes.toString());
@@ -54,8 +55,8 @@ public class ReactomeAnalysisService {
         System.out.println("Reactome URL: " + config.getReactomeAnalysisURL());
         return analysisText;
     }
-    
-    /**
+
+	/**
      * Perform HTTP call to passed in URL. Currently only supports post requests
      * with passed in String query. Returns a string of the response body,
      * or an empty string on request error.

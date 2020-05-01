@@ -1,15 +1,13 @@
 package org.reactome.immport.ws.service;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,7 +18,6 @@ import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +59,7 @@ public class ImmportDAO {
     }
 
     @Transactional(readOnly = true)
-    public Collection<String> queryGSMDataForVO(GSMForVOs gSMForVOs){
+    public Set<String> queryGSMDataForVO(GSMForVOs gSMForVOs){
     	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, " +
     					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
@@ -82,29 +79,27 @@ public class ImmportDAO {
 			if(obj[0].toString().equals("Not available yet") || !gSMForVOs.getTimes().contains(date)) continue;
 					result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
 		}
-		Collection<String> geneIDs = getTestGeneSymbols();
+		Set<String> geneIDs = getTestGeneSymbols();
 		
     	return geneIDs;
     }
     
-    public Collection<String> getTestGeneSymbols(){
-    	Collection<String> geneIDs = new ArrayList<>();
+    public Set<String> getTestGeneSymbols(){
+    	Set<String> geneIDs = new HashSet<>();
     	
     	InputStream is = getClass().getClassLoader().getResourceAsStream("test.tsv");
     	Scanner scanner = new Scanner(is);
     	String line = scanner.nextLine();
     	while((line = scanner.nextLine()) != null) {
-    		String[] tokens = line.split("\t");
+    		String gene = line.split("\t")[2];
+    		if(gene.isEmpty() || gene.contains("///")) continue;  
     		
-    		if(tokens[2].contains("or") ||
-    				tokens[2].contains(" ")) continue;  
-    		
-    		geneIDs.add(tokens[2].replaceAll("^\"|\"$", ""));
+    		geneIDs.add(gene);
     		if(!scanner.hasNextLine()) break;
     		
     	}
     	scanner.close();
-    	
+    	System.out.print(geneIDs.toString());
     	return geneIDs;
     }
     

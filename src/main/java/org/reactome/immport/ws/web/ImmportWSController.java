@@ -3,7 +3,9 @@ package org.reactome.immport.ws.web;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
@@ -77,11 +79,11 @@ public class ImmportWSController {
      */
     @PostMapping("expSample/vaccine")
     @CrossOrigin
-    public Collection<String> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
+    public Set<String> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null || gsmForVOs.getVoIds().size() == 0
     	   || gsmForVOs.getGenderList().size() == 0
     	   || gsmForVOs.getTimes().size() == 0)
-    		return new ArrayList<>();
+    		return new HashSet<>();
     	return studyDAO.queryGSMDataForVO(gsmForVOs);
     }
     
