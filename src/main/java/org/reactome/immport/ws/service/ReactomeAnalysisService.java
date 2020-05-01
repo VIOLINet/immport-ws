@@ -31,7 +31,7 @@ public class ReactomeAnalysisService {
     public String constructFINetwork(Collection<String> genes) {
     	String fiText = "";
     	try {
-    		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/buildNetwork", HTTP_POST, genes.toString());
+    		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, genes.toString());
     	} catch (IOException e) {
     		e.printStackTrace();
     	}

@@ -95,8 +95,13 @@ public class ImmportDAO {
     	String line = scanner.nextLine();
     	while((line = scanner.nextLine()) != null) {
     		String[] tokens = line.split("\t");
+    		
+    		if(tokens[2].contains("or") ||
+    				tokens[2].contains(" ")) continue;  
+    		
     		geneIDs.add(tokens[2].replaceAll("^\"|\"$", ""));
     		if(!scanner.hasNextLine()) break;
+    		
     	}
     	scanner.close();
     	
