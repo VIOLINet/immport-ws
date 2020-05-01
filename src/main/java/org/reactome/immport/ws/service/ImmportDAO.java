@@ -91,15 +91,13 @@ public class ImmportDAO {
     	Scanner scanner = new Scanner(is);
     	String line = scanner.nextLine();
     	while((line = scanner.nextLine()) != null) {
-    		String gene = line.split("\t")[2];
+    		String gene = line.split("\t")[2].replaceAll("^\"|\"$", "");
     		if(gene.isEmpty() || gene.contains("///")) continue;  
-    		
     		geneIDs.add(gene);
     		if(!scanner.hasNextLine()) break;
     		
     	}
     	scanner.close();
-    	System.out.print(geneIDs.toString());
     	return geneIDs;
     }
     

@@ -1,6 +1,7 @@
 package org.reactome.immport.ws.service;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -32,7 +33,7 @@ public class ReactomeAnalysisService {
     public String constructFINetwork(Set<String> genes) {
     	String fiText = "";
     	try {
-    		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, genes.toString());
+    		fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, String.join(",", genes));
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
@@ -48,7 +49,7 @@ public class ReactomeAnalysisService {
     public String doPathwayEnrichmentAnalysis(Set<String> genes) {
     	String analysisText = "";
     	try {
-    		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, genes.toString());
+    		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, String.join(",", genes));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
