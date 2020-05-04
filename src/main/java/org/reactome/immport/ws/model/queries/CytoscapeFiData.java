@@ -14,14 +14,14 @@ public class CytoscapeFiData {
 	@JsonInclude(Include.NON_NULL)
 	String name;
 	@JsonInclude(Include.NON_NULL)
-	String taret;
+	String target;
 	@JsonInclude(Include.NON_NULL)
 	String source;
 	
-	public CytoscapeFiData(String id, String name, String taret, String source) {
+	public CytoscapeFiData(String id, String name, String target, String source) {
 		this.id = id;
 		this.name = name;
-		this.taret = taret;
+		this.target = target;
 		this.source = source;
 	}
 
@@ -41,12 +41,12 @@ public class CytoscapeFiData {
 		this.name = name;
 	}
 
-	public String getTaret() {
-		return taret;
+	public String getTarget() {
+		return target;
 	}
 
-	public void setTaret(String taret) {
-		this.taret = taret;
+	public void setTarget(String target) {
+		this.target = target;
 	}
 
 	public String getSource() {

@@ -41,7 +41,7 @@ public class ReactomeAnalysisService {
     	String rtn = "";
     	try {
     		String fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, String.join(",", genes));
-    		rtn = convertToCyJson(fiText);
+    		rtn = convertToCyJson(fiText, genes);
     	} catch (IOException e) {
     		return "";
     	}
@@ -49,21 +49,23 @@ public class ReactomeAnalysisService {
         return rtn;
     }
     
-    private String convertToCyJson(String fiText) throws IOException {
+    private String convertToCyJson(String fiText, Set<String> genes) throws IOException {
     	ObjectMapper objectMapper = new ObjectMapper();
     	JsonNode fis = objectMapper.readTree(fiText);
-    	List<CytoscapeFI> rtn = new ArrayList<>();
     	
     	if(!fis.get("interaction").isArray()) return "";
     	
-    	int counter = 0;
+    	List<CytoscapeFI> rtn = new ArrayList<>();
+    	genes.forEach(x -> {
+    		rtn.add(new CytoscapeFI("nodes", new CytoscapeFiData(x,x,null,null)));
+    	});
+    	
+    	List<CytoscapeFI> edges = new ArrayList<>();
     	for(final JsonNode node : fis.get("interaction")) {
-    		rtn.add(new CytoscapeFI("nodes", new CytoscapeFiData(node.get("firstProtein").get("name").asText(),node.get("firstProtein").get("name").asText(),null,null)));
-    		rtn.add(new CytoscapeFI("nodes", new CytoscapeFiData(node.get("secondProtein").get("name").asText(),node.get("secondProtein").get("name").asText(),null,null)));
-    		rtn.add(new CytoscapeFI("edges", new CytoscapeFiData(counter+"", null, node.get("firstProtein").get("name").asText(),node.get("secondProtein").get("name").asText())));
-    		counter++;
+    		edges.add(new CytoscapeFI("edges", new CytoscapeFiData("e"+edges.size(), null, node.get("firstProtein").get("name").asText(),node.get("secondProtein").get("name").asText())));
     	}
     	
+    	rtn.addAll(edges);
 		return objectMapper.writeValueAsString(rtn);
 	}
 
