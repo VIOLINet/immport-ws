@@ -10,6 +10,7 @@ import java.util.Set;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
+import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.reactome.immport.ws.service.ImmportDAO;
 import org.reactome.immport.ws.service.ReactomeAnalysisService;
@@ -79,11 +80,11 @@ public class ImmportWSController {
      */
     @PostMapping("expSample/vaccine")
     @CrossOrigin
-    public Set<String> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
+    public List<VOToGSM> queryGSMDataForVOs(@RequestBody GSMForVOs gsmForVOs){
     	if(gsmForVOs == null || gsmForVOs.getVoIds().size() == 0
     	   || gsmForVOs.getGenderList().size() == 0
     	   || gsmForVOs.getTimes().size() == 0)
-    		return new HashSet<>();
+    		return new ArrayList<>();
     	return studyDAO.queryGSMDataForVO(gsmForVOs);
     }
     

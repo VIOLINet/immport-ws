@@ -59,8 +59,8 @@ public class ImmportDAO {
     }
 
     @Transactional(readOnly = true)
-    public Set<String> queryGSMDataForVO(GSMForVOs gSMForVOs){
-    	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, " +
+    public List<VOToGSM> queryGSMDataForVO(GSMForVOs gSMForVOs){
+    	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, sub.gender, " +
     					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
     					   "INNER JOIN sub.biosamples bs " + 
@@ -75,13 +75,13 @@ public class ImmportDAO {
 						                           .list();
 		List<VOToGSM> result = new ArrayList<>();
 		for(Object[] obj : repositoryAccessions) {
-			String date = obj[2].toString() + " " + obj[3];
+			String date = obj[3].toString() + " " + obj[4];
 			if(obj[0].toString().equals("Not available yet") || !gSMForVOs.getTimes().contains(date)) continue;
-					result.add(new VOToGSM(obj[0].toString(), obj[1].toString()));
+			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString() + " " + obj[4].toString()));
 		}
 		Set<String> geneIDs = getTestGeneSymbols();
 		
-    	return geneIDs;
+    	return result;
     }
     
     public Set<String> getTestGeneSymbols(){
@@ -92,7 +92,7 @@ public class ImmportDAO {
     	String line = scanner.nextLine();
     	while((line = scanner.nextLine()) != null) {
     		String gene = line.split("\t")[2].replaceAll("^\"|\"$", "");
-    		if(gene.isEmpty() || gene.contains("///")) continue;  
+    		if(gene.isEmpty() || gene.contains("///") || gene.contains("@")) continue;  
     		geneIDs.add(gene);
     		if(!scanner.hasNextLine()) break;
     		
