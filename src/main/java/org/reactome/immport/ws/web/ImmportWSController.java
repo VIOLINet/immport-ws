@@ -10,6 +10,7 @@ import java.util.Set;
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
+import org.reactome.immport.ws.model.queries.CytoscapeFI;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.reactome.immport.ws.service.ImmportDAO;
@@ -42,6 +43,16 @@ public class ImmportWSController {
     @GetMapping("analysis/fi_network") 
     public String getFINetwork() {
         return reactomeService.constructFINetwork(studyDAO.getTestGeneSymbols());
+    }
+    
+    /**
+     * Cosumes a FI network structured for cytoscape use.
+     * @param network
+     * @return
+     */
+    @PostMapping("analysis/clustered_fi_network")
+    public String getClusteredFINetwork(@RequestBody List<CytoscapeFI> network) {
+    	return reactomeService.constructClusteredFINetwork(network);
     }
     
     @GetMapping("study/{accession}")

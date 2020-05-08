@@ -9,6 +9,8 @@ public class CytoscapeFI {
 	String group;
 	CytoscapeFiData data;
 	
+	public CytoscapeFI() {}
+	
 	public CytoscapeFI(String group, CytoscapeFiData data) {
 		this.group = group;
 		this.data = data;

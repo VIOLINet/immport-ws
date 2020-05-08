@@ -2,7 +2,7 @@ package org.reactome.immport.ws.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -69,6 +69,24 @@ public class ReactomeAnalysisService {
 		return objectMapper.writeValueAsString(rtn);
 	}
 
+    public String constructClusteredFINetwork(List<CytoscapeFI> network) {
+    	Set<String> genes = new HashSet<>();
+		List<String> fisToCluster = new ArrayList<>();
+		for(CytoscapeFI fi : network) {
+			if(fi.getGroup().contains("edges"))
+				fisToCluster.add(fi.getData().getId() + "\t" + fi.getData().getSource() + "\t" + fi.getData().getTarget());
+			else
+				genes.add(fi.getData().getName());
+		}
+		
+		try {
+			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster));
+			return response;
+		} catch(IOException e) {
+			return "";
+		}
+	}
+    
 	/**
      * Query analysis service for a set of genes
      * @param genes

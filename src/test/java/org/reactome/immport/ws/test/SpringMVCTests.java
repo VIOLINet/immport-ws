@@ -3,12 +3,16 @@ package org.reactome.immport.ws.test;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.reactome.immport.ws.model.queries.CytoscapeFI;
+import org.reactome.immport.ws.model.queries.CytoscapeFiData;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -91,6 +95,22 @@ public class SpringMVCTests {
     public void getFINetwork() throws Exception {
         String url = "/analysis/fi_network";
         testGet(url);
+    }
+    
+    @Test
+    public void getClusteredFINetwork() throws Exception {
+    	String url = "/analysis/clustered_fi_network";
+    	List<CytoscapeFI> postData = new ArrayList<>();
+    	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e1", null, "EGFR", "NTN1")));
+    	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e2", null, "NTN1", "TITN")));
+    	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e3", null, "TITN", "EGFR")));
+    	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("EGFR", "EGFR", null, null)));
+    	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("NTN1", "NTN1", null, null)));
+    	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("TITN", "TITN", null, null)));
+    	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("CLOCK", "CLOCK", null, null)));
+    	ObjectMapper mapper = new ObjectMapper();
+    	ResultActions actions = mockMVC.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(postData)));
+    	outputResult(actions);
     }
 
     private void testGet(String url) throws Exception {

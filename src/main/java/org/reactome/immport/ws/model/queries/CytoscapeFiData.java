@@ -18,6 +18,8 @@ public class CytoscapeFiData {
 	@JsonInclude(Include.NON_NULL)
 	String source;
 	
+	public CytoscapeFiData() {}
+	
 	public CytoscapeFiData(String id, String name, String target, String source) {
 		this.id = id;
 		this.name = name;
