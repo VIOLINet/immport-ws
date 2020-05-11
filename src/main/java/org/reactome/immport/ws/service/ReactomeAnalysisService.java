@@ -45,7 +45,6 @@ public class ReactomeAnalysisService {
     	} catch (IOException e) {
     		return "";
     	}
-        System.out.println("Reactome FI Url: " + config.getReactomeFIServiceURL());
         return rtn;
     }
     
@@ -78,9 +77,8 @@ public class ReactomeAnalysisService {
 			else
 				genes.add(fi.getData().getName());
 		}
-		
 		try {
-			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster));
+			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster) + "\n");
 			return response;
 		} catch(IOException e) {
 			return "";
@@ -99,7 +97,6 @@ public class ReactomeAnalysisService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        System.out.println("Reactome URL: " + config.getReactomeAnalysisURL());
         return analysisText;
     }
 
@@ -118,16 +115,16 @@ public class ReactomeAnalysisService {
     	HttpClient client = null;
     	
     	method = new PostMethod(url);
-    	method.setRequestEntity(new StringRequestEntity(query, "text/plain", "UTF-8"));
+    	method.setRequestEntity(new StringRequestEntity(query, "text/plain", null));
     	method.setRequestHeader("Accept", "application/json");
-    	
+    	    	
     	client = new HttpClient();
     	
     	int responseCode = client.executeMethod(method);
     	if(responseCode == HttpStatus.SC_OK) {
     		return method.getResponseBodyAsString();
     	}
-    	else return "";
+    	else return "Response code: " + responseCode;
     	
     }
 }

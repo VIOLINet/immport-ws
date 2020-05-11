@@ -103,19 +103,20 @@ public class SpringMVCTests {
     	List<CytoscapeFI> postData = new ArrayList<>();
     	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e1", null, "EGFR", "NTN1")));
     	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e2", null, "NTN1", "TITN")));
-    	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e3", null, "TITN", "EGFR")));
+    	postData.add(new CytoscapeFI("edges", new CytoscapeFiData("e3", null, "EGFR", "TITN")));
     	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("EGFR", "EGFR", null, null)));
     	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("NTN1", "NTN1", null, null)));
     	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("TITN", "TITN", null, null)));
     	postData.add(new CytoscapeFI("nodes", new CytoscapeFiData("CLOCK", "CLOCK", null, null)));
     	ObjectMapper mapper = new ObjectMapper();
+    	
     	ResultActions actions = mockMVC.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(postData)));
     	outputResult(actions);
     }
 
     private void testGet(String url) throws Exception {
         ResultActions actions = this.mockMVC.perform(get(url));
-        outputResult(actions);
+//        outputResult(actions);
     }
     
     private void testPost(String url, String body) throws Exception {
@@ -140,7 +141,6 @@ public class SpringMVCTests {
         ObjectMapper mapper = new ObjectMapper();
         Object obj = mapper.readValue(json, Object.class);
         String rtn = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-        System.out.println(rtn);
         return rtn;
     }
 
