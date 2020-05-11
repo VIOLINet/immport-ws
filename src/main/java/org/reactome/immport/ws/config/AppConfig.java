@@ -40,6 +40,7 @@ public class AppConfig {
        ReactomeAnalysisConfig config = new ReactomeAnalysisConfig();
        config.setReactomeAnalysisURL(env.getProperty("reactome.analysis.service"));
        config.setReactomeFIServiceURL(env.getProperty("reactome.fi.service"));
+       config.setModuleColors(env.getProperty("reactome.fi.moduleColors").split(";"));
        return config;
    }
 

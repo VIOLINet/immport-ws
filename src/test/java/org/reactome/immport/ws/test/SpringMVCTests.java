@@ -137,7 +137,7 @@ public class SpringMVCTests {
     }
     
     private String outputJSON(String json) throws JsonProcessingException, IOException {
-//        System.out.println(json);
+        System.out.println(json);
         ObjectMapper mapper = new ObjectMapper();
         Object obj = mapper.readValue(json, Object.class);
         String rtn = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);

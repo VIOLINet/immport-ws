@@ -31,6 +31,8 @@ public class ReactomeAnalysisService {
     @Autowired
     private ReactomeAnalysisConfig config;
     
+    
+    
     public ReactomeAnalysisService() {
     }
     
@@ -108,12 +110,16 @@ public class ReactomeAnalysisService {
 	private Map<String, String> makeClusterMap(String clusterResponse) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
     	JsonNode fis = objectMapper.readTree(clusterResponse);
+    	String[] colorList = config.getModuleColors();
     	if(!fis.get("geneClusterPairs").isArray()) return null;
     	
 		Map<String, String> geneToColorMap = new HashMap<>();
 		
 		for(JsonNode node : fis.get("geneClusterPairs")) {
-			geneToColorMap.put(node.get("geneId").toString().replaceAll("^\"|\"$", ""), node.get("cluster").toString().replaceAll("^\"|\"$", ""));
+			geneToColorMap.put(node.get("geneId").asText(), 
+							   colorList.length > node.get("cluster").asInt() ?
+							   "rgb(" + colorList[node.get("cluster").asInt()] + ")":
+							   null);
 		}
 		
 		return geneToColorMap;
