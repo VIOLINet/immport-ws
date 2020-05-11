@@ -17,6 +17,8 @@ public class CytoscapeFiData {
 	String source;
 	@JsonInclude(Include.NON_NULL)
 	String target;
+	@JsonInclude(Include.NON_NULL)
+	String clusterColor;
 	
 	public CytoscapeFiData() {}
 	
@@ -57,4 +59,13 @@ public class CytoscapeFiData {
 	public void setTarget(String target) {
 		this.target = target;
 	}
+
+	public void setClusterColor(String clusterColor) {
+		this.clusterColor = clusterColor;
+	}
+
+	public String getClusterColor() {
+		return clusterColor;
+	}
+	
 }

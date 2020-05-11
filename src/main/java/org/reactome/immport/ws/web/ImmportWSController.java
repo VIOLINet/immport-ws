@@ -49,7 +49,7 @@ public class ImmportWSController {
      * @return
      */
     @PostMapping("analysis/clustered_fi_network")
-    public String getClusteredFINetwork(@RequestBody List<CytoscapeFI> network) {
+    public List<CytoscapeFI> getClusteredFINetwork(@RequestBody List<CytoscapeFI> network) {
     	return reactomeService.constructClusteredFINetwork(network);
     }
     

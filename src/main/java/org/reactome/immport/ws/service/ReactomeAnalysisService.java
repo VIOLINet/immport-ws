@@ -2,8 +2,10 @@ package org.reactome.immport.ws.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -41,19 +43,20 @@ public class ReactomeAnalysisService {
     	String rtn = "";
     	try {
     		String fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, String.join(",", genes));
-    		rtn = convertToCyJson(fiText, genes);
+    		ObjectMapper mapper = new ObjectMapper();
+    		rtn = mapper.writeValueAsString(convertToCyJson(fiText, genes));
     	} catch (IOException e) {
     		return "";
     	}
         return rtn;
     }
     
-    private String convertToCyJson(String fiText, Set<String> genes) throws IOException {
+    private List<CytoscapeFI> convertToCyJson(String fiText, Set<String> genes) throws IOException {
     	ObjectMapper objectMapper = new ObjectMapper();
     	JsonNode fis = objectMapper.readTree(fiText);
     	
-    	if(!fis.get("interaction").isArray()) return "";
-    	
+    	if(!fis.get("interaction").isArray()) return new ArrayList<>();
+    	    	
     	List<CytoscapeFI> rtn = new ArrayList<>();
     	genes.forEach(x -> {
     		rtn.add(new CytoscapeFI("nodes", new CytoscapeFiData(x,x,null,null)));
@@ -65,10 +68,10 @@ public class ReactomeAnalysisService {
     	}
     	
     	rtn.addAll(edges);
-		return objectMapper.writeValueAsString(rtn);
+		return rtn;
 	}
-
-    public String constructClusteredFINetwork(List<CytoscapeFI> network) {
+    
+    public List<CytoscapeFI> constructClusteredFINetwork(List<CytoscapeFI> network) {
     	Set<String> genes = new HashSet<>();
 		List<String> fisToCluster = new ArrayList<>();
 		for(CytoscapeFI fi : network) {
@@ -79,12 +82,43 @@ public class ReactomeAnalysisService {
 		}
 		try {
 			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster) + "\n");
-			return response;
+			return addClustering(network, response);
 		} catch(IOException e) {
-			return "";
+			return new ArrayList<>();
 		}
 	}
     
+	private List<CytoscapeFI> addClustering(List<CytoscapeFI> network, String clusterResponse) throws IOException {
+		Map<String, String> clusterMap = makeClusterMap(clusterResponse);
+		
+		for(CytoscapeFI obj : network) {
+			if(!obj.getGroup().contains("nodes")) continue;
+			obj.getData().setClusterColor(clusterMap.get(obj.getData().getName()));
+		}
+		
+		return network;
+	}
+
+	/**
+	 * Makes map of cluster call to FI service from gene to a hex color based on cluster number
+	 * @param clusterResponse
+	 * @return
+	 * @throws IOException 
+	 */
+	private Map<String, String> makeClusterMap(String clusterResponse) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+    	JsonNode fis = objectMapper.readTree(clusterResponse);
+    	if(!fis.get("geneClusterPairs").isArray()) return null;
+    	
+		Map<String, String> geneToColorMap = new HashMap<>();
+		
+		for(JsonNode node : fis.get("geneClusterPairs")) {
+			geneToColorMap.put(node.get("geneId").toString().replaceAll("^\"|\"$", ""), node.get("cluster").toString().replaceAll("^\"|\"$", ""));
+		}
+		
+		return geneToColorMap;
+	}
+
 	/**
      * Query analysis service for a set of genes
      * @param genes
