@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
@@ -49,7 +50,7 @@ public class ImmportWSController {
      * @return
      */
     @PostMapping("analysis/clustered_fi_network")
-    public List<CytoscapeFI> getClusteredFINetwork(@RequestBody List<CytoscapeFI> network) {
+    public Map<String,String> getClusteredFINetwork(@RequestBody List<CytoscapeFI> network) {
     	return reactomeService.constructClusteredFINetwork(network);
     }
     

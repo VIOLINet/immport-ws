@@ -73,7 +73,7 @@ public class ReactomeAnalysisService {
 		return rtn;
 	}
     
-    public List<CytoscapeFI> constructClusteredFINetwork(List<CytoscapeFI> network) {
+    public Map<String, String> constructClusteredFINetwork(List<CytoscapeFI> network) {
     	Set<String> genes = new HashSet<>();
 		List<String> fisToCluster = new ArrayList<>();
 		for(CytoscapeFI fi : network) {
@@ -84,21 +84,10 @@ public class ReactomeAnalysisService {
 		}
 		try {
 			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster) + "\n");
-			return addClustering(network, response);
+			return makeClusterMap(response);
 		} catch(IOException e) {
-			return new ArrayList<>();
+			return new HashMap<>();
 		}
-	}
-    
-	private List<CytoscapeFI> addClustering(List<CytoscapeFI> network, String clusterResponse) throws IOException {
-		Map<String, String> clusterMap = makeClusterMap(clusterResponse);
-		
-		for(CytoscapeFI obj : network) {
-			if(!obj.getGroup().contains("nodes")) continue;
-			obj.getData().setClusterColor(clusterMap.get(obj.getData().getName()));
-		}
-		
-		return network;
 	}
 
 	/**
