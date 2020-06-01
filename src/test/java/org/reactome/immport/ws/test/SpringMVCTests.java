@@ -116,7 +116,7 @@ public class SpringMVCTests {
 
     private void testGet(String url) throws Exception {
         ResultActions actions = this.mockMVC.perform(get(url));
-//        outputResult(actions);
+        outputResult(actions);
     }
     
     private void testPost(String url, String body) throws Exception {

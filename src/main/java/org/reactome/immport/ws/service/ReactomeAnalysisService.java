@@ -3,7 +3,6 @@ package org.reactome.immport.ws.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,9 +41,10 @@ public class ReactomeAnalysisService {
      * @return
      */
     public String constructFINetwork(Set<String> genes) {
-    	String rtn = "";
+    	String rtn = null;
     	try {
     		String fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, String.join(",", genes));
+    		//return List<CytoscapeFI>. Spring will convert on its own
     		ObjectMapper mapper = new ObjectMapper();
     		rtn = mapper.writeValueAsString(convertToCyJson(fiText, genes));
     	} catch (IOException e) {
@@ -74,13 +74,10 @@ public class ReactomeAnalysisService {
 	}
     
     public Map<String, String> constructClusteredFINetwork(List<CytoscapeFI> network) {
-    	Set<String> genes = new HashSet<>();
 		List<String> fisToCluster = new ArrayList<>();
 		for(CytoscapeFI fi : network) {
 			if(fi.getGroup().contains("edges"))
 				fisToCluster.add(fi.getData().getId() + "\t" + fi.getData().getSource() + "\t" + fi.getData().getTarget());
-			else
-				genes.add(fi.getData().getName());
 		}
 		try {
 			String response = callHttp(config.getReactomeFIServiceURL()+"/network/cluster", HTTP_POST, String.join("\n", fisToCluster) + "\n");
@@ -120,7 +117,7 @@ public class ReactomeAnalysisService {
      * @return
      */
     public String doPathwayEnrichmentAnalysis(Set<String> genes) {
-    	String analysisText = "";
+    	String analysisText = null;
     	try {
     		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, String.join(",", genes));
 		} catch (IOException e) {
@@ -153,7 +150,7 @@ public class ReactomeAnalysisService {
     	if(responseCode == HttpStatus.SC_OK) {
     		return method.getResponseBodyAsString();
     	}
-    	else return "Response code: " + responseCode;
+    	else return "Reactome service responded with code: " + responseCode;
     	
     }
 }

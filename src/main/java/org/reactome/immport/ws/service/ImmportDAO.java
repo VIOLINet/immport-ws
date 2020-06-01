@@ -26,6 +26,8 @@ public class ImmportDAO {
     @Autowired
     private SessionFactory sessionFactory;
     
+    private static boolean comparisonData = false;
+    
     public ImmportDAO() {
     }
     
@@ -87,6 +89,8 @@ public class ImmportDAO {
     public Set<String> getTestGeneSymbols(){
     	Set<String> geneIDs = new HashSet<>();
     	
+    	if(comparisonData) return getTestComparisonData();
+    	
     	InputStream is = getClass().getClassLoader().getResourceAsStream("test.tsv");
     	Scanner scanner = new Scanner(is);
     	String line = scanner.nextLine();
@@ -98,10 +102,26 @@ public class ImmportDAO {
     		
     	}
     	scanner.close();
+    	comparisonData = !comparisonData;
     	return geneIDs;
     }
     
-    @Transactional(readOnly = true)
+    private Set<String> getTestComparisonData() {
+		Set<String> geneIDs = new HashSet<>();
+		
+		InputStream is = getClass().getClassLoader().getResourceAsStream("comparison.txt");
+		Scanner scanner =  new Scanner(is);
+		String line = scanner.nextLine();
+		while((line = scanner.nextLine()) != null) {
+			geneIDs.add(line);
+			if(!scanner.hasNextLine()) break;
+		}
+		scanner.close();
+		comparisonData = !comparisonData;
+		return geneIDs;
+	}
+
+	@Transactional(readOnly = true)
     public List<BioSampleCollectionTime> queryStudyTimeCollectedForVO(String voId){
     	return queryStudyTimeCollectedForVO(Collections.singleton(voId));
     }
