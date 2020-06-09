@@ -6,13 +6,15 @@ public class VOToGSM {
 	String exposureMaterialId;
 	String gender;
 	String time;
+	String studyAccession;
 
 	
-	public VOToGSM(String gsm, String exposureMaterialId, String gender, String time) {
+	public VOToGSM(String gsm, String exposureMaterialId, String gender, String time, String studyAccession) {
 		this.gsm = gsm;
 		this.exposureMaterialId = exposureMaterialId;
 		this.gender = gender;
 		this.time = time;
+		this.studyAccession = studyAccession;
 	}
 
 	public String getGsm() {
@@ -45,5 +47,13 @@ public class VOToGSM {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public String getStudyAccession() {
+		return studyAccession;
+	}
+
+	public void setStudyAccession(String studyAccession) {
+		this.studyAccession = studyAccession;
 	}
 }

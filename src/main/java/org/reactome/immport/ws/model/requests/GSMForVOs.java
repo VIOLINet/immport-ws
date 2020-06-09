@@ -34,5 +34,4 @@ public class GSMForVOs {
 	public void setTimes(Set<String> times) {
 		this.times = times;
 	}
-	
 }

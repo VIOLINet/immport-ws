@@ -81,10 +81,6 @@ public class ImmportWSController {
     }
     
     /**
-     * Structure:
-     * Line 1: comma separated list of voIds
-     * Line 2: comma separated list of genders
-     * Line 3: comma separated list of times
      * @param voId
      * @return
      */

@@ -63,7 +63,7 @@ public class ImmportDAO {
     @Transactional(readOnly = true)
     public List<VOToGSM> queryGSMDataForVO(GSMForVOs gSMForVOs){
     	String queryText = "SELECT ge.repositoryAccession, ie.exposureMaterialId, sub.gender, " +
-    					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit FROM Subject sub " + 
+    					   "bs.studyTimeCollected, bs.studyTimeCollectedUnit, bs.study.accession FROM Subject sub " + 
     					   "INNER JOIN sub.immuneExposures ie " +
     					   "INNER JOIN sub.biosamples bs " + 
     					   "INNER JOIN bs.expSamples es " +
@@ -79,9 +79,8 @@ public class ImmportDAO {
 		for(Object[] obj : repositoryAccessions) {
 			String date = obj[3].toString() + " " + obj[4];
 			if(obj[0].toString().equals("Not available yet") || !gSMForVOs.getTimes().contains(date)) continue;
-			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString() + " " + obj[4].toString()));
+			result.add(new VOToGSM(obj[0].toString(), obj[1].toString(), obj[2].toString(), obj[3].toString() + " " + obj[4].toString(), obj[5].toString()));
 		}
-		Set<String> geneIDs = getTestGeneSymbols();
 		
     	return result;
     }
