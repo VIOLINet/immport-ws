@@ -27,7 +27,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -70,8 +69,11 @@ public class HibernateTests {
     	
     	CriteriaBuilder cb = session.getCriteriaBuilder();
     	CriteriaQuery<BioSample> cq = cb.createQuery(BioSample.class);
-    	Root<BioSample> rootEntry = cq.from(BioSample.class);
-    	List<BioSample> bioSamples = session.createQuery(cq.select(rootEntry)).getResultList();
+    	List<BioSample> bioSamples = session
+    			.createQuery(cq
+    					.select(cq
+    							.from(BioSample.class)))
+    			.getResultList();
     	
     	List<GSMInfo> gsmInfo = new ArrayList<>();
     	bioSamples.forEach(bioSample -> {
@@ -104,6 +106,7 @@ public class HibernateTests {
 		gsmInfoFile.createNewFile();
 		FileWriter fos = new FileWriter(gsmInfoFile);
 		PrintWriter dos = new PrintWriter(fos);
+		//prints a line of headers to the file
 		dos.println("Study Id\t"
 				  + "Subject Id\t"
 				  + "Repository Accession\t"
@@ -111,6 +114,7 @@ public class HibernateTests {
 				  + "Study Time Collected Units\t"
 				  + "ExpSample Id\t"
 				  + "Exp To Multiple GSM Flag");
+		//prints each gsmInfo object to file
 		gsmInfo.forEach(x -> {
 			dos.println(x.toString());
 		});

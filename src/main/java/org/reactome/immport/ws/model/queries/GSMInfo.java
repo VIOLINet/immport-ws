@@ -63,6 +63,10 @@ public class GSMInfo {
 	public void setExpToMultipleGSM(boolean expToMultipleGSM) {
 		this.expToMultipleGSM = expToMultipleGSM;
 	}
+	
+	/**
+	 * Overries toString to return a tab separated String of the object's data
+	 */
 	@Override
 	public String toString() {
 		return this.getStudyAccesssion() + "\t" +
