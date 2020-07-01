@@ -19,9 +19,19 @@ package org.reactome.immport.ws.test;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -42,6 +52,7 @@ import org.reactome.immport.ws.model.SampleGeneExpression;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.Subject;
 import org.reactome.immport.ws.model.Treatment;
+import org.reactome.immport.ws.model.queries.GSMInfo;
 
 public class HibernateTests {
 
@@ -49,6 +60,56 @@ public class HibernateTests {
     }
     
     @Test
+    public void testQueryAllGSM() throws Exception {
+    	SessionFactory sf = createSessionFactory();
+    	Session session = sf.openSession();
+    	
+    	CriteriaBuilder cb = session.getCriteriaBuilder();
+    	CriteriaQuery<BioSample> cq = cb.createQuery(BioSample.class);
+    	Root<BioSample> rootEntry = cq.from(BioSample.class);
+    	List<BioSample> bioSamples = session.createQuery(cq.select(rootEntry)).getResultList();
+    	
+    	List<GSMInfo> gsmInfo = new ArrayList<>();
+    	bioSamples.forEach(bioSample -> {
+    		bioSample.getExpSamples().forEach(expSample -> {
+    			expSample.getGeneExpressions().forEach(geneExpression -> {
+    				boolean expToMultipleBio = expSample.getGeneExpressions().size() > 1 ? true:false;
+        			GSMInfo info = new GSMInfo(bioSample.getStudy().getAccession(),
+        									bioSample.getSubject().getAccession(),
+        									geneExpression.getRepositoryAccession(),
+        									bioSample.getStudyTimeCollected(),
+        									bioSample.getStudyTimeCollectedUnit(),
+        									expSample.getAccession(),
+        									expToMultipleBio);
+        			gsmInfo.add(info);
+    			});
+    		});
+    	});
+    	writeFile(gsmInfo);
+    }
+    
+    private void writeFile(List<GSMInfo> gsmInfo) throws IOException {
+		String gsmFileName = "output/GSMInfo.txt";
+		File gsmInfoFile = new File(gsmFileName);
+		gsmInfoFile.getParentFile().mkdirs();
+		gsmInfoFile.createNewFile();
+		FileWriter fos = new FileWriter(gsmInfoFile);
+		PrintWriter dos = new PrintWriter(fos);
+		dos.println("Study Id\t"
+				  + "Subject Id\t"
+				  + "Repository Accession\t"
+				  + "Study Time Collected\t"
+				  + "Study Time Collected Units\t"
+				  + "ExpSample Id\t"
+				  + "Exp To Multiple GSM Flag");
+		gsmInfo.forEach(x -> {
+			dos.println(x.toString());
+		});
+		dos.close();
+		fos.close();
+	}
+
+	@Test
     public void testStudy() throws Exception {
         SessionFactory sf = createSessionFactory();
         Session session = sf.openSession();
