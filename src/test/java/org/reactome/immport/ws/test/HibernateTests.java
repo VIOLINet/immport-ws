@@ -59,6 +59,10 @@ public class HibernateTests {
     public HibernateTests() {
     }
     
+    /**
+     * Queries all BioSamples and creates GSMInfo Objects for each.
+     * @throws Exception
+     */
     @Test
     public void testQueryAllGSM() throws Exception {
     	SessionFactory sf = createSessionFactory();
@@ -88,6 +92,11 @@ public class HibernateTests {
     	writeFile(gsmInfo);
     }
     
+    /**
+     * Writes lift of GSMInfo objects to file
+     * @param gsmInfo
+     * @throws IOException
+     */
     private void writeFile(List<GSMInfo> gsmInfo) throws IOException {
 		String gsmFileName = "output/GSMInfo.txt";
 		File gsmInfoFile = new File(gsmFileName);
