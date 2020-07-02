@@ -24,13 +24,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -64,34 +59,57 @@ public class HibernateTests {
      */
     @Test
     public void testQueryAllGSM() throws Exception {
+    	
+    	//Setup print file and add headers row
+    	String gsmFileName = "output/GSMInfo.txt";
+		File gsmInfoFile = new File(gsmFileName);
+		gsmInfoFile.getParentFile().mkdirs();
+		gsmInfoFile.createNewFile();
+		FileWriter fos = new FileWriter(gsmInfoFile);
+		PrintWriter dos = new PrintWriter(fos);
+		dos.println("Study Id\t"
+				  + "Study Min Age\t"
+				  + "Study Max Age\t"
+				  + "Subject Id\t"
+				  + "Gender\t"
+				  + "Race\t"
+				  + "VO_Id\t"
+				  + "Repository Accession\t"
+				  + "Study Time Collected\t"
+				  + "Study Time Collected Units\t"
+				  + "ExpSample Id\t"
+				  + "Exp To Multiple GSM Flag");
+    	
     	SessionFactory sf = createSessionFactory();
     	Session session = sf.openSession();
     	
-    	CriteriaBuilder cb = session.getCriteriaBuilder();
-    	CriteriaQuery<BioSample> cq = cb.createQuery(BioSample.class);
-    	List<BioSample> bioSamples = session
-    			.createQuery(cq
-    					.select(cq
-    							.from(BioSample.class)))
-    			.getResultList();
+    	List<BioSample> bioSamples = session.createQuery("FROM " + BioSample.class.getName(), BioSample.class).getResultList();
     	
-    	List<GSMInfo> gsmInfo = new ArrayList<>();
     	bioSamples.forEach(bioSample -> {
-    		bioSample.getExpSamples().forEach(expSample -> {
-    			expSample.getGeneExpressions().forEach(geneExpression -> {
-    				boolean expToMultipleBio = expSample.getGeneExpressions().size() > 1 ? true:false;
-        			GSMInfo info = new GSMInfo(bioSample.getStudy().getAccession(),
-        									bioSample.getSubject().getAccession(),
-        									geneExpression.getRepositoryAccession(),
-        									bioSample.getStudyTimeCollected(),
-        									bioSample.getStudyTimeCollectedUnit(),
-        									expSample.getAccession(),
-        									expToMultipleBio);
-        			gsmInfo.add(info);
-    			});
+    		bioSample.getSubject().getImmuneExposures().forEach(immuneExposure -> {
+	    		bioSample.getExpSamples().forEach(expSample -> {
+	    			expSample.getGeneExpressions().forEach(geneExpression -> {
+	    				boolean expToMultipleBio = expSample.getGeneExpressions().size() > 1 ? true:false;
+	        			GSMInfo info = new GSMInfo(bioSample.getStudy().getAccession(),
+	        									bioSample.getStudy().getMinimumAge(),
+	        									bioSample.getStudy().getMaximumAge(),
+	        									bioSample.getSubject().getAccession(),
+	        									bioSample.getSubject().getGender(),
+	        									bioSample.getSubject().getRace(),
+	        									immuneExposure.getExposureMaterialId(),
+	        									geneExpression.getRepositoryAccession(),
+	        									bioSample.getStudyTimeCollected(),
+	        									bioSample.getStudyTimeCollectedUnit(),
+	        									expSample.getAccession(),
+	        									expToMultipleBio);
+	        			//print each obj to file
+	        			dos.println(info.toString());
+	    			});
+	    		});
     		});
     	});
-    	writeFile(gsmInfo);
+    	dos.close();
+		fos.close();
     }
     
     /**
@@ -108,7 +126,12 @@ public class HibernateTests {
 		PrintWriter dos = new PrintWriter(fos);
 		//prints a line of headers to the file
 		dos.println("Study Id\t"
+				  + "Study Min Age\t"
+				  + "Study Max Age\t"
 				  + "Subject Id\t"
+				  + "Gender\t"
+				  + "Race\t"
+				  + "VO_Id\t"
 				  + "Repository Accession\t"
 				  + "Study Time Collected\t"
 				  + "Study Time Collected Units\t"
