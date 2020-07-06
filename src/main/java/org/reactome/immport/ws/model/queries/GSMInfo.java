@@ -104,7 +104,7 @@ public class GSMInfo {
 		this.voExposureId = voExposureId;
 	}
 	/**
-	 * Overries toString to return a tab separated String of the object's data
+	 * Overrides toString to return a tab separated String of the object's data
 	 */
 	@Override
 	public String toString() {
