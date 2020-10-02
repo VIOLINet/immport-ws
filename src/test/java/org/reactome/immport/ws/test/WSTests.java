@@ -77,7 +77,12 @@ public class WSTests {
     	outputJSON(rtn);
     }
     
-    
+    @Test
+    public void testGetBiosampleMetadata() throws Exception {
+    	String url = HOST_URL + "/metadata/biosamples";
+    	String rtn = callHttp(url, HTTP_GET, null);
+    	outputJSON(rtn);
+    }
     
     private String outputJSON(String json) throws JsonProcessingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
