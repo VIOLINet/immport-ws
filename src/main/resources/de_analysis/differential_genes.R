@@ -57,8 +57,8 @@ all.expr.dat <- all.expr.dat[ ,match(all.pheno.dat$gsm, colnames(all.expr.dat))]
 # -----------------------------------------------------
 covars <- user.select$adjustingVariables
 
-# should always be true for unbiased analysis results
-if (user.select$platformCorrection == T){
+# make sure platform is a covariate
+if (! "gpl" %in% user.select$adjustingVariables){
   covars <- c("gpl", covars)
 }
 
@@ -114,13 +114,18 @@ if (user.select$modelTime == F){
   de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time", synergy.terms), collapse = ' + ')))
   
 } else {
-  # ex. ~ age_group + immport_vaccination_time_groups
+  # ex. ~ age_group + immport_vaccination_time_groups + age_group:immport_vaccination_time_groups
   pheno.dat$immport_vaccination_time_groups <- NA
   pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group1] <- "A"
   pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group2] <- "B"
   pheno.dat$immport_vaccination_time_groups <- as.factor(pheno.dat$immport_vaccination_time_groups)
   
-  de.formula <- as.formula(paste("~", paste(c(user.select$studyCohort, "immport_vaccination_time_groups"), collapse =' + ')))
+  synergy.terms <- lapply(user.select$studyCohort, function(s){
+    paste(s, "immport_vaccination_time_groups", sep =':')
+  })
+  synergy.terms <- unlist(synergy.terms)
+  
+  de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time_groups", synergy.terms), collapse = ' + ')))
 }
 
 fit <- limma::eBayes(limma::lmFit(expr.dat.adjusted, model.matrix(de.formula, data = pheno.dat)))
@@ -131,4 +136,3 @@ top.table <- limma::topTable(fit, 2000, coef=2)
 # write table as json file 
 # -----------------------------------------------------
 write_json(as_tibble(top.table, rownames = "gene_name"), output.path)
-
