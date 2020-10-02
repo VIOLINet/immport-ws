@@ -5,7 +5,7 @@
 # -----------------------------------------------------
 args = commandArgs(trailingOnly=T)
 
-if(length(args) < 3) {
+if(length(args) < 4) {
   print("Missing one of the absolute paths to generate analysis!")
 } 
 
@@ -43,37 +43,15 @@ rownames(all.expr.dat) <- all.expr.dat[, 1]
 all.expr.dat <- all.expr.dat[, -1]
 
 user.select <- read_json(selections.path, simplifyVector = TRUE)
+
 # -----------------------------------------------------
+# Filter biosamples by users study design selections &
 # make sure biosamples exist & have matching orders 
-# -----------------------------------------------------
-all.expr.dat <- all.expr.dat[ ,which(colnames(all.expr.dat) %in% all.pheno.dat$gsm)]
-all.expr.dat <- all.expr.dat[ ,match(all.pheno.dat$gsm, colnames(all.expr.dat))]
-
-# -----------------------------------------------------
-# adjust expression data for covariates 
-# -----------------------------------------------------
-# adjusted variable shouldn't be a study variable 
-# that would cause loss of the true signal
-# -----------------------------------------------------
-covars <- user.select$adjustingVariables
-
-# make sure platform is a covariate
-if (! "gpl" %in% user.select$adjustingVariables){
-  covars <- c("gpl", covars)
-}
-
-covars.formula <- as.formula(paste("~", paste(covars, collapse =' + ')))
-
-fit <- limma::eBayes(limma::lmFit(all.expr.dat, model.matrix(covars.formula, data = all.pheno.dat)))
-all.expr.dat.adjusted <- as.matrix(residuals(fit, all.expr.dat))
-# -----------------------------------------------------
-# Filter biosamples by users study design selections 
-# and make sure they have matching orders 
 # -----------------------------------------------------
 pheno.dat <- all.pheno.dat[which(all.pheno.dat$gsm %in% user.select$GSMids), ]
 
-expr.dat.adjusted <- all.expr.dat.adjusted[ ,which(colnames(all.expr.dat.adjusted) %in% pheno.dat$gsm)]
-expr.dat.adjusted <- expr.dat.adjusted[ ,match(pheno.dat$gsm, colnames(expr.dat.adjusted))]
+expr.dat <- all.expr.dat[ ,which(colnames(all.expr.dat) %in% pheno.dat$gsm)]
+expr.dat <- expr.dat[ ,match(pheno.dat$gsm, colnames(expr.dat))]
 
 # -----------------------------------------------------
 # make factors for groups selected 
@@ -81,7 +59,7 @@ expr.dat.adjusted <- expr.dat.adjusted[ ,match(pheno.dat$gsm, colnames(expr.dat.
 # one of the study variables selection lengths has to be greater than 2 
 # treat groups as factors 
 # -----------------------------------------------------
-if (length(user.select$studyCohort) == 1 ){
+if (length(user.select$studyCohort) == 1){
   pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyCohort)] <- as.factor(pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyCohort)])
 } else {
   for (s in user.select$studyCohort){
@@ -95,10 +73,10 @@ if (length(user.select$studyCohort) == 1 ){
 # Note: 0.6 seems to be a good threshold for this slice of data 
 # -----------------------------------------------------
 if (user.select$variableGenes == T){
-  mdf.mad <- apply(expr.dat.adjusted, 1, mad)
+  mdf.mad <- apply(expr.dat, 1, mad)
   variable.genes <- names(mdf.mad[mdf.mad >  0.6])
   
-  expr.dat.adjusted <- expr.dat.adjusted[which(rownames(expr.dat.adjusted) %in% variable.genes), ]
+  expr.dat <- expr.dat[which(rownames(expr.dat) %in% variable.genes), ]
 }
 # -----------------------------------------------------
 # conduct differential expression analysis
@@ -128,7 +106,7 @@ if (user.select$modelTime == F){
   de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time_groups", synergy.terms), collapse = ' + ')))
 }
 
-fit <- limma::eBayes(limma::lmFit(expr.dat.adjusted, model.matrix(de.formula, data = pheno.dat)))
+fit <- limma::eBayes(limma::lmFit(expr.dat, model.matrix(de.formula, data = pheno.dat)))
 top.table <- limma::topTable(fit, 2000, coef=2)
 
 # -----------------------------------------------------
