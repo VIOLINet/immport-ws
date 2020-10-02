@@ -1,7 +1,10 @@
 package org.reactome.immport.ws.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+/**
+ * 
+ * @author brunsont
+ *
+ */
 public class ReactomeAnalysisConfig {
     
     private String reactomeAnalysisURL;

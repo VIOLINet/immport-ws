@@ -13,6 +13,7 @@ import org.reactome.immport.ws.model.queries.CytoscapeFI;
 import org.reactome.immport.ws.model.queries.VOToGSM;
 import org.reactome.immport.ws.model.requests.GSMForVOs;
 import org.reactome.immport.ws.service.ImmportDAO;
+import org.reactome.immport.ws.service.ImmportService;
 import org.reactome.immport.ws.service.ReactomeAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +31,8 @@ public class ImmportWSController {
     private ImmportDAO studyDAO;
     @Autowired
     private ReactomeAnalysisService reactomeService;
+    @Autowired
+    private ImmportService immportService;
     
     public ImmportWSController() {
     }
@@ -112,4 +115,8 @@ public class ImmportWSController {
     	return studyDAO.queryStudyTimeCollectedForVO(voIds);
     }
     
+    @GetMapping("metadata/biosamples")
+    public String queryBioSampleObjects(){
+    	return immportService.getBiosampleMetadata();
+    }
 }

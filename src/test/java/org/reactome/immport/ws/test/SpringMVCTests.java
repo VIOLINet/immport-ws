@@ -98,6 +98,12 @@ public class SpringMVCTests {
     }
     
     @Test
+    public void getBiosampleMetadata() throws Exception {
+    	String url = "/metadata/biosamples";
+    	testGet(url);
+    }
+    
+    @Test
     public void getClusteredFINetwork() throws Exception {
     	String url = "/analysis/clustered_fi_network";
     	List<CytoscapeFI> postData = new ArrayList<>();

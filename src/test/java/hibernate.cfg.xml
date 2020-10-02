@@ -7,9 +7,9 @@
 	<session-factory>
 		<!-- This is handled automatically by hibernate. There is no need to defined it any more. -->
 <!-- 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property> -->
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/immport_shared</property>
-		<property name="hibernate.connection.username">{}</property>
-		<property name="hibernate.connection.password">{}</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/immport?serverTimezone=UTC</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root</property>
 		<!-- For internal test. ssl is not required. -->
 		<property name="hibernate.connection.useSSL">false</property>
 		<property name="hibernate.connection.pool_size">4</property>

@@ -14,6 +14,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 
 import java.util.Properties;
 
+import org.reactome.immport.ws.service.ImmportServiceConfig;
 import org.reactome.immport.ws.service.ReactomeAnalysisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,13 @@ public class AppConfig {
        config.setReactomeFIServiceURL(env.getProperty("reactome.fi.service"));
        config.setModuleColors(env.getProperty("reactome.fi.moduleColors").split(";"));
        return config;
+   }
+   
+   @Bean
+   public ImmportServiceConfig getImmportServiceConfig() {
+	   ImmportServiceConfig config = new ImmportServiceConfig();
+	   config.setBiosampleMetatdataFileLocation(env.getProperty("biosample.metatdata.file"));
+	   return config;
    }
 
    @Bean
