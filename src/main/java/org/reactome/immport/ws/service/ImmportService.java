@@ -32,7 +32,7 @@ public class ImmportService {
 	
 	/**
 	 * Loads in biosample_metadata.csv and stores in biosampleMetadataString for caching before sending
-	 * to front end
+	 * to front end. Stores string were columns are \t separated and rows are \n separated
 	 */
 	private void loadBiosampleMetadata() {
 		try {
