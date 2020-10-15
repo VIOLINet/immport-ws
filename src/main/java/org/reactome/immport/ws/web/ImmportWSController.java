@@ -115,6 +115,7 @@ public class ImmportWSController {
     	return studyDAO.queryStudyTimeCollectedForVO(voIds);
     }
     
+    @CrossOrigin
     @GetMapping("metadata/biosamples")
     public String queryBioSampleObjects(){
     	return immportService.getBiosampleMetadata();

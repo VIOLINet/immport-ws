@@ -81,7 +81,7 @@ public class WSTests {
     public void testGetBiosampleMetadata() throws Exception {
     	String url = HOST_URL + "/metadata/biosamples";
     	String rtn = callHttp(url, HTTP_GET, null);
-    	outputJSON(rtn);
+    	System.out.println(rtn);
     }
     
     private String outputJSON(String json) throws JsonProcessingException, IOException {
