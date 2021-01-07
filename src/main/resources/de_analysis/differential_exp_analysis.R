@@ -58,13 +58,13 @@ do_diff_exp_analysis <- function(selection.json.text) {
     if (is.null(all.exp.adjusted.data)) {
       all.exp.adjusted.data <<- load_exp_data(all.exp.adjusted.path)
     }
-    expr.dat <- all.expr.dat[ ,which(colnames(all.exp.adjusted.data) %in% pheno.dat$gsm)]
+    expr.dat <- all.exp.adjusted.data[ ,which(colnames(all.exp.adjusted.data) %in% pheno.dat$gsm)]
   }
   else {
     if (is.null(all.exp.data)) { # Use the expression data directly
       all.exp.data <<- load_exp_data(all.exp.path)
     }
-    expr.dat <- all.expr.dat[ ,which(colnames(all.expr.dat) %in% pheno.dat$gsm)]
+    expr.dat <- all.exp.data[ ,which(colnames(all.exp.data) %in% pheno.dat$gsm)]
   }
   # Make sure it has the same order as in the sample meta data. Not sure why (GW)?
   expr.dat <- expr.dat[ ,match(pheno.dat$gsm, colnames(expr.dat))]
