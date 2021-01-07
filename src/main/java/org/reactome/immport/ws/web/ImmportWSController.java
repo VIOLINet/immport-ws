@@ -120,4 +120,11 @@ public class ImmportWSController {
     public String queryBioSampleObjects(){
     	return immportService.getBiosampleMetadata();
     }
+    
+    @CrossOrigin
+    @PostMapping("analysis/geneExpression")
+    public String analyizeBiosamples(@RequestBody String text) {
+		return reactomeService.analyzeBiosamples(text);
+
+    }
 }

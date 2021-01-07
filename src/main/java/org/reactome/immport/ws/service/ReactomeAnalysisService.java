@@ -1,6 +1,9 @@
 package org.reactome.immport.ws.service;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +23,12 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @Component
 public class ReactomeAnalysisService {
     private final Logger logger = Logger.getLogger(ReactomeAnalysisService.class);
     
     private final String HTTP_POST = "Post";
-    
+        
     @Autowired
     private ReactomeAnalysisConfig config;
     
@@ -153,4 +155,21 @@ public class ReactomeAnalysisService {
     	else return "Reactome service responded with code: " + responseCode;
     	
     }
+
+	public String analyzeBiosamples(String nums) {
+		
+		String response = "";
+		
+		try {
+			String json = new String(Files.readAllBytes(Paths.get("/Users/brunsont/git/immport-ws/src/main/resources/de_analysis/selections.json")));
+			response = callHttp("http://127.0.01:8087/doDiffExpAnalysis", "POST", json);
+			System.out.println(response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return response;
+	}
 }
