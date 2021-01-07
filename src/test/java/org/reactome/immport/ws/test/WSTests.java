@@ -78,6 +78,13 @@ public class WSTests {
     }
     
     @Test
+    public void testAnalyzeBiosamples() throws Exception {
+    	String url = HOST_URL + "/analysis/geneExpression";
+    	String rtn = callHttp(url,HTTP_POST, "2,4");
+    	outputJSON(rtn);
+    }
+    
+    @Test
     public void testGetBiosampleMetadata() throws Exception {
     	String url = HOST_URL + "/metadata/biosamples";
     	String rtn = callHttp(url, HTTP_GET, null);
