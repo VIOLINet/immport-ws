@@ -1,20 +1,19 @@
 package org.reactome.immport.ws.service;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.reactome.immport.ws.model.analysis.BiosampleAnalysis;
 import org.reactome.immport.ws.model.queries.CytoscapeFI;
 import org.reactome.immport.ws.model.queries.CytoscapeFiData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +122,7 @@ public class ReactomeAnalysisService {
     	try {
     		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, String.join(",", genes));
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
         return analysisText;
     }
@@ -139,14 +138,11 @@ public class ReactomeAnalysisService {
      * @throws IOException
      */
     private String callHttp(String url, String type, String query) throws IOException {
-    	PostMethod method = null;
-    	HttpClient client = null;
+    	PostMethod method = new PostMethod(url);
+    	HttpClient client = new HttpClient();
     	
-    	method = new PostMethod(url);
-    	method.setRequestEntity(new StringRequestEntity(query, "text/plain", null));
+    	method.setRequestEntity(new StringRequestEntity(query, "text/plain", "UTF-8"));
     	method.setRequestHeader("Accept", "application/json");
-    	    	
-    	client = new HttpClient();
     	
     	int responseCode = client.executeMethod(method);
     	if(responseCode == HttpStatus.SC_OK) {
@@ -156,20 +152,33 @@ public class ReactomeAnalysisService {
     	
     }
 
-	public String analyzeBiosamples(String nums) {
+	public String analyzeBiosamples(String jsonText) {
 		
 		String response = "";
-		
-		try {
-			String json = new String(Files.readAllBytes(Paths.get("/Users/brunsont/git/immport-ws/src/main/resources/de_analysis/selections.json")));
-			response = callHttp("http://127.0.01:8087/doDiffExpAnalysis", "POST", json);
-			System.out.println(response);
+ 		try {			
+			//make call to plumber  server for R script
+			PostMethod method = new PostMethod("http://127.0.0.1:8087/doDiffExpAnalysis");
+			method.addParameter("selection.json", jsonText);
+			HttpClient client = new HttpClient();
+			client.executeMethod(method);
+			
+			//get body of response
+			response =  method.getResponseBodyAsString();
+			response = response.replaceAll("\\\\", "");
+			response = response.substring(2, response.length()-2);
+			
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
 		
-		
+		//POJO response and return
 		return response;
+	}
+
+	private List<BiosampleAnalysis> structureBiosampleAnalysis(String response) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<BiosampleAnalysis> analysisObjs = mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, BiosampleAnalysis.class));
+		return analysisObjs;
 	}
 }
