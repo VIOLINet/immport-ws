@@ -59,8 +59,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
       all.exp.adjusted.data <<- load_exp_data(all.exp.adjusted.path)
     }
     expr.dat <- all.exp.adjusted.data[ ,which(colnames(all.exp.adjusted.data) %in% pheno.dat$gsm)]
-  }
-  else {
+  } else {
     if (is.null(all.exp.data)) { # Use the expression data directly
       all.exp.data <<- load_exp_data(all.exp.path)
     }
