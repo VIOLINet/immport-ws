@@ -30,14 +30,6 @@
 			<version>4.3.10.RELEASE</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>4.3.10.RELEASE</version>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- Spring ORM -->
 		<dependency>
 			<groupId>org.springframework</groupId>

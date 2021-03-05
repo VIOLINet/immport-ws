@@ -1,17 +1,15 @@
 package org.reactome.immport.ws.service;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import org.reactome.immport.ws.service.ImmportServiceConfig;
 
 @Component
 public class ImmportService {
@@ -35,22 +33,27 @@ public class ImmportService {
 	 * to front end. Stores string were columns are \t separated and rows are \n separated
 	 */
 	private void loadBiosampleMetadata() {
-		try {
-			Reader in = new FileReader(config.getBiosampleMetatdataFileLocation());
-			Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
-			for(CSVRecord record : records) {
-				String row = "";
-				for(String cell : record) {
-					row += cell + "\t";
-				}
-				biosampleMetadataString += row.replaceAll("\"", "") + "\n";
-			}
-		} catch (FileNotFoundException e) {
-			logger.error(e);
-			e.printStackTrace();
-		} catch (IOException e) {
-			logger.error(e);
-			e.printStackTrace();
-		}
+	    try {
+	        logger.info("Starting loading " + config.getBiosampleMetatdataFileLocation() + "...");
+	        InputStream is = getClass().getClassLoader().getResourceAsStream(config.getBiosampleMetatdataFileLocation());
+	        InputStreamReader isr = new InputStreamReader(is);
+	        Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(isr);
+	        for(CSVRecord record : records) {
+	            String row = "";
+	            for(String cell : record) {
+	                row += cell + "\t";
+	            }
+	            biosampleMetadataString += row.replaceAll("\"", "") + "\n";
+	        }
+	        isr.close();
+	        is.close();
+	        logger.info("Done loading.");
+	    } catch (FileNotFoundException e) {
+	        logger.error(e);
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        logger.error(e);
+	        e.printStackTrace();
+	    }
 	}
 }
