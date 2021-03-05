@@ -49,6 +49,7 @@ public class ReactomeAnalysisService {
     		ObjectMapper mapper = new ObjectMapper();
     		rtn = mapper.writeValueAsString(convertToCyJson(fiText, genes));
     	} catch (IOException e) {
+    		logger.error(e);
     		return "";
     	}
         return rtn;
@@ -123,6 +124,7 @@ public class ReactomeAnalysisService {
     		analysisText = callHttp(config.getReactomeAnalysisURL(), HTTP_POST, String.join(",", genes));
 		} catch (IOException e) {
 			logger.error(e);
+			return "";
 		}
         return analysisText;
     }
@@ -152,7 +154,7 @@ public class ReactomeAnalysisService {
     	
     }
 
-	public String analyzeBiosamples(String jsonText) {
+	public List<BiosampleAnalysis> analyzeBiosamples(String jsonText) {
 		
 		String response = "";
  		try {			
@@ -166,14 +168,13 @@ public class ReactomeAnalysisService {
 			response =  method.getResponseBodyAsString();
 			response = response.replaceAll("\\\\", "");
 			response = response.substring(2, response.length()-2);
-			
+			return structureBiosampleAnalysis(response);
+
 			
 		} catch (IOException e) {
 			logger.error(e);
+			return new ArrayList<>();
 		}
-		
-		//POJO response and return
-		return response;
 	}
 
 	private List<BiosampleAnalysis> structureBiosampleAnalysis(String response) throws IOException {

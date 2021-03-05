@@ -9,19 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BiosampleAnalysis {
 	
-	@JsonProperty("gene_name")
 	private String geneName;
-	@JsonProperty("logFC")
 	private Double logFC;
-	@JsonProperty("AveExpr")
 	private Double averageExpression;
-	@JsonProperty("t")
 	private Double t;
-	@JsonProperty("P.Value")
 	private Double pVal;
-	@JsonProperty("adj.P.Val")
 	private Double adjustedPVal;
-	@JsonProperty("B")
 	private Double B;
 	
 	public BiosampleAnalysis() {
@@ -40,58 +33,72 @@ public class BiosampleAnalysis {
 		this.B = b;
 	}
 
+	@JsonProperty("gene_name")
 	public String getGeneName() {
 		return geneName;
 	}
 
+	@JsonProperty("gene_name")
 	public void setGeneName(String geneName) {
 		this.geneName = geneName;
 	}
 
+	@JsonProperty("logFC")
 	public Double getLogFC() {
 		return logFC;
 	}
 
+	@JsonProperty("logFC")
 	public void setLogFC(Double logFC) {
 		this.logFC = logFC;
 	}
 
+	@JsonProperty("AveExpr")
 	public Double getAverageExpression() {
 		return averageExpression;
 	}
 
+	@JsonProperty("AveExpr")
 	public void setAverageExpression(Double averageExpression) {
 		this.averageExpression = averageExpression;
 	}
 
+	@JsonProperty("t")
 	public Double getT() {
 		return t;
 	}
 
+	@JsonProperty("t")
 	public void setT(Double t) {
 		this.t = t;
 	}
 
+	@JsonProperty("pValue")
 	public Double getpVal() {
 		return pVal;
 	}
 
+	@JsonProperty("P.Value")
 	public void setpVal(Double pVal) {
 		this.pVal = pVal;
 	}
 
+	@JsonProperty("adjPValue")
 	public Double getAdjustedPVal() {
 		return adjustedPVal;
 	}
 
+	@JsonProperty("adj.P.Val")
 	public void setAdjustedPVal(Double adjustedPVal) {
 		this.adjustedPVal = adjustedPVal;
 	}
 
+	@JsonProperty("B")
 	public Double getB() {
 		return B;
 	}
 
+	@JsonProperty("B")
 	public void setB(Double b) {
 		B = b;
 	}

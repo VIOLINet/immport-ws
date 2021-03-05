@@ -3,13 +3,13 @@ package org.reactome.immport.ws.web;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.reactome.immport.ws.model.PublicRepository;
 import org.reactome.immport.ws.model.Study;
+import org.reactome.immport.ws.model.analysis.BiosampleAnalysis;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
 import org.reactome.immport.ws.model.queries.CytoscapeFI;
 import org.reactome.immport.ws.model.queries.VOToGSM;
@@ -42,19 +42,19 @@ public class ImmportWSController {
     }
     
     @CrossOrigin
-    @RequestMapping(value="analysis/pathways", method=RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value="analysis/pathways", method=RequestMethod.POST)
     public String getAnalysisResults(@RequestBody Set<String> req) {
         return reactomeService.doPathwayEnrichmentAnalysis(req);
     }
     
     @CrossOrigin
-    @RequestMapping(value="analysis/fi_network", method=RequestMethod.POST, consumes="application/json") 
+    @RequestMapping(value="analysis/fi_network", method=RequestMethod.POST) 
     public String getFINetwork(@RequestBody Set<String> req) {
         return reactomeService.constructFINetwork(req);
     }
     
     /**
-     * Cosumes a FI network structured for cytoscape use.
+     * Consumes a FI network structured for cytoscape use.
      * @param network
      * @return
      */
@@ -129,7 +129,7 @@ public class ImmportWSController {
     
     @CrossOrigin
     @PostMapping("analysis/geneExpression")
-    public String analyizeBiosamples(@RequestBody String text) {
+    public List<BiosampleAnalysis> analyizeBiosamples(@RequestBody String text) {
 		return reactomeService.analyzeBiosamples(text);
 
     }
