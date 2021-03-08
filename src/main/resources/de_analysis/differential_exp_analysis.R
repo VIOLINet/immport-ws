@@ -19,7 +19,7 @@ p_load("limma")
 # can be configured inside Java directly
 
 dir <- args[2]
-pheno.path <- paste(dir, "biosample_metadata2.csv", sep = "/")
+pheno.path <- paste(dir, "biosample_metadata.csv", sep = "/")
 all.exp.path <- paste(dir, "all_expr_df_final.csv", sep = "/")
 all.exp.adjusted.path <- paste(dir, "all_expr_df_final_adjusted.csv", sep = "/")
 
@@ -44,7 +44,7 @@ load_exp_data <- function(file.name) {
 
 # Perform the differential expression analysis via limma
 do_diff_exp_analysis <- function(selection.json.text) {
-  
+  # print(selection.json.text)
   user.select <- fromJSON(selection.json.text, simplifyVector = TRUE)
   
   # -----------------------------------------------------
@@ -121,8 +121,14 @@ do_diff_exp_analysis <- function(selection.json.text) {
     de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time_groups", synergy.terms), collapse = ' + ')))
   }
   
+  # print(dim(expr.dat))
+  # print(dim(pheno.dat))
+  # print(de.formula)
+  
   fit <- limma::eBayes(limma::lmFit(expr.dat, model.matrix(de.formula, data = pheno.dat)))
-  top.table <- limma::topTable(fit, 2000, coef=2)
+  # top.table <- limma::topTable(fit, 2000, coef=2)
+  # Try to get all genes
+  top.table <- limma::topTable(fit, number=25000, coef=2)
   
   # -----------------------------------------------------
   # leave filtering to frontend 

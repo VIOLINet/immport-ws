@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -155,6 +154,7 @@ public class ReactomeAnalysisService {
     }
 
 	public List<BiosampleAnalysis> analyzeBiosamples(String jsonText) {
+	    System.out.println(jsonText);
 		
 		String response = "";
  		try {			
