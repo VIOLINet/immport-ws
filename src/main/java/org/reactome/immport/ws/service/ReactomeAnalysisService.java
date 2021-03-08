@@ -2,6 +2,8 @@ package org.reactome.immport.ws.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +69,9 @@ public class ReactomeAnalysisService {
     	
     	List<CytoscapeFI> edges = new ArrayList<>();
     	for(final JsonNode node : fis.get("interaction")) {
-    		edges.add(new CytoscapeFI("edges", new CytoscapeFiData("e"+edges.size(), null, node.get("firstProtein").get("name").asText(),node.get("secondProtein").get("name").asText())));
+    		List<String> proteins = Arrays.asList(node.get("firstProtein").get("name").asText(),node.get("secondProtein").get("name").asText());
+    		Collections.sort(proteins);
+    		edges.add(new CytoscapeFI("edges", new CytoscapeFiData(proteins.get(0) + "&&" + proteins.get(1), null, proteins.get(0),proteins.get(1))));
     	}
     	
     	rtn.addAll(edges);
