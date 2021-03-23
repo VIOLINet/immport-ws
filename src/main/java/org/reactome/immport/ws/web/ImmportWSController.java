@@ -49,7 +49,7 @@ public class ImmportWSController {
     
     @CrossOrigin
     @RequestMapping(value="analysis/fi_network", method=RequestMethod.POST) 
-    public String getFINetwork(@RequestBody Set<String> req) {
+    public List<CytoscapeFI> getFINetwork(@RequestBody Set<String> req) {
         return reactomeService.constructFINetwork(req);
     }
     

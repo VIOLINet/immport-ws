@@ -3,25 +3,33 @@ package org.reactome.immport.ws.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.reactome.immport.ws.model.FI.FIAnnotation;
+import org.reactome.immport.ws.model.FI.FIAnnotations;
 import org.reactome.immport.ws.model.analysis.BiosampleAnalysis;
 import org.reactome.immport.ws.model.queries.CytoscapeFI;
 import org.reactome.immport.ws.model.queries.CytoscapeFiData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotationMap;
 
 @Component
 public class ReactomeAnalysisService {
@@ -42,40 +50,69 @@ public class ReactomeAnalysisService {
      * @param genes
      * @return
      */
-    public String constructFINetwork(Set<String> genes) {
-    	String rtn = null;
+    public List<CytoscapeFI> constructFINetwork(Set<String> genes) {
     	try {
     		String fiText = callHttp(config.getReactomeFIServiceURL() + "/network/queryFIs", HTTP_POST, String.join(",", genes));
-    		//return List<CytoscapeFI>. Spring will convert on its own
-    		ObjectMapper mapper = new ObjectMapper();
-    		rtn = mapper.writeValueAsString(convertToCyJson(fiText, genes));
+
+    		//Add all genes to list of fisToReturn after converting to cytoscape objects
+    		List<CytoscapeFI> fisToReturn = getGeneFIs(genes);
+    		//Add all edges after getting annotations
+    		fisToReturn.addAll(annotateEdges(fiText));
+    		
+//    		return List<CytoscapeFI>. Spring will convert on its own
+       		return fisToReturn;
     	} catch (IOException e) {
     		logger.error(e);
-    		return "";
+    		return new ArrayList<>();
     	}
-        return rtn;
     }
     
-    private List<CytoscapeFI> convertToCyJson(String fiText, Set<String> genes) throws IOException {
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	JsonNode fis = objectMapper.readTree(fiText);
-    	
-    	if(!fis.get("interaction").isArray()) return new ArrayList<>();
-    	    	
+    private List<CytoscapeFI> getGeneFIs(Set<String> genes) {
     	List<CytoscapeFI> rtn = new ArrayList<>();
     	genes.forEach(x -> {
     		rtn.add(new CytoscapeFI("nodes", new CytoscapeFiData(x,x,null,null)));
     	});
     	
-    	List<CytoscapeFI> edges = new ArrayList<>();
-    	for(final JsonNode node : fis.get("interaction")) {
-    		List<String> proteins = Arrays.asList(node.get("firstProtein").get("name").asText(),node.get("secondProtein").get("name").asText());
-    		Collections.sort(proteins);
-    		edges.add(new CytoscapeFI("edges", new CytoscapeFiData(proteins.get(0) + "&&" + proteins.get(1), null, proteins.get(0),proteins.get(1))));
+    	return rtn;
+	}
+
+	private Collection<CytoscapeFI> annotateEdges(String fiText) throws IOException {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	JsonNode fis = objectMapper.readTree(fiText);
+    	
+    	Map<Integer, String> idToEdge = new HashMap<>();
+    	Map<Integer, CytoscapeFI> idToCyEdge = new HashMap<>();
+    	
+    	JsonNode interactions = fis.get("interaction");
+    	for(int i = 0; i< interactions.size(); i++) {
+    		JsonNode node = interactions.get(i);
+    		String[] proteins = {node.get("firstProtein").get("name").asText(), node.get("secondProtein").get("name").asText()};
+    		idToEdge.put(i, proteins[0] + "\t" + proteins[1]);
+    		idToCyEdge.put(i, new CytoscapeFI("edges", new CytoscapeFiData(proteins[0] + "&&" + proteins[1], null, proteins[0],proteins[1])));
     	}
     	
-    	rtn.addAll(edges);
-		return rtn;
+    	//convert idToEdge to post text for annotation service
+    	StringBuilder annotatedFiPostString = new StringBuilder();
+		idToEdge.forEach((id,proteins) -> {
+			annotatedFiPostString.append(id + "\t" + proteins + "\n");
+		});
+		String annotatedFiText = callHttp(config.getReactomeFIServiceURL()+"/network/annotate", HTTP_POST, annotatedFiPostString.toString());
+		
+		//convert annotation return to map of id to object
+		Map<Integer, FIAnnotation> annotationMap = convertAnnotatedFiTextToMap(annotatedFiText);
+		
+		//add direction to edges
+		idToCyEdge.forEach((id, edge) -> {
+			edge.getData().setDirection(annotationMap.get(id).getDirection());
+		});
+    	return idToCyEdge.values();
+	}
+
+	private Map<Integer, FIAnnotation> convertAnnotatedFiTextToMap(String annotatedFiText) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<FIAnnotation> annotations = mapper.readValue(annotatedFiText, FIAnnotations.class).getFiAnnotation();
+		
+		return annotations.stream().collect(Collectors.toMap(FIAnnotation::getInteractionId, x -> x));
 	}
     
     public Map<String, String> constructClusteredFINetwork(List<CytoscapeFI> network) {
