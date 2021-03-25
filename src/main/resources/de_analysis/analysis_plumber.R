@@ -8,6 +8,12 @@ if(length(args) < 2) {
   args <- c(8087, "../data")
 }
 
+if (length(args) > 2) {
+  # Set working dir if available
+  setwd(args[3])
+  print(paste("Setting working dir: " , args[3]))
+}
+
 # The bootstrap code to start the RESTful API in R for differential expression analysis
 usePackage <- function(p) 
 {

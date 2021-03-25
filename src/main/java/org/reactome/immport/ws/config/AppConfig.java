@@ -15,6 +15,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 import java.util.Properties;
 
 import org.reactome.immport.ws.service.ImmportServiceConfig;
+import org.reactome.immport.ws.service.RScriptService;
 import org.reactome.immport.ws.service.ReactomeAnalysisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -93,5 +94,17 @@ public class AppConfig {
       HibernateTransactionManager transactionManager = new HibernateTransactionManager();
       transactionManager.setSessionFactory(getSessionFactory().getObject());
       return transactionManager;
+   }
+   
+   @Bean
+   public RScriptService getRService() {
+       RScriptService service = new RScriptService();
+       service.setDataDir(env.getProperty("r.data.dir"));
+       service.setPort(env.getProperty("r.port"));
+       service.setScript(env.getProperty("r.script"));
+       service.setWorkDir(env.getProperty("r.work.dir"));
+       service.setCommand(env.getProperty("r.command"));
+       service.startService();
+       return service;
    }
 }

@@ -90,7 +90,7 @@ public class WSTests {
     			+ "    \"study\": [\"SDY400\", \"SDY404\", \"SDY520\"],\n"
     			+ "    \"age_group\": [\"old\", \"young\"]\n"
     			+ "  },\n"
-    			+ "  \"modelTime\": true,\n"
+    			+ "  \"modelTime\": false,\n"
     			+ "  \"analysisGroups\": {\n"
     			+ "    \"group1\": [0],\n"
     			+ "    \"group2\": [2,  3,  4,  5,  7,  8,  9, 24, 28, 32, 35, 36, 43]\n"
