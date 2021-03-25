@@ -34,8 +34,8 @@ public class ReactomeAnalysisService {
         
     @Autowired
     private ReactomeAnalysisConfig config;
-    
-    
+    @Autowired
+    private RScriptService rservice;
     
     public ReactomeAnalysisService() {
     }
@@ -192,7 +192,8 @@ public class ReactomeAnalysisService {
 		String response = "";
  		try {			
 			//make call to plumber  server for R script
-			PostMethod method = new PostMethod("http://127.0.0.1:8087/doDiffExpAnalysis");
+ 		    String url = "http://localhost:" + rservice.getPort() + "/doDiffExpAnalysis";
+			PostMethod method = new PostMethod(url);
 			method.addParameter("selection.json", jsonText);
 			HttpClient client = new HttpClient();
 			client.executeMethod(method);

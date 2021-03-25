@@ -1,0 +1,25 @@
+<!-- This assembly file is used to create a zipped R service file for deployment. It is based on this web
+page: https://medium.com/@kasunpdh/using-the-maven-assembly-plugin-to-build-a-zip-distribution-5cbca2a3b052 -->
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/data</directory>
+            <outputDirectory>immport_ws_rservice/data</outputDirectory>
+    		<includes>
+      			<include>all_expr_df_final_adjusted.csv</include>
+      			<include>all_expr_df_final.csv</include>
+      			<include>biosample_metadata.csv</include>
+    		</includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/de_analysis</directory>
+            <outputDirectory>immport_ws_rservice/de_analysis</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
