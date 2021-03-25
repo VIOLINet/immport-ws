@@ -3,21 +3,31 @@ package org.reactome.immport.ws.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ProcessBuilder.Redirect;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.log4j.Logger;
 
 public class RScriptService {
     private static Logger logger = Logger.getLogger(RScriptService.class);
-    
+
     private String dataDir;
     private String script;
-    private String port;
+    private int port;
     private String workDir;
     private String command;
-    
+    // To kill it
+    private Process process;
+
     public RScriptService() {
+    }
+
+    public int getPort() {
+        return this.port;
     }
 
     public String getCommand() {
@@ -44,14 +54,6 @@ public class RScriptService {
         this.script = script;
     }
 
-    public String getPort() {
-        return port;
-    }
-
-    public void setPort(String port) {
-        this.port = port;
-    }
-
     public String getWorkDir() {
         return workDir;
     }
@@ -60,47 +62,84 @@ public class RScriptService {
         this.workDir = workDir;
     }
     
+    @PreDestroy
+    public void stopService() {
+        if (process != null && process.isAlive())
+            process.destroy();
+    }
+
     /**
      * Start the R REST service by using Java process calling
      */
     public void startService() {
-        String[] parameters = {
-                command,
-                workDir + File.separator + script,
-                port,
-                dataDir,
-                workDir
-        };
-        Thread t = new Thread() {
-            public void run() {
-                try {
-                    logger.info("Starting R service...");
-                    Runtime runtime = Runtime.getRuntime();
-                    Process process = runtime.exec(parameters);
-                    InputStream is = process.getInputStream();
-                    String output = output(is);
-                    logger.info(output);
-                    logger.info("R service started: " + process);
+        try {
+            // Get an available port
+            ServerSocket socket = new ServerSocket(0);
+            this.port = socket.getLocalPort();
+            socket.close();
+            // Build an asynchronous call
+            String[] parameters = {
+                    command,
+                    workDir + File.separator + script,
+                    port + "",
+                    dataDir,
+                    workDir
+            };
+            logger.info("Starting the R service...");
+            ProcessBuilder builder = new ProcessBuilder(parameters);
+            builder.directory(new File(workDir));
+            builder.redirectErrorStream(true);
+            // For the time being, this will go to system.out.
+            // TODO: redirect to logger as info.
+            //            builder.redirectOutput(Redirect.INHERIT);
+            process = builder.start();
+            // Merge the output into logger
+            Thread t = new Thread() {
+                public void run() {
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                        String line = null;
+                        while ((line = reader.readLine()) != null) {
+                            logger.info(line);
+                        }
+                    }
+                    catch(IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
                 }
-                catch(Exception e) {
-                    logger.error(e.getMessage(), e);
+            };
+            t.setPriority(t.getPriority() - 1);
+            t.start();
+            // Make sure the service start 
+            // Poll the port to make sure it is reachable
+            long time1 = System.currentTimeMillis();
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                    // Try again
+                    Socket testSocket = new Socket("localhost", port);
+                    if (testSocket.isConnected()) {
+                        testSocket.close();
+                        logger.info("The R service has started.");
+                        break;
+                    }
+                    else
+                        testSocket.close();
+                }
+                catch(Exception e) { // Do nothing
+                    // Avoid to throw ConnectException, which should be thrown during starting up.
+//                    logger.error(e.getMessage(), e);
+                }
+                long time2 = System.currentTimeMillis();
+                // It is observed that the service starts slow when it starts for the first time after download under Mac.
+                if ((time2 - time1) > 10000) { // Give 10 seconds for starting the R service
+                    logger.info("The R service cannot start in 10 seconds. Please check!");
+                    break;
                 }
             }
-        };
-        t.start();
-    }
-    
-    private String output(InputStream is) throws IOException {
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String line = null;
-        StringBuilder builder = new StringBuilder();
-        while ((line = br.readLine()) != null) {
-            builder.append(line).append("\n");
         }
-        br.close();
-        isr.close();
-        return builder.toString();
+        catch(Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
-
 }

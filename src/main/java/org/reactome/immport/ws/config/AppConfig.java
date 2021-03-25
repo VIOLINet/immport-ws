@@ -100,7 +100,6 @@ public class AppConfig {
    public RScriptService getRService() {
        RScriptService service = new RScriptService();
        service.setDataDir(env.getProperty("r.data.dir"));
-       service.setPort(env.getProperty("r.port"));
        service.setScript(env.getProperty("r.script"));
        service.setWorkDir(env.getProperty("r.work.dir"));
        service.setCommand(env.getProperty("r.command"));

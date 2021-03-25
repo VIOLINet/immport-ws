@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.reactome.immport</groupId>
-	<artifactId>ws</artifactId>
+	<artifactId>immport-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -130,6 +130,16 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<!-- This file will be used by Java web application -->
+            <resource>
+                <directory>${project.basedir}/src/main/resources/data</directory>
+                <targetPath>data</targetPath>
+                <includes>
+                    <include>biosample_metadata.csv</include>
+                </includes>
+            </resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -139,9 +149,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-			<!-- Embedded Apache Tomcat required for testing war -->
-
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
@@ -152,6 +159,22 @@
 					<port>8076</port>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                                <descriptor>src/main/assembly/rzip.xml</descriptor>
+    							<finalName>immport-ws-rservice-${version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
