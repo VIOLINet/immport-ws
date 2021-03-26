@@ -74,10 +74,16 @@ public class ReactomeAnalysisService {
     	ObjectMapper objectMapper = new ObjectMapper();
     	JsonNode fis = objectMapper.readTree(fiText);
     	
+    	//null check in case there are no edges in the network
+    	JsonNode interactions = fis.get("interaction");
+    	if(interactions == null) return new ArrayList<>();
+    	
     	StringBuilder annotatedFiPostString = new StringBuilder();
     	Map<Integer, CytoscapeFI> idToCyEdge = new HashMap<>();
     	
-    	JsonNode interactions = fis.get("interaction");
+    	//loop over interactions and create two things
+    	//annotatedFiPostString is "id\tprotein1\tprotein2\n" for annotation service
+    	//idToCyEdge is key value from id to CytoscapeFI so annotation direction can easily be added
     	for(int i = 0; i< interactions.size(); i++) {
     		JsonNode node = interactions.get(i);
     		String[] proteins = {node.get("firstProtein").get("name").asText(), node.get("secondProtein").get("name").asText()};
@@ -97,6 +103,8 @@ public class ReactomeAnalysisService {
 		idToCyEdge.forEach((id, edge) -> {
 			edge.getData().setDirection(annotationMap.get(id).getDirection());
 		});
+		
+		//return just CytoscapeFI list from map values
     	return idToCyEdge.values();
 	}
 
