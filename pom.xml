@@ -139,6 +139,13 @@
                     <include>biosample_metadata.csv</include>
                 </includes>
             </resource>
+            <resource>
+            	<directory>${project.basedir}/src/main/resources</directory>
+                <targetPath>.</targetPath>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
 		</resources>
 		<plugins>
 			<plugin>
