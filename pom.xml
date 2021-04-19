@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.reactome.immport</groupId>
-	<artifactId>immport-ws</artifactId>
+	<artifactId>reactome-immport-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -123,7 +123,7 @@
 				the error: The server time zone value 'PDT' is unrecognized -->
 			<!-- Add the following line in /etc/my.cnf: default_time_zone = '-7:00'. 
 				So there is no need to do the above, which should be done after mysql (re)starts. -->
-			<version>6.0.6</version>
+			<version>8.0.13</version>
 		</dependency>
 
 	</dependencies>
@@ -162,8 +162,8 @@
 				<version>2.2</version>
 				<configuration>
 					<ignorePackaging>true</ignorePackaging>
-					<path>/immportws</path>
-					<port>8076</port>
+					<path>/reactome-immport-ws</path>
+					<port>8080</port>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -180,7 +180,7 @@
     							<finalName>immport-ws-rservice-${version}</finalName>
                         </configuration>
                     </execution>
-                </executions>
+                 </executions>
             </plugin>
 		</plugins>
 	</build>

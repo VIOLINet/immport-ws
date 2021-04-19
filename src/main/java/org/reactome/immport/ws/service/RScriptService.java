@@ -86,6 +86,7 @@ public class RScriptService {
                     workDir
             };
             logger.info("Starting the R service...");
+            logger.info("Working dir: " + workDir);
             ProcessBuilder builder = new ProcessBuilder(parameters);
             builder.directory(new File(workDir));
             builder.redirectErrorStream(true);
