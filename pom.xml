@@ -163,7 +163,7 @@
 				<configuration>
 					<ignorePackaging>true</ignorePackaging>
 					<path>/reactome-immport-ws</path>
-					<port>8080</port>
+					<port>8076</port>
 				</configuration>
 			</plugin>
 			<plugin>
