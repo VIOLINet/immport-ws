@@ -86,6 +86,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # Filter variable genes for stronger analysis results 
   # based on users request 
   # Note: 0.6 seems to be a good threshold for this slice of data 
+  # Note: changed to fetch upper quantile variable genes based on mad of expressions
   # -----------------------------------------------------
   if (user.select$variableGenes){
     mdf.mad <- apply(expr.dat, 1, mad)
