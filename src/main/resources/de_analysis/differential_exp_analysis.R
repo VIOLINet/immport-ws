@@ -89,7 +89,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # -----------------------------------------------------
   if (user.select$variableGenes){
     mdf.mad <- apply(expr.dat, 1, mad)
-    variable.genes <- names(mdf.mad[mdf.mad >  0.6])
+    variable.genes <- names(mdf.mad[mdf.mad > summary(mdf.mad)[[5]]])
     
     expr.dat <- expr.dat[which(rownames(expr.dat) %in% variable.genes), ]
   }
@@ -103,8 +103,9 @@ do_diff_exp_analysis <- function(selection.json.text) {
       paste(s, "immport_vaccination_time", sep =':')
     })
     synergy.terms <- unlist(synergy.terms)
+    pheno.dat$immport_subject_accession <- as.factor(pheno.dat$immport_subject_accession)
     
-    de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time", synergy.terms), collapse = ' + ')))
+    de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
     
   } else {
     # ex. ~ age_group + immport_vaccination_time_groups + age_group:immport_vaccination_time_groups
@@ -112,13 +113,14 @@ do_diff_exp_analysis <- function(selection.json.text) {
     pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group1] <- "A"
     pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group2] <- "B"
     pheno.dat$immport_vaccination_time_groups <- as.factor(pheno.dat$immport_vaccination_time_groups)
+    pheno.dat$immport_subject_accession <- as.factor(pheno.dat$immport_subject_accession)
     
     synergy.terms <- lapply(user.select$studyCohort, function(s){
       paste(s, "immport_vaccination_time_groups", sep =':')
     })
     synergy.terms <- unlist(synergy.terms)
     
-    de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time_groups", synergy.terms), collapse = ' + ')))
+    de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time_groups", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
   }
   
   # print(dim(expr.dat))
@@ -126,7 +128,6 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # print(de.formula)
   
   fit <- limma::eBayes(limma::lmFit(expr.dat, model.matrix(de.formula, data = pheno.dat)))
-  # top.table <- limma::topTable(fit, 2000, coef=2)
   # Try to get all genes
   top.table <- limma::topTable(fit, number=25000, coef=2)
   
