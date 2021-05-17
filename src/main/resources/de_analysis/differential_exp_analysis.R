@@ -20,8 +20,7 @@ p_load("limma")
 
 dir <- args[2]
 pheno.path <- paste(dir, "biosample_metadata.csv", sep = "/")
-all.exp.path <- paste(dir, "all_expr_df_final.csv", sep = "/")
-all.exp.adjusted.path <- paste(dir, "all_expr_df_final_adjusted.csv", sep = "/")
+all.exp.path <- paste(dir, "gene_expression_matrix.csv", sep = "/")
 
 # ------ Load data and then cached them -----------------------------------------------------
 set.seed(1234)
@@ -31,9 +30,8 @@ options(stringsAsFactors = F)
 # read in data for pre-processed biosample expression and associated phenotypes 
 # -----------------------------------------------------
 all.pheno.dat <- read.csv(pheno.path) %>% as.data.frame()
-# We will do dynamic loading for these two big data files
+# We will do dynamic loading for the expression data
 all.exp.data <- NULL
-all.exp.adjusted.data <- NULL
 
 load_exp_data <- function(file.name) {
   all.expr.dat <- read_csv(all.exp.path) %>% as.data.frame()
@@ -41,6 +39,18 @@ load_exp_data <- function(file.name) {
   all.expr.dat <- all.expr.dat[, -1]
 }
 
+# Make sure there are at least two values for the selected variable
+validate_variables <- function(variables, pheno.dat) {
+  validate.variables <- c() # To be returned
+  for (var in variables) {
+    values <- pheno.dat[, var]
+    unique.values <- unique(values)
+    if ((length(unique.values)) > 1) {
+      validate.variables <- c(validate.variables, var)
+    }
+  }
+  validate.variables
+}
 
 # Perform the differential expression analysis via limma
 do_diff_exp_analysis <- function(selection.json.text) {
@@ -52,32 +62,30 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # make sure biosamples exist & have matching orders 
   # -----------------------------------------------------
   pheno.dat <- all.pheno.dat[which(all.pheno.dat$gsm %in% user.select$GSMids), ]
-  # Based on the user's choice
-  expr.dat <- NULL
-  if (user.select$platformCorrection) {
-    if (is.null(all.exp.adjusted.data)) {
-      all.exp.adjusted.data <<- load_exp_data(all.exp.adjusted.path)
-    }
-    expr.dat <- all.exp.adjusted.data[ ,which(colnames(all.exp.adjusted.data) %in% pheno.dat$gsm)]
-  } else {
-    if (is.null(all.exp.data)) { # Use the expression data directly
-      all.exp.data <<- load_exp_data(all.exp.path)
-    }
-    expr.dat <- all.exp.data[ ,which(colnames(all.exp.data) %in% pheno.dat$gsm)]
+  
+  if (is.null(all.exp.data)) { # Use the expression data directly
+    all.exp.data <<- load_exp_data(all.exp.path)
   }
-  # Make sure it has the same order as in the sample meta data. Not sure why (GW)?
+  # Filter the expression to the user's selected samples
+  expr.dat <- all.exp.data[ ,which(colnames(all.exp.data) %in% pheno.dat$gsm)]
+  # Make sure it has the same order as in the sample meta data.
   expr.dat <- expr.dat[ ,match(pheno.dat$gsm, colnames(expr.dat))]
   
+  # For test
+  # which <- rownames(expr.dat) %in% c("IGLL3")
+  # selected.view <- expr.dat[which, ]
+  # View(selected.view)
   # -----------------------------------------------------
   # make factors for groups selected 
   # -----------------------------------------------------
   # one of the study variables selection lengths has to be greater than 2 
   # treat groups as factors 
+  # TODO: This converting may be removed. Need to check. Note by G.W.
   # -----------------------------------------------------
-  if (length(user.select$studyCohort) == 1){
-    pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyCohort)] <- as.factor(pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyCohort)])
+  if (length(user.select$studyVariables) == 1){
+    pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyVariables)] <- as.factor(pheno.dat[,which(colnames(pheno.dat) %in% user.select$studyVariables)])
   } else {
-    for (s in user.select$studyCohort){
+    for (s in user.select$studyVariables){
       pheno.dat[,which(colnames(pheno.dat) %in% s)] <- as.factor(pheno.dat[,which(colnames(pheno.dat) %in% s)])
     }
   }
@@ -86,52 +94,69 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # Filter variable genes for stronger analysis results 
   # based on users request 
   # Note: 0.6 seems to be a good threshold for this slice of data 
-  # Note: changed to fetch upper quantile variable genes based on mad of expressions
+  # This should never be done when using limma:ebays. Note by G.W.
   # -----------------------------------------------------
-  if (user.select$variableGenes){
-    mdf.mad <- apply(expr.dat, 1, mad)
-    variable.genes <- names(mdf.mad[mdf.mad > summary(mdf.mad)[[5]]])
-    
-    expr.dat <- expr.dat[which(rownames(expr.dat) %in% variable.genes), ]
-  }
+  # if (user.select$variableGenes){
+  #   mdf.mad <- apply(expr.dat, 1, mad)
+  #   variable.genes <- names(mdf.mad[mdf.mad >  0.6])
+  #   
+  #   expr.dat <- expr.dat[which(rownames(expr.dat) %in% variable.genes), ]
+  # }
   # -----------------------------------------------------
   # conduct differential expression analysis
-  # add time interactions 
   # -----------------------------------------------------
+  
+  # Collect all variables to be corrected
+  # Other variables that should be corrected
+  other.vars <- c()
+  if (user.select$platformCorrection) {
+    other.vars <- c(other.vars, "gpl") # add the platform as a new variable for correction
+  }
+  if (!is.null(user.select$usePairedData) && user.select$usePairedData) {
+    other.vars <- c(other.vars, "immport_subject_accession") # paired analysis
+  }
+  total.vars <- other.vars
+  if (!is.null(user.select$studyVariables)) {
+    total.vars <- c(total.vars, user.select$studyVariables)
+  }
+  # Make sure variable has at least two values
+  total.vars <- validate_variables(total.vars, pheno.dat)
+  
+  coef.name <- NULL
   if (user.select$modelTime){
-    # ex. ~ age_group + immport_vaccination_time + age_group:immport_vaccination_time
-    synergy.terms <- lapply(user.select$studyCohort, function(s){
-      paste(s, "immport_vaccination_time", sep =':')
-    })
-    synergy.terms <- unlist(synergy.terms)
-    pheno.dat$immport_subject_accession <- as.factor(pheno.dat$immport_subject_accession)
-    
-    de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
-    
+    # # ex. ~ age_group + immport_vaccination_time + age_group:immport_vaccination_time
+    # Don't consider synergy.terms for the time being.
+    # synergy.terms <- lapply(user.select$studyVariables, function(s){
+    #   paste(s, "immport_vaccination_time", sep =':')
+    # })
+    # synergy.terms <- unlist(synergy.terms)
+    coef.name <- "immport_vaccination_time"
   } else {
     # ex. ~ age_group + immport_vaccination_time_groups + age_group:immport_vaccination_time_groups
     pheno.dat$immport_vaccination_time_groups <- NA
     pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group1] <- "A"
     pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group2] <- "B"
     pheno.dat$immport_vaccination_time_groups <- as.factor(pheno.dat$immport_vaccination_time_groups)
-    pheno.dat$immport_subject_accession <- as.factor(pheno.dat$immport_subject_accession)
-    
-    synergy.terms <- lapply(user.select$studyCohort, function(s){
-      paste(s, "immport_vaccination_time_groups", sep =':')
-    })
-    synergy.terms <- unlist(synergy.terms)
-    
-    de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time_groups", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
+    coef.name <- "immport_vaccination_time_groups"
+    # Don't consider interaction term for the time being. It is difficult to give then a biological explanation.
+    # synergy.terms <- lapply(user.select$studyVariables, function(s){
+    #   paste(s, "immport_vaccination_time_groups", sep =':')
+    # })
+    # synergy.terms <- unlist(synergy.terms)
   }
-  
+  # Make sure the coef.name is the first parametmer so that we can use coef = 2 in top.table
+  de.formula <- as.formula(paste("~" , paste(c(coef.name, total.vars), collapse = ' + ')))
+  print(de.formula)
+  design <- model.matrix(de.formula, data = pheno.dat)
+  # View(design)
+  # print(dim(design))
   # print(dim(expr.dat))
-  # print(dim(pheno.dat))
-  # print(de.formula)
-  
-  fit <- limma::eBayes(limma::lmFit(expr.dat, model.matrix(de.formula, data = pheno.dat)))
+  fit <- limma::lmFit(expr.dat, design)
+  fit <- limma::eBayes(fit)
+  # View(fit$coefficients)
   # Try to get all genes
-  top.table <- limma::topTable(fit, number=25000, coef=2)
-  
+  top.table <- limma::topTable(fit, coef=2, number = 2000)
+  # View(top.table)
   # -----------------------------------------------------
   # leave filtering to frontend 
   # write table as json file 
