@@ -178,7 +178,10 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # leave filtering to frontend 
   # write table as json file 
   # -----------------------------------------------------
-  toJSON(as_tibble(top.table, rownames = "gene_name"))
+  tibble.table <- as_tibble(top.table, rownames = "gene_name")
+  # View(tibble.table)
+  json.rtn = toJSON(tibble.table, digits = NA)
+  json.rtn
 }
 
 # ----------------------------------
