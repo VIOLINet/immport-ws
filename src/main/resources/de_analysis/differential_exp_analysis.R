@@ -30,7 +30,7 @@ options(stringsAsFactors = F)
 # read in data for pre-processed biosample expression and associated phenotypes 
 # -----------------------------------------------------
 all.pheno.dat <- read.csv(pheno.path) %>% as.data.frame()
-# We will do dynamic loading for the expression data
+# # We will do dynamic loading for the expression data
 all.exp.data <- NULL
 
 load_exp_data <- function(file.name) {
@@ -54,20 +54,30 @@ validate_variables <- function(variables, pheno.dat) {
 
 # Perform the differential expression analysis via limma
 do_diff_exp_analysis <- function(selection.json.text) {
-  # print(selection.json.text)
   user.select <- fromJSON(selection.json.text, simplifyVector = TRUE)
-  
   # -----------------------------------------------------
   # Filter biosamples by users study design selections &
   # make sure biosamples exist & have matching orders 
   # -----------------------------------------------------
-  pheno.dat <- all.pheno.dat[which(all.pheno.dat$gsm %in% user.select$GSMids), ]
-  
+  pheno.dat <- NA
+  if (!is.null(user.select$GSMids)) {
+    pheno.dat <- all.pheno.dat[which(all.pheno.dat$gsm %in% user.select$GSMids), ]
+  }else {
+    pheno.dat <- all.pheno.dat
+    for (s in names(user.select$studyCohort)) {
+      print(paste(s, user.select$studyCohort[s][[1]], sep = ": "))
+      # print(pheno.dat[, s])
+      selected <- which(pheno.dat[, s] %in% user.select$studyCohort[s][[1]])
+      pheno.dat <- pheno.dat[selected, ]
+    }
+    # View(pheno.dat)
+  }
+  # View(pheno.dat)
   if (is.null(all.exp.data)) { # Use the expression data directly
     all.exp.data <<- load_exp_data(all.exp.path)
   }
   # Filter the expression to the user's selected samples
-  expr.dat <- all.exp.data[ ,which(colnames(all.exp.data) %in% pheno.dat$gsm)]
+  expr.dat <- all.exp.data[ , which(colnames(all.exp.data) %in% pheno.dat$gsm)]
   # Make sure it has the same order as in the sample meta data.
   expr.dat <- expr.dat[ ,match(pheno.dat$gsm, colnames(expr.dat))]
   
@@ -89,7 +99,6 @@ do_diff_exp_analysis <- function(selection.json.text) {
       pheno.dat[,which(colnames(pheno.dat) %in% s)] <- as.factor(pheno.dat[,which(colnames(pheno.dat) %in% s)])
     }
   }
-  
   # -----------------------------------------------------
   # Filter variable genes for stronger analysis results 
   # based on users request 
@@ -115,6 +124,10 @@ do_diff_exp_analysis <- function(selection.json.text) {
   if (!is.null(user.select$usePairedData) && user.select$usePairedData) {
     other.vars <- c(other.vars, "immport_subject_accession") # paired analysis
   }
+  
+  # For test. It should be controlled by the user interface
+  other.vars <- c(other.vars, "type_subtype")
+  
   total.vars <- other.vars
   if (!is.null(user.select$studyVariables)) {
     total.vars <- c(total.vars, user.select$studyVariables)
@@ -138,25 +151,29 @@ do_diff_exp_analysis <- function(selection.json.text) {
     pheno.dat$immport_vaccination_time_groups[pheno.dat$immport_vaccination_time %in% user.select$analysisGroups$group2] <- "B"
     pheno.dat$immport_vaccination_time_groups <- as.factor(pheno.dat$immport_vaccination_time_groups)
     coef.name <- "immport_vaccination_time_groups"
-    # Don't consider interaction term for the time being. It is difficult to give then a biological explanation.
-    # synergy.terms <- lapply(user.select$studyVariables, function(s){
-    #   paste(s, "immport_vaccination_time_groups", sep =':')
+    # # Don't consider interaction term for the time being. It is difficult to give then a biological explanation.
+    # synergy.terms <- lapply(total.vars, function(s){
+    #   paste(s, coef.name, sep =':')
     # })
     # synergy.terms <- unlist(synergy.terms)
+    # total.vars <- c(total.vars, synergy.terms)
   }
+  print(total.vars)
   # Make sure the coef.name is the first parametmer so that we can use coef = 2 in top.table
   de.formula <- as.formula(paste("~" , paste(c(coef.name, total.vars), collapse = ' + ')))
   print(de.formula)
   design <- model.matrix(de.formula, data = pheno.dat)
   # View(design)
-  # print(dim(design))
-  # print(dim(expr.dat))
+  print(dim(design))
+  print(dim(expr.dat))
   fit <- limma::lmFit(expr.dat, design)
   fit <- limma::eBayes(fit)
   # View(fit$coefficients)
+  # View(fit$p.value)
   # Try to get all genes
-  top.table <- limma::topTable(fit, coef=2, number = 2000)
+  top.table <- limma::topTable(fit, coef=2, number = Inf)
   # View(top.table)
+  # write.table(top.table, "top_table.csv", sep = ",", quote = F, col.names = T)
   # -----------------------------------------------------
   # leave filtering to frontend 
   # write table as json file 
