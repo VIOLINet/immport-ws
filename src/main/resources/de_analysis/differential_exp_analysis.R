@@ -31,7 +31,7 @@ options(stringsAsFactors = F)
 # -----------------------------------------------------
 all.pheno.dat <- read.csv(pheno.path) %>% as.data.frame()
 # # We will do dynamic loading for the expression data
-all.exp.data <- NULL
+# all.exp.data <- NULL
 
 load_exp_data <- function(file.name) {
   all.expr.dat <- read_csv(all.exp.path) %>% as.data.frame()
@@ -65,7 +65,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
   }else {
     pheno.dat <- all.pheno.dat
     for (s in names(user.select$studyCohort)) {
-      print(paste(s, user.select$studyCohort[s][[1]], sep = ": "))
+      # print(paste(s, user.select$studyCohort[s][[1]], sep = ": "))
       # print(pheno.dat[, s])
       selected <- which(pheno.dat[, s] %in% user.select$studyCohort[s][[1]])
       pheno.dat <- pheno.dat[selected, ]
@@ -80,6 +80,8 @@ do_diff_exp_analysis <- function(selection.json.text) {
   expr.dat <- all.exp.data[ , which(colnames(all.exp.data) %in% pheno.dat$gsm)]
   # Make sure it has the same order as in the sample meta data.
   expr.dat <- expr.dat[ ,match(pheno.dat$gsm, colnames(expr.dat))]
+  # For this analysis, we'd keep genes having all values
+  expr.dat <- expr.dat %>% drop_na()
   
   # For test
   # which <- rownames(expr.dat) %in% c("IGLL3")
@@ -158,14 +160,14 @@ do_diff_exp_analysis <- function(selection.json.text) {
     # synergy.terms <- unlist(synergy.terms)
     # total.vars <- c(total.vars, synergy.terms)
   }
-  print(total.vars)
+  # print(total.vars)
   # Make sure the coef.name is the first parametmer so that we can use coef = 2 in top.table
   de.formula <- as.formula(paste("~" , paste(c(coef.name, total.vars), collapse = ' + ')))
-  print(de.formula)
+  # print(de.formula)
   design <- model.matrix(de.formula, data = pheno.dat)
   # View(design)
-  print(dim(design))
-  print(dim(expr.dat))
+  # print(dim(design))
+  # print(dim(expr.dat))
   fit <- limma::lmFit(expr.dat, design)
   fit <- limma::eBayes(fit)
   # View(fit$coefficients)
