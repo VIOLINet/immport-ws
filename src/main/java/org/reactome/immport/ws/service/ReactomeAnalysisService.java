@@ -200,7 +200,9 @@ public class ReactomeAnalysisService {
 		String response = "";
  		try {			
 			//make call to plumber  server for R script
- 		    String url = "http://localhost:" + rservice.getPort() + "/doDiffExpAnalysis";
+// 		    String url = "http://localhost:" + rservice.getPort() + "/doDiffExpAnalysis";
+ 		    // For local test with RStudio
+ 		    String url = "http://localhost:8087/doDiffExpAnalysis";
 			PostMethod method = new PostMethod(url);
 			method.addParameter("selection.json", jsonText);
 			HttpClient client = new HttpClient();

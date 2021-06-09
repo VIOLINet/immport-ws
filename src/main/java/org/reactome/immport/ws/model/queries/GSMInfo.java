@@ -9,13 +9,16 @@ public class GSMInfo {
 	private String subjectGender;
 	private String subjectRace;
 	private String voExposureId;
+	private String repositoryName;
 	private String repositoryAccession;
 	private Float studyTimeCollected;
 	private String studyTimeCollectedUnit;
 	private String expSampleAccession;
 	private boolean expToMultipleGSM;
 	
-	public GSMInfo(String studyAccesssion, String studyMinAge, String studyMaxAge, String subjectId, String subjectGender, String subjectRace, String voExposureId, String repositoryAccession, Float studyTimeCollected,
+	public GSMInfo(String studyAccesssion, String studyMinAge, String studyMaxAge, String subjectId, String subjectGender, String subjectRace, String voExposureId, 
+	               String repositoryName,
+	               String repositoryAccession, Float studyTimeCollected,
 			String studyTimeCollectedUnit, String expSampleAccession, boolean expToMultipleGSM) {
 		super();
 		this.studyAccesssion = studyAccesssion;
@@ -25,6 +28,7 @@ public class GSMInfo {
 		this.subjectGender = subjectGender;
 		this.subjectRace = subjectRace;
 		this.voExposureId = voExposureId;
+		this.repositoryName = repositoryName;
 		this.repositoryAccession = repositoryAccession;
 		this.studyTimeCollected = studyTimeCollected;
 		this.studyTimeCollectedUnit = studyTimeCollectedUnit;
@@ -115,6 +119,7 @@ public class GSMInfo {
 			   this.getSubjectGender() + "\t" +
 			   this.getSubjectRace() + "\t" +
 			   this.getVoExposureId() + "\t" +
+			   repositoryName + "\t" +
 			   this.getRepositoryAccession() + "\t" +
 			   this.getStudyTimeCollected() + "\t" +
 			   this.getStudyTimeCollectedUnit() + "\t" +

@@ -21,11 +21,11 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,8 +38,8 @@ import org.reactome.immport.ws.model.AdverseEvent;
 import org.reactome.immport.ws.model.ArmOrCohort;
 import org.reactome.immport.ws.model.ArmToSubject;
 import org.reactome.immport.ws.model.BioSample;
-import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.ExpSample;
+import org.reactome.immport.ws.model.Experiment;
 import org.reactome.immport.ws.model.ImmuneExposure;
 import org.reactome.immport.ws.model.Intervention;
 import org.reactome.immport.ws.model.SampleGeneExpression;
@@ -61,7 +61,7 @@ public class HibernateTests {
     public void testQueryAllGSM() throws Exception {
     	
     	//Setup print file and add headers row
-    	String gsmFileName = "output/GSMInfo.txt";
+    	String gsmFileName = "output/GSMInfo_060921.txt";
 		File gsmInfoFile = new File(gsmFileName);
 		gsmInfoFile.getParentFile().mkdirs();
 		gsmInfoFile.createNewFile();
@@ -74,6 +74,7 @@ public class HibernateTests {
 				  + "Gender\t"
 				  + "Race\t"
 				  + "VO_Id\t"
+				  + "Repository Name\t"
 				  + "Repository Accession\t"
 				  + "Study Time Collected\t"
 				  + "Study Time Collected Units\t"
@@ -97,6 +98,7 @@ public class HibernateTests {
 	        									bioSample.getSubject().getGender(),
 	        									bioSample.getSubject().getRace(),
 	        									immuneExposure.getExposureMaterialId(),
+	        									geneExpression.getRepository().getName(),
 	        									geneExpression.getRepositoryAccession(),
 	        									bioSample.getStudyTimeCollected(),
 	        									bioSample.getStudyTimeCollectedUnit(),
@@ -110,54 +112,122 @@ public class HibernateTests {
     	});
     	dos.close();
 		fos.close();
+		session.close();
+		sf.close();
     }
     
     /**
-     * Writes lift of GSMInfo objects to file
-     * @param gsmInfo
-     * @throws IOException
+     * This method is used to dump gene expression data related to immune exposure.
+     * @throws Exception
      */
-    private void writeFile(List<GSMInfo> gsmInfo) throws IOException {
-		String gsmFileName = "output/GSMInfo.txt";
-		File gsmInfoFile = new File(gsmFileName);
-		gsmInfoFile.getParentFile().mkdirs();
-		gsmInfoFile.createNewFile();
-		FileWriter fos = new FileWriter(gsmInfoFile);
-		PrintWriter dos = new PrintWriter(fos);
-		//prints a line of headers to the file
-		dos.println("Study Id\t"
-				  + "Study Min Age\t"
-				  + "Study Max Age\t"
-				  + "Subject Id\t"
-				  + "Gender\t"
-				  + "Race\t"
-				  + "VO_Id\t"
-				  + "Repository Accession\t"
-				  + "Study Time Collected\t"
-				  + "Study Time Collected Units\t"
-				  + "ExpSample Id\t"
-				  + "Exp To Multiple GSM Flag");
-		//prints each gsmInfo object to file
-		gsmInfo.forEach(x -> {
-			dos.println(x.toString());
-		});
-		dos.close();
-		fos.close();
-	}
+    @Test
+    public void dumpGeneExpression() throws Exception {
+        String fileName = "output/ImmuneExposureGeneExpression_060921.txt";
+        PrintWriter pr = new PrintWriter(fileName);
+        SessionFactory sf = createSessionFactory();
+        Session session = sf.openSession();
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("Study Id\t"
+                  + "Study Title\t"
+                  + "Study Brief Desc\t"
+                  + "Study Min Age\t"
+                  + "Study Max Age\t"
+                  + "Subject Id\t"
+                  + "Subject Gender\t"
+                  + "Subject Race\t"
+                  + "Exposure Material Id\t"
+                  + "Exposure Material Reported\t"
+                  + "Biosample Id\t"
+                  + "Biosample Study Time Collected\t"
+                  + "Biosample Study Time Collected Units\t"
+                  + "Biosample Time t0 Event\t"
+                  + "Biosample Type\t"
+                  + "Biosample Subtype"
+                  + "ExpSample Id\t"
+                  + "Expsample Repository Name\t"
+                  + "Expsample Repository Accession\t"
+                  + "Expsample To Multiple GSM Flag");
+        pr.println(builder.toString());
+        builder.setLength(0);
+        List<ExpSample> expSamples = session.createQuery("FROM " + ExpSample.class.getName() + " es WHERE es.accession != null", 
+                                                                   ExpSample.class)
+                                            .getResultList();
+        System.out.println("Total ImmuneExposure: " + expSamples.size());
+        for (ExpSample expsample : expSamples) {
+            Set<SampleGeneExpression> expressions = expsample.getGeneExpressions();
+            if (expressions == null || expressions.size() == 0)
+                continue;
+            boolean flag = expressions.size() > 1;
+            Set<BioSample> biosamples = expsample.getBioSamples();
+            for (BioSample biosample : biosamples) {
+                Subject subject = biosample.getSubject();
+                Study study = biosample.getStudy();
+                String t0event = biosample.getStudyTimeT0Event();
+                if (t0event != null && t0event.equals("Other"))
+                    t0event = biosample.getStudyTimeT0EventSpecify();
+                Set<ImmuneExposure> immuneExposures = subject.getImmuneExposures();
+                if (immuneExposures == null || immuneExposures.size() == 0)
+                    continue;
+                Set<String> exposureTexts = normalizeImmuneExposures(immuneExposures);
+                for (String exposureText : exposureTexts) {
+                    for (SampleGeneExpression expression : expressions) {
+                        builder.append(study.getAccession()).append("\t")
+                               .append(study.getBriefTitle()).append("\t")
+                               .append(study.getBriefDescription()).append("\t")
+                               .append(study.getMinimumAge()).append("\t")
+                               .append(study.getMaximumAge()).append("\t")
+                               .append(subject.getAccession()).append("\t")
+                               .append(subject.getGender()).append("\t")
+                               .append(subject.getRace()).append("\t")
+                               .append(exposureText).append("\t")
+                               .append(biosample.getAccession()).append("\t")
+                               .append(biosample.getStudyTimeCollected()).append("\t")
+                               .append(biosample.getStudyTimeCollectedUnit()).append("\t")
+                               .append(t0event).append("\t")
+                               .append(biosample.getType()).append("\t")
+                               .append(biosample.getSubtype()).append("\t")
+                               .append(expsample.getAccession()).append("\t")
+                               .append(expression.getRepository().getName()).append("\t")
+                               .append(expression.getRepositoryAccession()).append("\t")
+                               .append(flag);
+                        pr.println(builder.toString());
+                        builder.setLength(0);
+                    }
+                }
+            }
+        }
+        pr.close();
+        session.close();
+        sf.close();
+    }
+    
+    /**
+     * The same immune exposure may be used in different studies and therefore has different immune exposures ids,
+     * resulting in multiple objects. This method is used to extract the common information among these objects.
+     * @param exposures
+     * @return
+     */
+    private Set<String> normalizeImmuneExposures(Set<ImmuneExposure> exposures) {
+        return exposures.stream()
+                        .filter(exposure -> exposure.getExposureMaterialId() != null)
+                        .map(exposure -> exposure.getExposureMaterialId() + "\t" + exposure.getExposureMaterialReported())
+                        .collect(Collectors.toSet());
+    }
 
 	@Test
     public void testStudy() throws Exception {
         SessionFactory sf = createSessionFactory();
         Session session = sf.openSession();
         
-        Study study = session.get(Study.class, "SDY212");
+        Study study = session.get(Study.class, "SDY270");
         checkObject(study);
         
         Set<Experiment> experiments = study.getExperiments();
         System.out.println("Total experiments: " + experiments.size());
         // This experiment should have gene expression
         Experiment experiment = experiments.stream()
-                .filter(e -> e.getAccession().equals("EXP13387"))
+                .filter(e -> e.getAccession().equals("EXP20675"))
                 .findAny()
                 .get();
         checkObject(experiment);
