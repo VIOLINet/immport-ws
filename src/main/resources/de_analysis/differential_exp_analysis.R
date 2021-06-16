@@ -31,7 +31,7 @@ options(stringsAsFactors = F)
 # -----------------------------------------------------
 all.pheno.dat <- read.csv(pheno.path) %>% as.data.frame()
 # # We will do dynamic loading for the expression data
-# all.exp.data <- NULL
+all.exp.data <- NULL
 
 load_exp_data <- function(file.name) {
   all.expr.dat <- read_csv(all.exp.path) %>% as.data.frame()
