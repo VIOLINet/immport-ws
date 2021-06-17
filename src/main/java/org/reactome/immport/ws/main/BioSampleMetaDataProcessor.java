@@ -15,11 +15,18 @@ import java.util.stream.Stream;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.Test;
 import org.reactome.immport.ws.config.AppConfig;
 import org.reactome.immport.ws.model.BioSample;
 import org.reactome.immport.ws.model.ExpSample;
+import org.reactome.immport.ws.model.ImmuneExposure;
 import org.reactome.immport.ws.model.SampleGeneExpression;
+import org.reactome.immport.ws.model.Study;
+import org.reactome.immport.ws.model.Subject;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +40,112 @@ public class BioSampleMetaDataProcessor {
     private final String SAMPLE_META_FILE = "src/main/resources/data/biosample_metadata.csv";
     
     public BioSampleMetaDataProcessor() {
+    }
+    
+    /**
+     * This method is used to dump gene expression data related to immune exposure.
+     * @throws Exception
+     */
+    @Test
+    public void dumpGeneExpression() throws Exception {
+        SessionFactory sf = createSessionFactory();
+        Session session = sf.openSession();
+        
+        String fileName = "output/ImmuneExposureGeneExpression_060921.txt";
+        PrintWriter pr = new PrintWriter(fileName);
+        StringBuilder builder = new StringBuilder();
+        builder.append("Study Id\t"
+                  + "Study Title\t"
+                  + "Study Brief Desc\t"
+                  + "Study Min Age\t"
+                  + "Study Max Age\t"
+                  + "Subject Id\t"
+                  + "Subject Gender\t"
+                  + "Subject Race\t"
+                  + "Exposure Material Id\t"
+                  + "Exposure Material Reported\t"
+                  + "Biosample Id\t"
+                  + "Biosample Study Time Collected\t"
+                  + "Biosample Study Time Collected Units\t"
+                  + "Biosample Time t0 Event\t"
+                  + "Biosample Type\t"
+                  + "Biosample Subtype\t"
+                  + "ExpSample Id\t"
+                  + "Expsample Repository Name\t"
+                  + "Expsample Repository Accession\t"
+                  + "Expsample To Multiple GSM Flag");
+        pr.println(builder.toString());
+        builder.setLength(0);
+        List<ExpSample> expSamples = session.createQuery("FROM " + ExpSample.class.getName() + " es WHERE es.accession != null", 
+                                                                   ExpSample.class)
+                                            .getResultList();
+        System.out.println("Total ImmuneExposure: " + expSamples.size());
+        for (ExpSample expsample : expSamples) {
+            Set<SampleGeneExpression> expressions = expsample.getGeneExpressions();
+            if (expressions == null || expressions.size() == 0)
+                continue;
+            boolean flag = expressions.size() > 1;
+            Set<BioSample> biosamples = expsample.getBioSamples();
+            for (BioSample biosample : biosamples) {
+                Subject subject = biosample.getSubject();
+                Study study = biosample.getStudy();
+                String t0event = biosample.getStudyTimeT0Event();
+                if (t0event != null && t0event.equals("Other"))
+                    t0event = biosample.getStudyTimeT0EventSpecify();
+                Set<ImmuneExposure> immuneExposures = subject.getImmuneExposures();
+                if (immuneExposures == null || immuneExposures.size() == 0)
+                    continue;
+                Set<String> exposureTexts = normalizeImmuneExposures(immuneExposures);
+                for (String exposureText : exposureTexts) {
+                    for (SampleGeneExpression expression : expressions) {
+                        builder.append(study.getAccession()).append("\t")
+                               .append(study.getBriefTitle()).append("\t")
+                               .append(study.getBriefDescription()).append("\t")
+                               .append(study.getMinimumAge()).append("\t")
+                               .append(study.getMaximumAge()).append("\t")
+                               .append(subject.getAccession()).append("\t")
+                               .append(subject.getGender()).append("\t")
+                               .append(subject.getRace()).append("\t")
+                               .append(exposureText).append("\t")
+                               .append(biosample.getAccession()).append("\t")
+                               .append(biosample.getStudyTimeCollected()).append("\t")
+                               .append(biosample.getStudyTimeCollectedUnit()).append("\t")
+                               .append(t0event).append("\t")
+                               .append(biosample.getType()).append("\t")
+                               .append(biosample.getSubtype()).append("\t")
+                               .append(expsample.getAccession()).append("\t")
+                               .append(expression.getRepository().getName()).append("\t")
+                               .append(expression.getRepositoryAccession()).append("\t")
+                               .append(flag);
+                        pr.println(builder.toString());
+                        builder.setLength(0);
+                    }
+                }
+            }
+        }
+        pr.close();
+        session.close();
+        sf.close();
+    }
+    
+    private SessionFactory createSessionFactory() {
+        StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+        Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
+        SessionFactory sessionFactory = metaData.getSessionFactoryBuilder().build();
+        return sessionFactory;
+    }
+    
+    /**
+     * The same immune exposure may be used in different studies and therefore has different immune exposures ids,
+     * resulting in multiple objects. This method is used to extract the common information among these objects.
+     * @param exposures
+     * @return
+     */
+    private Set<String> normalizeImmuneExposures(Set<ImmuneExposure> exposures) {
+        return exposures.stream()
+                        .filter(exposure -> exposure.getExposureMaterialId() != null)
+                        .map(exposure -> exposure.getExposureMaterialId() + "\t" + exposure.getExposureMaterialReported())
+                        .collect(Collectors.toSet());
     }
     
     /**
