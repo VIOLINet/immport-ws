@@ -2,6 +2,7 @@
 # on the platform annotation. The major functions in this R script are refactored from Nasim's original harmonize.R
 
 library(GEOquery)
+library(GEOmetadb)
 library(limma)
 library(logger)
 library(stringr)
@@ -9,7 +10,7 @@ library(ggplot2)
 
 # Have to make sure this sqlite database exist to collect data.
 if ( !file.exists( "GEOmetadb.sqlite" ) ) {
-    geometadbfile <- getSQLiteFile() # download full DB
+    geometadbfile <- getSQLiteFile(destdir = ".") # download full DB
 } else {
     geometadbfile <- "GEOmetadb.sqlite"
 }
@@ -29,7 +30,7 @@ process.gse <- function(gse.id,
     if (!dir.exists(temp.dir)) {
         dir.create(temp.dir)
     }
-    gse.data <- getGEO(gse.id, destdir = temp.dir)
+    gse.data <- getGEO(gse.id, destdir = temp.dir, AnnotGPL = TRUE)
     # The results are organized as GPL
     genes.expression <- data.frame()
     # Collect gpl information for batch correction pca analysis
@@ -97,12 +98,14 @@ process.gpl.data <- function(gpl.gse.data,
     }
     # Ignore probsets that cannot be mapped to genes
     features <- gpl.gse.data@featureData@data
+    # Upper case the col names for easy handling
+    colnames(features) <- toupper(colnames(features))
     if (is.na(gene)) {
         # Need to determine what is the gene symbol col
-        if ("Gene Symbol" %in% colnames(features)) {
-            symbol.col.name <- "Gene Symbol" # Affy
-        }else if ("Symbol" %in% colnames(features)) {
-            symbol.col.name <- "Symbol" # Illumina
+        if ("GENE SYMBOL" %in% colnames(features)) {
+            symbol.col.name <- "GENE SYMBOL" # Affy
+        }else if ("SYMBOL" %in% colnames(features)) {
+            symbol.col.name <- "SYMBOL" # Illumina
         }else {
             map.results <- map.to.genes(features)
             if (is.null(map.results))
@@ -152,28 +155,29 @@ process.gpl.data <- function(gpl.gse.data,
 # genes using external file
 map.to.genes <- function(features) {
     # First check if UniGene column exists
-    gene.col.name <- 'Gene Symbol'
+    gene.col.name <- 'GENE SYMBOL'
     features.col.names <- colnames(features)
     # Two colnames for mapping
     feature.col.name <- NA
     map.col.name <- NA
-    if ("UniGene" %in% features.col.names) {
+    if ("UNIGENE" %in% features.col.names) {
         log_info("Using UniGene to map gene symbols")
-        feature.col.name <- "UniGene"
-        map.col.name <- "UniGene"
+        feature.col.name <- "UNIGENE"
+        map.col.name <- "UNIGENE"
         
     }else if("ENTREZ_GENE_ID" %in% features.col.names) {
         log_info("Using ENTREZ_GENE_ID to map gene symbols")
         feature.col.name <- "ENTREZ_GENE_ID"
-        map.col.name <- "Gene_ID"
+        map.col.name <- "GENE_ID"
     }else if ("LOCUSLINK" %in% features.col.names) {
         log_info("Usiing LOCUSLINK to map gene symbols")
         feature.col.name <- "LOCUSLINK"
-        map.col.name <- "Gene_ID"
+        map.col.name <- "GENE_ID"
     }
     if (is.na(feature.col.name) || is.na(map.col.name)) return(NULL)
     # Have to make sure this file exists
     unigene.2.gene <- read.delim(unigene.gene.map.file, header = T, check.names = F)
+    colnames(unigene.2.gene) <- toupper(colnames(unigene.2.gene))
     indices <- match(features[, feature.col.name], unigene.2.gene[, map.col.name])
     log_info(paste("Total mapped genes:", sum(!is.na(indices))))
     features[, gene.col.name] <- unigene.2.gene[, gene.col.name][indices]
@@ -298,19 +302,21 @@ process.file <- function(file.name,
 }
 
 # The following variables are used as a configuration and make sure they exist
-unigene.gene.map.file <- "/Volumes/ssd/datasets/NCBI/UniGene/UniGeneMapper_071321.txt"
+unigene.gene.map.file <- "UniGeneMapper_071321.txt"
 if (!file.exists(unigene.gene.map.file)) {
     stop(paste(unigene.gene.map.file, "doesn't exist!"))
 }
-geneacc.gene.mal.file <- "/Volumes/ssd/datasets/NCBI/UniGene/UniGeneMapperWithAcc_071321.txt"
-if (!file.exists(geneacc.gene.mal.file)) {
-    stop(paste(geneacc.gene.mal.file, "doesn't exist!"))
-}
+# geneacc.gene.mal.file <- "/Volumes/ssd/datasets/NCBI/UniGene/UniGeneMapperWithAcc_071321.txt"
+# if (!file.exists(geneacc.gene.mal.file)) {
+#     stop(paste(geneacc.gene.mal.file, "doesn't exist!"))
+# }
 # This is for test
-dest.dir <- "/Users/wug/temp"
-file.name <- "/Users/wug/git/immport/ws/output/ImmuneExposureGeneExpression_071221.txt"
+dest.dir <- "output"
+file.name <- "ImmuneExposureGeneExpression_071921.txt"
 gse.id <- "GSE13485" # Test GPL7567 using UniGene map
 gse.id <- "GSE22768" # Test GPL10647 using ENTREZ_GENE_ID map
-gse.id <- "GSE22121" # Test GPL9700 and GPL10465 using LOCUSLINK: There are only 
-                    #  about 7,000 columns in the expresion matrix file though much more rows in the GPL
+# gse.id <- "GSE22121" # Test GPL9700 and GPL10465 using LOCUSLINK: There are only 
+#                     #  about 7,000 columns in the expression matrix file though much more rows in the GPL
+gse.id <- NA # To run all GSEs
+# gse.id <- "GSE47353" # There are two files related to the platform used by this GSE: GPL6244.
 process.file(file.name, dest.dir, gse.id)
