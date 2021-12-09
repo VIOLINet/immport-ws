@@ -21,7 +21,7 @@ p_load(tidyr)
 p_load(lubridate)
 p_load(purrr)
 p_load(tidyverse)
-p_load(ggplot)
+p_load(ggplot2)
 
 
 set.seed(1234)

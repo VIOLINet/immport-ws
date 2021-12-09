@@ -70,11 +70,11 @@ if (length(user.select$studyCohort) == 1){
 # -----------------------------------------------------
 # Filter variable genes for stronger analysis results 
 # based on users request 
-# Note: changed to fetch upper quantile variable genes based on mad of expressions
+# Note: 0.6 seems to be a good threshold for this slice of data 
 # -----------------------------------------------------
 if (user.select$variableGenes == T){
   mdf.mad <- apply(expr.dat, 1, mad)
-  variable.genes <- names(mdf.mad[mdf.mad >  summary(mdf.mad)[[5]]])
+  variable.genes <- names(mdf.mad[mdf.mad >  0.6])
   
   expr.dat <- expr.dat[which(rownames(expr.dat) %in% variable.genes), ]
 }
@@ -88,9 +88,8 @@ if (user.select$modelTime == F){
     paste(s, "immport_vaccination_time", sep =':')
   })
   synergy.terms <- unlist(synergy.terms)
-  pheno.dat$immport_subject_accession <- as.factor(pheno.dat$immport_subject_accession)
   
-  de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
+  de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time", synergy.terms), collapse = ' + ')))
   
 } else {
   # ex. ~ age_group + immport_vaccination_time_groups + age_group:immport_vaccination_time_groups
@@ -104,11 +103,11 @@ if (user.select$modelTime == F){
   })
   synergy.terms <- unlist(synergy.terms)
   
-  de.formula <- as.formula(paste("~" , paste(c("immport_vaccination_time_groups", "immport_subject_accession", user.select$studyCohort, synergy.terms), collapse = ' + ')))
+  de.formula <- as.formula(paste("~" , paste(c(user.select$studyCohort, "immport_vaccination_time_groups", synergy.terms), collapse = ' + ')))
 }
 
 fit <- limma::eBayes(limma::lmFit(expr.dat, model.matrix(de.formula, data = pheno.dat)))
-top.table <- limma::topTable(fit, 30000, coef=2)
+top.table <- limma::topTable(fit, 2000, coef=2)
 
 # -----------------------------------------------------
 # leave filtering to frontend 

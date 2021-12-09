@@ -25,13 +25,14 @@ import org.junit.Test;
  */
 public class GeneMatrixProcessor {
     private final String GENE_NAME_FILE = "/Volumes/ssd/datasets/genenames/human_gene_names_051121.txt";
-    private final String MATRIX_FILE = "/Volumes/ssd/docs/Immport_VO_project_Nasim/all_expr_all_genes_df_final.csv";
+//    private final String MATRIX_FILE = "/Volumes/ssd/docs/Immport_VO_project_Nasim/all_expr_all_genes_df_final.csv";
+    private final String MATRIX_FILE = "/Volumes/ssd/results/immport-ws/data_eng/immport_vaccine_expression_matrix_091421.csv";
     
     public GeneMatrixProcessor() {
     }
     
     /**
-     * For the final matrix, another filtering is conducted to keep genes only for ones approaved by HUGO.
+     * For the final matrix, another filtering is conducted to keep genes only for ones approved by HUGO.
      * @throws IOException
      */
     @Test
@@ -39,6 +40,11 @@ public class GeneMatrixProcessor {
         String dir = "/Volumes/ssd/docs/Immport_VO_project_Nasim/";
         String srcFile = dir + "all_expr_all_genes_df_final_mapped_merged_051221.csv";
         String targetFile = dir + "all_expr_all_genes_df_final_mapped_merged_approved_genes_051321.csv";
+        
+        // Results for all vaccines on Sept 13, 2021
+        dir = "/Volumes/ssd/results/immport-ws/data_eng/";
+        srcFile = dir + "immport_vaccine_expression_matrix_mapped_merged_091421.csv";
+        targetFile = dir + "immport_vaccine_expression_matrix_mapped_merged_approved_genes_091421.csv";
         
         Set<String> approvedGenes = loadApprovedGenes();
         System.out.println("Total approved genes: " + approvedGenes.size());
@@ -81,6 +87,10 @@ public class GeneMatrixProcessor {
         String mappedFile = dir + "all_expr_all_genes_df_final_mapped_051221.csv";
         // Rows are merged if they have the same gene symols using median or mean?
         String mergedFile = dir + "all_expr_all_genes_df_final_mapped_merged_051221.csv";
+        // Results for all vaccines on Sept 13, 2021
+        dir = "/Volumes/ssd/results/immport-ws/data_eng/";
+        mappedFile = dir + "immport_vaccine_expression_matrix_mapped_091421.csv";
+        mergedFile = dir + "immport_vaccine_expression_matrix_mapped_merged_091421.csv";
         
         Map<String, Set<String>> symToName = loadGeneToSynonyms(false);
         Map<String, Set<String>> nameToSyms = switchKeyToValue(symToName);
@@ -231,7 +241,7 @@ public class GeneMatrixProcessor {
     }
     
     private Optional<Double> mergeValues(String gene, List<Double> values) {
-        if (values.size() == 0)
+    	if (values.size() == 0)
             return Optional.empty();
         List<Double> sorted = values.stream().sorted().collect(Collectors.toList());
         int index = sorted.size() / 2;

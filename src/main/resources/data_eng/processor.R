@@ -7,6 +7,7 @@ library(limma)
 library(logger)
 library(stringr)
 library(ggplot2)
+library(autoplotly)
 
 # Have to make sure this sqlite database exist to collect data.
 if ( !file.exists( "GEOmetadb.sqlite" ) ) {
@@ -226,7 +227,37 @@ plot.mad.mean <- function(expressions) {
 }
 
 pca <- function(expressions,
-                title = "") {
+                title = "",
+                need.no.scale = TRUE) {
+    df <- prepare.pca.df(expressions)
+    if (is.null(df)) {
+        log_info("Cannot generate a DataFrame for PCA.")
+        return(NULL)
+    }
+    pca <- prcomp(df, scale.=T, center = T) # Use whatever data we have
+    # Plot first 2 PCs
+    plotdata <- data.frame(SampleID=rownames(pca$x),
+                           PC1=pca$x[,1],
+                           PC2=pca$x[,2])
+    pca.plot <- ggplot(plotdata, aes(x=PC1, y=PC2)) + geom_point() +
+        labs(title = paste(title, "PCA with Scale and Center", sep=""))
+    print(pca.plot)
+    if (!need.no.scale) {
+        return(pca)
+    }
+    pca <- prcomp(df, scale.=F, center = F) # Use whatever data we have
+    # Plot first 2 PCs
+    plotdata <- data.frame(SampleID=rownames(pca$x),
+                           PC1=pca$x[,1],
+                           PC2=pca$x[,2])
+    pca.plot <- ggplot(plotdata, aes(x=PC1, y=PC2)) + geom_point() + 
+        labs(title = paste(title, "PCA without Scale and Center", sep = ""))
+    print(pca.plot)
+    pca
+}
+
+# Generate a dataframe for PCA
+prepare.pca.df <- function(expressions) {
     if (dim(expressions)[1] == 0) {
         log_info("No genes are in the expressions dataframe for PCA analysis.")
         return(NULL)
@@ -239,22 +270,34 @@ pca <- function(expressions,
     # This is arbirary number
     which <- vars > 1.0E-5
     df <- df[, which]
+    # Remove columns having NA: 
+    # https://stackoverflow.com/questions/2643939/remove-columns-from-dataframe-where-all-values-are-na
+    df <- df[, colSums(is.na(df)) < nrow(df)]
+    df
+}
+
+# Use autoplotly to plot an interactive PCA for manual investigation. The code is modified
+# from this web page: https://terrytangyuan.github.io/2018/02/12/autoplotly-intro/
+interactive.pca <- function(expressions,
+                            meta.file) {
+    df <- prepare.pca.df(expressions)
     pca <- prcomp(df, scale.=T, center = T) # Use whatever data we have
-    # Plot first 2 PCs
-    plotdata <- data.frame(SampleID=rownames(pca$x),
-                           PC1=pca$x[,1],
-                           PC2=pca$x[,2])
-    pca.plot <- ggplot(plotdata, aes(x=PC1, y=PC2)) + geom_point() +
-        labs(title = paste(title, "PCA with Scale and Center", sep=""))
-    print(pca.plot)
-    pca <- prcomp(df, scale.=F, center = F) # Use whatever data we have
-    # Plot first 2 PCs
-    plotdata <- data.frame(SampleID=rownames(pca$x),
-                           PC1=pca$x[,1],
-                           PC2=pca$x[,2])
-    pca.plot <- ggplot(plotdata, aes(x=PC1, y=PC2)) + geom_point() + 
-        labs(title = paste(title, "PCA without Scale and Center", sep = ""))
-    print(pca.plot)
+    # Want to get some meta information to color the plot
+    meta <- read.delim(meta.file, sep = "\t", header = T, check.names = T)
+    which <- meta[, 'Expsample.Repository.Accession'] %in% rownames(df)
+    meta.rows <- meta[which, ]
+    tmp <- meta.rows
+    # Sort based on df
+    indices <- match(rownames(df), meta.rows[, 'Expsample.Repository.Accession'])
+    meta.rows <- meta.rows[indices, ]
+    rownames(meta.rows) <- meta.rows[, 'Expsample.Repository.Accession']
+    # Use the call from autoplotly
+    plotdata <- autoplotly(pca, frame = TRUE, data = meta.rows, 
+                           label = TRUE, label.size = 2,
+                           originalData = FALSE,
+                           colour = "Expsample.Repository.Accession")
+    print(plotdata)
+    pca
 }
 
 pca.with.batch.correction <- function(expressions, gsms.gpls) {
@@ -312,11 +355,16 @@ if (!file.exists(unigene.gene.map.file)) {
 # }
 # This is for test
 dest.dir <- "output"
-file.name <- "ImmuneExposureGeneExpression_071921.txt"
+file.name <- "ImmuneExposureGeneExpression.txt"
 gse.id <- "GSE13485" # Test GPL7567 using UniGene map
 gse.id <- "GSE22768" # Test GPL10647 using ENTREZ_GENE_ID map
 # gse.id <- "GSE22121" # Test GPL9700 and GPL10465 using LOCUSLINK: There are only 
 #                     #  about 7,000 columns in the expression matrix file though much more rows in the GPL
 gse.id <- NA # To run all GSEs
 # gse.id <- "GSE47353" # There are two files related to the platform used by this GSE: GPL6244.
-process.file(file.name, dest.dir, gse.id)
+gse.id <- "GSE52005" # Error related if diff > 0
+gse.id <- "GSE30101" # Same platform but three batches
+gse.id <- "GSE59714"
+log_info("Starting processing the file...")
+# process.file(file.name, dest.dir, gse.id)
+log_info("Done!")

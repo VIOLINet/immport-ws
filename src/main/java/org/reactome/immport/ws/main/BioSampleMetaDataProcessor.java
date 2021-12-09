@@ -1,17 +1,27 @@
 package org.reactome.immport.ws.main;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.sql.rowset.FilteredRowSet;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,6 +41,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import tech.tablesaw.api.StringColumn;
+import tech.tablesaw.api.Table;
+import tech.tablesaw.columns.Column;
+import tech.tablesaw.io.csv.CsvReadOptions;
+import tech.tablesaw.io.csv.CsvWriteOptions;
+import tech.tablesaw.selection.Selection;
+
 /**
  * This class is used to handle the meta data file.
  * @author wug
@@ -40,6 +57,561 @@ public class BioSampleMetaDataProcessor {
     private final String SAMPLE_META_FILE = "src/main/resources/data/biosample_metadata.csv";
     
     public BioSampleMetaDataProcessor() {
+    }
+    
+    /**
+     * Call this method to update the headers so that they are compatible to JavaScript Vue code.
+     * This method also changes the delimit from tab to common.
+     * @throws IOException
+     */
+    @Test
+    public void updateHeaders() throws IOException {
+    	// The following is used to map from the immport table headers to the headers used by Nasim
+    	// and then coded into Vue.
+    	Map<String, String> headerMap = new HashMap<String, String>();
+    	headerMap.put("Expsample_Repository_Accession", "gsm");
+    	headerMap.put("GPL_Accession", "gpl");
+    	headerMap.put("GSE_Accession", "gse");
+    	headerMap.put("GPL_Title", "platform_desc");
+    	headerMap.put("Study_Id", "immport_study_accession");
+    	headerMap.put("Subject_Id", "immport_subject_accession");
+    	headerMap.put("Subject_Gender", "gender");
+    	headerMap.put("ExpSample_Id", "immport_biosample_accession");
+    	headerMap.put("Exposure_Material_Id", "immport_immune_exposure_material_id");
+    	headerMap.put("Exposure_Material_Reported", "vaccine");
+    	headerMap.put("Biosample_Study_Time_Collected", "immport_vaccination_time");
+    	headerMap.put("Biosample_Study_Time_Collected_Units", "immport_vaccination_time_unit");
+    	headerMap.put("Subject_Race", "race");
+    	headerMap.put("Biosample_Time_t0_Event", "day_0_def");
+    	headerMap.put("type", "Biosample_Type");
+    	headerMap.put("Biosample_Subtype", "subtype");
+    	
+    	String srcFile = "output/ImmuneExposureGeneExpression_091421.txt";
+    	String targetFile = "output/ImmuneExposureGeneExpression_091621.csv";
+    	FileReader fr = new FileReader(srcFile);
+    	BufferedReader br = new BufferedReader(fr);
+    	PrintWriter pr = new PrintWriter(targetFile);
+    	String line = br.readLine();
+    	line = line.replace("\t", ",").replace(" ", "_");
+    	String[] tokens = line.split(",");
+    	List<String> list = new ArrayList<String>();
+    	for (String token : tokens) {
+    		String mapped = headerMap.get(token);
+    		if (mapped == null)
+    			list.add(token.toLowerCase());
+    		else
+    			list.add(mapped);
+    	}
+    	list.add("type_subtype");
+    	list.add("age_group");
+    	pr.println(String.join(",", list));
+    	// For generating type_subtype
+    	int typeCol = 14;
+    	int subtypeCol = 15;
+    	int minAgeCol = 3;
+    	int maxAgeCol = 4;
+    	
+    	while ((line = br.readLine()) != null) {
+    		tokens = line.split("\t");
+    		list.clear();
+    		for (String token : tokens) {
+    			if (token.contains(","))
+    				token = "\"" + token + "\"";
+    			list.add(token);
+    		}
+    		list.add(tokens[typeCol] + " : " + 
+    		         (tokens[subtypeCol].length() == 0 ? "NA" : tokens[15]));
+    		// For age group
+    		list.add(tokens[minAgeCol] + " - " + tokens[maxAgeCol]);
+    		pr.println(String.join(",", list));
+    	}
+    	pr.close();
+    	br.close();
+    }
+    
+    /**
+     * We don't want to include GSE datasets having only one time point since they cannot be used for
+     * differential expression analysis even though they may be merged with other datasets. However,
+     * integration may always be an issue during differential expression analysis. 
+     * @throws IOException
+     */
+    @Test
+    public void filterOutGSEsWithOnlyOneTimePoint() throws IOException {
+    	String src = "output/ImmuneExposureGeneExpression_082521.txt";
+    	String target = "output/ImmuneExposureGeneExpression_090921.txt";
+    	CsvReadOptions.Builder builder = CsvReadOptions.builder(src)
+    			.separator('\t');
+    	CsvReadOptions options = builder.build();
+    	Table table = Table.read().usingOptions(options);
+    	System.out.println("Total rows: " + table.rowCount());
+    	System.out.println("Total cols: " + table.columnCount());
+    	StringColumn gseCol = table.stringColumn("GSE Accession");
+    	Column<?> timeCol = table.column("Biosample Study Time Collected");
+    	Map<String, Set<String>> gse2times = new HashMap<>();
+    	for (int i = 0; i < table.rowCount(); i++) {
+    		String gse = gseCol.getString(i);
+    		String time = timeCol.getString(i);
+    		gse2times.compute(gse, (key, set) -> {
+    			if (set == null)
+    				set = new HashSet<>();
+    			set.add(time);
+    			return set;
+    		});
+    	}
+    	System.out.println("\nThe following GSE datasets will not be included:");
+//    	gse2times.forEach((g, t) -> System.out.println(g + ": " + t));
+    	Set<String> excludedGSEs = gse2times.keySet()
+    							           .stream()
+    							           .filter(g -> gse2times.get(g).size() == 1)
+    							           .collect(Collectors.toSet());
+    	// See file, 07_2021_Result_Summary.xlsx, for the reason why the following is excluded
+    	excludedGSEs.add("GSE65440");
+    	excludedGSEs.stream().sorted().forEach(System.out::println);
+    	// Filter on the table directly
+    	Selection selection = gseCol.isNotIn(excludedGSEs);
+    	System.out.println("Total rows to be included: " + selection.size());
+    	Table filteredTable = table.where(selection);
+    	System.out.println("After filtering: " + filteredTable.rowCount());
+    	CsvWriteOptions.Builder writerBuilder = CsvWriteOptions.builder(target)
+    			.separator('\t');
+    	filteredTable.write().usingOptions(writerBuilder.build());
+    }
+    
+    /**
+     * Add batch annotation to the meta file. The majority of rows will add GSE ids as their
+     * batches. However, for some of them, a hard-coded batch annotation was used. This annotation
+     * was based on an external annotation file 07_2021_Result_Summary.xlsx. 
+     * @throws IOException
+     */
+    @Test
+    public void addBatchAnnotations() throws IOException {
+        // The following batch annotation is based on file 07_2021_Result_Summary.xlsx, which was
+        // manually edited based on PCA analysis. 
+        String batch_annotations = "GSE30101,GSM744835-GSM744888,GSM744942-GSM745143,GSM745214-GSM745344\n"
+                                 + "GSE59714,GSM1441196-GSM1441267,GSM1441830-GSM1441985";
+        String[] lines = batch_annotations.split("\n");
+        Map<String, List<Integer[]>> gse2batches = new HashMap<>();
+        for (String line : lines) {
+            List<Integer[]> batches = new ArrayList<>();
+            String[] tokens = line.split(",");
+            for (int i = 1; i < tokens.length; i++) {
+                String[] tokens1 = tokens[i].split("-");
+                Integer min = new Integer(tokens1[0].substring(3));
+                Integer max = new Integer(tokens1[1].substring(3));
+                batches.add(new Integer[]{min, max});
+            }
+            gse2batches.put(tokens[0], batches);
+        }
+        System.out.println(gse2batches);
+        
+        String srcFile = "output/ImmuneExposureGeneExpression_072021.txt";
+        String targetFile = "output/ImmuneExposureGeneExpression_082521.txt";
+        FileReader fr = new FileReader(srcFile);
+        BufferedReader br = new BufferedReader(fr);
+        PrintWriter pr = new PrintWriter(targetFile);
+        String line = br.readLine();
+        // Add a new column
+        pr.println(line + "\tBatch Factor");
+        while ((line = br.readLine()) != null) {
+            String[] tokens = line.split("\t");
+            // GSE
+            if (gse2batches.containsKey(tokens[20])) {
+                String gsmId = tokens[18];
+                int batch = findBatch(gsmId, gse2batches.get(tokens[20]));
+                if (batch == -1)
+                    throw new IllegalStateException("Cannot find batch for " + gsmId);
+                pr.println(line + "\t" + tokens[20] + "_" + batch);
+            }
+            else {
+                // Use GSE directly
+                pr.println(line + "\t" + tokens[20]);
+            }
+        }
+        pr.close();
+        br.close();
+        fr.close();
+    }
+    
+    private int findBatch(String gsmId, List<Integer[]> batches) {
+        int batch = -1;
+        Integer id = new Integer(gsmId.substring(3));
+        for (int i = 0; i < batches.size(); i++) {
+            Integer[] range = batches.get(i);
+            if (id >= range[0] && id <= range[1])
+                return i;
+        }
+        return batch;
+    }
+    
+    
+    /**
+     * Some GSEs don't have pre-processed expression data in the matrix format. We will exclude this.
+     * @throws IOException
+     */
+    @Test
+    public void filterGSEs() throws IOException {
+        String[] escapedGSEs = {
+//                "GSE41080" // https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE41080. 91 GSMs will be filtered out.
+        		"GSE22121",
+        		"GSE125921",
+        		"GSE62110",
+        		"GSE64361",
+        		"GSE64514",
+        		"GSE65440"
+        };
+        String input = "output/ImmuneExposureGeneExpression_071921.txt";
+        String output = "output/ImmuneExposureGeneExpression_072021.txt";
+        
+        input = "output/ImmuneExposureGeneExpression_090921.txt";
+        output = "output/ImmuneExposureGeneExpression_091421.txt";
+        
+        int colIndex = 20;
+        filterRows(input, output, escapedGSEs, colIndex);
+    }
+    
+    /**
+     * Some GPL platforms cannot be handled in the current R script: including
+     * RNA-seq and peptide arrays.
+     * @throws IOException
+     */
+    @Test
+    public void filterGPLs() throws IOException {
+        String[] escapePlatforms = new String[] {
+                "GPL16791", // Illumina HiSeq 2500 (Homo sapiens): RNA-seq
+                "GPL16497" // Utz lab influenza peptide array: peptide array
+        };
+        String input = "output/ImmuneExposureGeneExpression_071221.txt";
+        String output = "output/ImmuneExposureGeneExpression_071921.txt";
+        int colIndex = 21;
+        filterRows(input, output, escapePlatforms, colIndex);
+    }
+
+    protected void filterRows(String input, String output, String[] filterKeys, int colIndex) throws FileNotFoundException, IOException {
+        FileReader fr = new FileReader(input);
+        BufferedReader br = new BufferedReader(fr);
+        PrintWriter pr = new PrintWriter(output);
+        String line = br.readLine();
+        pr.println(line);
+        Map<String, Integer> platform2deleted = new HashMap<>();
+        Set<String> filterSet = Stream.of(filterKeys).collect(Collectors.toSet());
+        while ((line = br.readLine()) != null) {
+            String[] tokens = line.split("\t");
+            String platform = tokens[colIndex];
+            if (!filterSet.contains(platform)) {
+                // Remove some unexpected attached spaces
+                line = Stream.of(tokens).map(t -> t.trim()).collect(Collectors.joining("\t"));
+                pr.println(line);
+                continue;
+            }
+            platform2deleted.compute(platform, (k, v) -> {
+               if (v == null)
+                   v = 0;
+               v ++;
+               return v;
+            });
+        }
+        pr.close();
+        br.close();
+        fr.close();
+        System.out.println("Filtered samples according to keys:");
+        platform2deleted.forEach((k, v) -> System.out.println(k + ": " + v));
+    }
+    
+    @Test
+    public void generateUniGeneMap() throws IOException {
+        String dir = "/Volumes/ssd/datasets/NCBI/UniGene/";
+        String src = dir + "Hs.data";
+        String dest = dir + "UniGeneMapperWithAcc_071321.txt";
+        String dest1 = dir + "UniGeneMapper_071321.txt";
+        FileReader fr = new FileReader(src);
+        BufferedReader br = new BufferedReader(fr);
+        PrintWriter pr = new PrintWriter(dest);
+        PrintWriter pr1 = new PrintWriter(dest1);
+        pr.println("UniGene\tGene Symbol\tGene_ID\tAccession");
+        pr1.println("UniGene\tGene Symbol\tGene_ID");
+        String id = null, gene = null, geneId = null, line = null;
+        while ((line = br.readLine()) != null) {
+            if (line.startsWith("ID ")) {
+                id = line.substring("ID".length()).trim();
+            }
+            else if (line.startsWith("GENE ")) {
+                gene = line.substring("GENE".length()).trim();
+            }
+            else if (line.startsWith("GENE_ID ")) {
+                geneId = line.substring("GENE_ID".length()).trim();
+                pr1.println(id + "\t" + 
+                            (gene == null ? "" : gene) + "\t" + 
+                            (geneId == null ? "" : geneId));
+            }
+            else if (line.startsWith("SEQUENCE    ACC=")) {
+                int index = line.indexOf(".");
+                String acc = line.substring("SEQUENCE    ACC=".length(), index);
+                if (id == null)
+                    throw new IllegalStateException(acc + " is not linked to ID!");
+                pr.println(id + "\t" + 
+                           (gene == null ? "" : gene) + "\t" + 
+                           (geneId == null ? "" : geneId) + "\t" + 
+                           acc);
+            }
+            else if (line.startsWith("//")) {
+                id = gene = geneId = null;
+            }
+        }
+        pr.close();
+        pr1.close();
+        br.close();
+        fr.close();
+    }
+    
+    @Test
+    public void checkGSEOverlaps() throws IOException {
+        Map<String, Set<String>> gse2gsms = new HashMap<>();
+        String fileName = "output/ImmuneExposureGeneExpression_061721.txt";
+        Files.lines(Paths.get(fileName))
+             .skip(1)
+             .map(line -> line.split("\t"))
+             .forEach(tokens -> {
+                 String gsm = tokens[18];
+                 String gse = tokens[20];
+                 gse2gsms.compute(gse, (key, set) -> {
+                     if (set == null)
+                         set = new HashSet<>();
+                     set.add(gsm);
+                     return set;
+                 });
+             });
+        System.out.println("Total GSE accessions: " + gse2gsms.size());
+        
+        // Perform some pairwise overlapping analysis
+        List<String> gseList = gse2gsms.keySet().stream().sorted().collect(Collectors.toList());
+        // The first gse should be replaced by the second gse since the second gse contains all GSM ids in the first gse
+        // and it has the largest accession number
+        Map<String, String> gse2gse = new HashMap<>();
+        for (int i = 0; i < gseList.size() - 1; i++) {
+            String gse1 = gseList.get(i);
+            Set<String> gsms1 = gse2gsms.get(gse1);
+            for (int j = i + 1; j < gseList.size(); j++) {
+                String gse2 = gseList.get(j);
+                Set<String> gsms2 = gse2gsms.get(gse2);
+                Set<String> shared = new HashSet<>(gsms2);
+                shared.retainAll(gsms1);
+                if (shared.size() == 0)
+                    continue;
+                System.out.println(gse1 + "\t" + gse2 + "\t" +
+                                   gsms1.size() + "\t" + gsms2.size() + "\t" +
+                                   shared.size());
+                checkSubsume(gse1, gse2, gsms1, gsms2, shared, gse2gse);
+            }
+        }
+        System.out.println();
+        gse2gse.keySet().stream().sorted().forEach(g -> System.out.println(g + " -> " + gse2gse.get(g)));
+        
+        // Based on the above mapping to update the output
+        String outFileName = "output/ImmuneExposureGeneExpression_071221.txt";
+        PrintWriter pr = new PrintWriter(outFileName);
+        FileReader fr = new FileReader(fileName);
+        BufferedReader br = new BufferedReader(fr);
+        String line = br.readLine();
+        pr.println(line); // Just the header
+        Set<String> processedGSMs = new HashSet<>();
+        while ((line = br.readLine()) != null) {
+            String[] tokens = line.split("\t");
+            String gsm = tokens[18];
+            if (processedGSMs.contains(gsm))
+                continue;
+            processedGSMs.add(gsm);
+            String gse = tokens[20];
+            String mapped = getMappedGSE(gse, gse2gse);
+            if (!gse.equals(mapped)) {
+                tokens[20] = mapped;
+                line = String.join("\t", tokens);
+            }
+            pr.println(line);
+        }
+        br.close();
+        fr.close();
+        pr.close();
+    }
+    
+    private String getMappedGSE(String gse, Map<String, String> gse2gse) {
+        String rtn = gse;
+        while (gse2gse.containsKey(rtn)) {
+            rtn = gse2gse.get(rtn);
+        }
+        return rtn;
+    }
+    
+    private void checkSubsume(String gse1,
+                              String gse2,
+                              Set<String> gsms1,
+                              Set<String> gsms2,
+                              Set<String> shared, 
+                              Map<String, String> gse2gse) {
+        if (shared.size() == 0)
+            return;
+        if (gsms1.size() != shared.size() && gsms2.size() != shared.size())
+            return; // There are some extra ids in one of these two sets
+        if (gsms1.size() > gsms2.size())
+            gse2gse.put(gse2, gse1); // The second should be replaced by the first
+        else if (gsms1.size() < gsms2.size())
+            gse2gse.put(gse1, gse2); // The first should be replaced by the second
+        else {
+            // In this case, we will pick up the id that is smaller to avoid pruning.
+            // The id that is larger should contain more GSMs in GEO.
+            Integer id1 = new Integer(gse1.substring(3));
+            Integer id2 = new Integer(gse2.substring(3));
+            if (id1 < id2)
+                gse2gse.put(gse2, gse1);
+            else
+                gse2gse.put(gse1, gse2); // There are only two cases
+        }
+    }
+    
+    @Test
+    public void checkGSE2GPLMap() throws IOException {
+        Map<String, Set<String>> gse2gpl = new HashMap<>();
+        String fileName = "output/ImmuneExposureGeneExpression_061721.txt";
+        Files.lines(Paths.get(fileName))
+             .skip(1)
+             .forEach(line -> {
+                 String[] tokens = line.split("\t");
+                 String gse = tokens[20];
+                 String gpl = tokens[21];
+                 gse2gpl.compute(gse, (key, set) -> {
+                     if (set == null)
+                         set = new HashSet<>();
+                     set.add(gpl);
+                     return set;
+                 });
+             });
+        gse2gpl.forEach((gse, gpls) -> {
+            if (gpls.size() > 1)
+                System.out.println(gse + "\t" + String.join(", ", gpls));
+        });
+        // Output from the above results:
+//        GSE22121    GPL9700, GPL10465
+//        GSE13699    GPL6104, GPL6883
+//        GSE29619    GPL570, GPL3921, GPL13158
+//        GSE18323    GPL570, GPL571
+//        GSE48024    GPL10558, GPL6947
+    }
+    
+    /**
+     * Do some filtering and then map GSM ids to GSE and GPL based on the GEOSqlLite database.
+     * @throws Exception
+     */
+    @Test
+    public void filterAndMapGSMSamples() throws Exception {
+        Connection conn = getGEODbConnection();
+        String gseSql = "SELECT gse, gsm FROM gse_gsm WHERE gsm = ?";
+        String gplSql = "SELECT gpl, gsm FROM gsm WHERE gsm = ?";
+        String gplTitleSql = "SELECT title FROM gpl WHERE gpl = ?";
+        PreparedStatement gseStat = conn.prepareStatement(gseSql);
+        PreparedStatement gplStat = conn.prepareStatement(gplSql);
+        PreparedStatement gplTitleStat = conn.prepareStatement(gplTitleSql);
+        
+        String srcFileName = "output/ImmuneExposureGeneExpression_060921.txt";
+        String targetFilename = "output/ImmuneExposureGeneExpression_061721.txt";
+        List<String> lines = Files.readAllLines(Paths.get(srcFileName));
+        System.out.println("Total lines: " + lines.size());
+        PrintWriter pr = new PrintWriter(targetFilename);
+        String header = lines.get(0);
+        pr.println(header + "\tGSE Accession\tGPL Accession\tGPL Title" );
+        Set<String> escapeStudies = Stream.of("SDY406", "SDY675", "SDY773").collect(Collectors.toSet());
+        Set<String> allGSEs = new HashSet<>();
+        Set<String> allGPLs = new HashSet<>();
+        Set<String> allStudies = new HashSet<>();
+        int totalMoreThanOneGSE = 0;
+        Set<Integer> moreThanOneCounter = new HashSet<>();
+        int totalOutputLines = 0;
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] tokens = line.split("\t");
+            // Filter 1: Make sure "Exposure Material Id" starting with VO
+            if (!tokens[8].startsWith("VO"))
+                continue;
+            // Filter 2: Ignore three studies, which are DNA-sequences of antibody genes
+            // SDY460, SDY675, SDY773
+            if (escapeStudies.contains(tokens[0]))
+                continue;
+            // Filter 3: Make sure expression ids starting with GSM
+            if (!tokens[18].startsWith("GSM"))
+                continue;
+            allStudies.add(tokens[0]);
+            // Need to do trim since there is a space after the id in some cases
+            String gsm = tokens[18].trim(); 
+            String gpl = queryGPL(gsm, gplStat);
+            allGPLs.add(gpl);
+            String gplTitle = queryGPLTitle(gpl, gplTitleStat);
+            gseStat.setString(1, gsm);
+            ResultSet result = gseStat.executeQuery();
+            int counter = 0;
+            while (result.next()) {
+                // We may get more than one GSE
+                String gse = result.getString("gse");
+                allGSEs.add(gse);
+                pr.println(line + "\t" + 
+                           gse + "\t" + 
+                           gpl + "\t" + 
+                           gplTitle);
+                counter ++;
+                totalOutputLines ++;
+            }
+            result.close();
+            if (counter > 1) {
+                System.out.println(gsm + " has " + counter + " GSEs.");
+                totalMoreThanOneGSE ++;
+                moreThanOneCounter.add(counter);
+            }
+        }
+        gseStat.close();
+        gplStat.close();
+        gplTitleStat.close();
+        conn.close();
+        pr.close();
+        System.out.println("Total GSM ids having more than one GSE: " + totalMoreThanOneGSE);
+        System.out.println("The counter is: " + moreThanOneCounter);
+        System.out.println("Total output lines: " + totalOutputLines);
+        System.out.println("Total GSEs: " + allGSEs.size());
+        System.out.println("Total GPLs: " + allGPLs.size());
+        System.out.println("Total Studies: " + allStudies.size());
+    }
+    
+    private String queryGPLTitle(String gpl,
+                                 PreparedStatement stat) throws Exception {
+        stat.setString(1, gpl);
+        ResultSet result = stat.executeQuery();
+        String rtn = null;
+        if (result.next()) {
+            rtn = result.getString(1);
+        }
+        result.close();
+        return rtn;
+    }
+    
+    private String queryGPL(String gsm,
+                            PreparedStatement stat) throws SQLException {
+        stat.setString(1, gsm);
+        ResultSet results = stat.executeQuery();
+        int counter = 0;
+        String gpl = null;
+        while (results.next()) {
+            gpl = results.getString(1);
+            counter ++;
+        }
+        results.close();
+        if (gpl == null)
+            throw new IllegalStateException("Cannot find a gpl for " + gsm);
+        if (counter > 1)
+            throw new IllegalStateException("More than one gpl found for " + gsm);
+        return gpl;
+    }
+    
+    private Connection getGEODbConnection() throws SQLException {
+        String fileName = "/Users/wug/GEOmetadb.sqlite";
+        String url = "jdbc:sqlite:" + fileName;
+        Connection conn = DriverManager.getConnection(url);
+        return conn;
     }
     
     /**
@@ -115,7 +687,7 @@ public class BioSampleMetaDataProcessor {
                                .append(biosample.getSubtype()).append("\t")
                                .append(expsample.getAccession()).append("\t")
                                .append(expression.getRepository().getName()).append("\t")
-                               .append(expression.getRepositoryAccession()).append("\t")
+                               .append(expression.getRepositoryAccession().trim()).append("\t")
                                .append(flag);
                         pr.println(builder.toString());
                         builder.setLength(0);

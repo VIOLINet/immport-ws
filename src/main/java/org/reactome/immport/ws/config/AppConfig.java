@@ -50,6 +50,7 @@ public class AppConfig {
    public ImmportServiceConfig getImmportServiceConfig() {
 	   ImmportServiceConfig config = new ImmportServiceConfig();
 	   config.setBiosampleMetatdataFileLocation(env.getProperty("biosample.metatdata.file"));
+	   config.setTestDiffGeneExpFileLocation(env.getProperty("test.diff.exp.result.file"));
 	   return config;
    }
 

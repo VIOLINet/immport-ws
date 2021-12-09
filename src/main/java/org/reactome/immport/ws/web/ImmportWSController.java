@@ -1,5 +1,8 @@
 package org.reactome.immport.ws.web;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -130,7 +133,13 @@ public class ImmportWSController {
     @CrossOrigin
     @PostMapping("analysis/geneExpression")
     public List<BiosampleAnalysis> analyizeBiosamples(@RequestBody String text) {
-		return reactomeService.analyzeBiosamples(text);
-
+    	List<BiosampleAnalysis> rtn = reactomeService.analyzeBiosamples(text);
+    	return rtn;
+    }
+    
+    @CrossOrigin
+    @GetMapping("analysis/testGeneExpression")
+    public String testAnalyizeBiosamples() throws IOException {
+    	return immportService.loadTestDiffExpResults();
     }
 }

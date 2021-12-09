@@ -1,9 +1,12 @@
 package org.reactome.immport.ws.service;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -55,5 +58,20 @@ public class ImmportService {
 	        logger.error(e);
 	        e.printStackTrace();
 	    }
+	}
+	
+	public String loadTestDiffExpResults() throws IOException {
+		InputStream is = getClass().getClassLoader().getResourceAsStream(config.getTestDiffGeneExpFileLocation());
+		InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        List<String> lines = new ArrayList<>();
+        String line = null;
+        while ((line = br.readLine()) != null) {
+        	lines.add(line);
+        }
+        br.close();
+        isr.close();
+        is.close();
+        return String.join("\n", lines);
 	}
 }

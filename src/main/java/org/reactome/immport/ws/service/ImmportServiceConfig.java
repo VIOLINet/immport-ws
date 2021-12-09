@@ -8,11 +8,20 @@ package org.reactome.immport.ws.service;
 public class ImmportServiceConfig {
 
 	private String biosampleMetatdataFileLocation;
-	
+	private String testDiffGeneExpFileLocation;
+
+
 	public ImmportServiceConfig() {
-		
+	}
+	
+	public String getTestDiffGeneExpFileLocation() {
+		return testDiffGeneExpFileLocation;
 	}
 
+	public void setTestDiffGeneExpFileLocation(String testDiffGeneExpFileLocation) {
+		this.testDiffGeneExpFileLocation = testDiffGeneExpFileLocation;
+	}
+	
 	public String getBiosampleMetatdataFileLocation() {
 		return biosampleMetatdataFileLocation;
 	}

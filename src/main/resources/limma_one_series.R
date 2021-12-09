@@ -4,7 +4,10 @@
 #!/usr/bin/env Rscript
 args = commandArgs( trailingOnly=TRUE )
 # For local test
-args = c("GSM733843,GSM733844", "GSM733852,GSM733853")
+# args = c("GSM733816,GSM733817", "GSM733819,GSM733820", "GSM733822,GSM733823", "GSM733825,GSM733826",
+#          "GSM733828,GSM733829", "GSM733831,GSM733832", "GSM733834,GSM733835", "GSM733837,GSM733838")
+args = c("GSM733816,GSM733819,GSM733822,GSM733825,GSM733828,GSM733831,GSM733834,GSM733837,GSM733840", 
+         "GSM733817,GSM733820,GSM733823,GSM733826,GSM733829,GSM733832,GSM733835,GSM733838,GSM733841")
 #Parse 
 if ( length(args)<2 ) {
   stop( "At least two groups must be provided.\nExample: Rscript limma_one_gse.R GSM733843,GSM733844 GSM733852,GSM733853", call.=FALSE )
@@ -26,6 +29,9 @@ for ( i in 1:length(args) ) {
     samples[count] = tokens[j]
   }
 }
+
+print(groups)
+print(samples)
 
 if ( !file.exists( "GEOmetadb.sqlite" ) ) {
   getSQLiteFile()
@@ -95,7 +101,7 @@ if ( length( unique(groups) ) == 2 ) {
   tT = topTable( fit2, adjust="fdr", sort.by="B", number=Inf )
   tT = tT[tT[,"P.Value"]<0.05 & abs(tT[,"logFC"])>1,]
   tT = subset( tT, select=c( "ID", "Gene.Symbol", "Gene.Title", "logFC", "P.Value", "adj.P.Val" ) )
-  # print( tT )
+  print( tT )
   # This code is for ttest
   write.table(data.frame(tT), "test.tsv", append = T, sep = "\t")
 } else {
