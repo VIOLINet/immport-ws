@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -20,9 +18,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.junit.Test;
-import org.reactome.immport.ws.model.requests.GSMForVOs;
+import org.reactome.immport.ws.model.ReactomePathway;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WSTests {
@@ -110,6 +109,17 @@ public class WSTests {
         String rtn = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         System.out.println(rtn);
         return rtn;
+    }
+    
+    @Test
+    public void testGetHierarchicalOrderedPathways() throws Exception {
+    	String url = HOST_URL + "/analysis/pathway_list";
+    	ObjectMapper mapper = new ObjectMapper();
+    	List<ReactomePathway> pathways = mapper.readValue(new URL(url),
+    			new TypeReference<List<ReactomePathway>>() {});
+    	pathways.forEach(p -> {
+    		System.out.println(p.getName() + "\t" + p.getStId() + "\t" + p.getTopPathway());
+    	});
     }
 
     protected String callHttp(String url,

@@ -9,11 +9,20 @@ public class ReactomeAnalysisConfig {
     
     private String reactomeAnalysisURL;
     private String reactomeFIServiceURL;
-    private String[] moduleColors;
+    private String reactomePathwayHierarchyURL;
+	private String[] moduleColors;
     
     public ReactomeAnalysisConfig() {
         
     }
+    
+    public String getReactomePathwayHierarchyURL() {
+		return reactomePathwayHierarchyURL;
+	}
+
+	public void setReactomePathwayHierarchyURL(String reactomePathwayHierarchyURL) {
+		this.reactomePathwayHierarchyURL = reactomePathwayHierarchyURL;
+	}
 
     public String getReactomeAnalysisURL() {
         return reactomeAnalysisURL;

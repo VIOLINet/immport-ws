@@ -1,8 +1,6 @@
 package org.reactome.immport.ws.web;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.reactome.immport.ws.model.PublicRepository;
+import org.reactome.immport.ws.model.ReactomePathway;
 import org.reactome.immport.ws.model.Study;
 import org.reactome.immport.ws.model.analysis.BiosampleAnalysis;
 import org.reactome.immport.ws.model.queries.BioSampleCollectionTime;
@@ -42,6 +41,12 @@ public class ImmportWSController {
     private ImmportService immportService;
     
     public ImmportWSController() {
+    }
+    
+    @CrossOrigin
+    @RequestMapping(value = "analysis/pathway_list", method = RequestMethod.GET)
+    public List<ReactomePathway> getHierarchicalOrderedPathways() {
+    	return reactomeService.getHierarchicalOrderedPathways();
     }
     
     @CrossOrigin

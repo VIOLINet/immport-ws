@@ -1,10 +1,13 @@
 package org.reactome.immport.ws.service;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +18,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.reactome.immport.ws.model.ReactomePathway;
 import org.reactome.immport.ws.model.FI.FIAnnotation;
 import org.reactome.immport.ws.model.FI.FIAnnotations;
 import org.reactome.immport.ws.model.analysis.BiosampleAnalysis;
@@ -23,6 +27,7 @@ import org.reactome.immport.ws.model.queries.CytoscapeFiData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,9 +41,70 @@ public class ReactomeAnalysisService {
     private ReactomeAnalysisConfig config;
     @Autowired
     private RScriptService rservice;
+    // Want to catch the pathway list assuming it will not change
+    private List<ReactomePathway> pathways;
     
     public ReactomeAnalysisService() {
     }
+    
+	/**
+	 * Generate a list of pathways that are ordered based on their locations in the pathway
+	 * hierarchy so that similar pathways are grouped together. This method uses a width-first-search
+	 * algorithm to get the list.
+	 * @return
+	 * @throws Exception
+	 */
+    @SuppressWarnings("unchecked")
+    public synchronized List<ReactomePathway> getHierarchicalOrderedPathways() {
+    	if (pathways != null)
+    		return pathways;
+    	try {
+    		URL url = new URL(config.getReactomePathwayHierarchyURL());
+    		ObjectMapper mapper = new ObjectMapper();
+    		List<ReactomePathway> topPathways = mapper.readValue(url,
+    				new TypeReference<List<ReactomePathway>>() {
+    		});
+    		List<ReactomePathway> pathways = new ArrayList<>();
+    		// Some pathways may be listed under multiple topics. For this application,
+    		// we need to list them once only by choosing whatever they occur first.
+    		// Use this set to keep tracking pathways based on names.
+    		Set<String> listedPathways = new HashSet<>();
+    		for (ReactomePathway topPathway : topPathways) {
+    			traversePathway(topPathway, topPathway, pathways, listedPathways);
+    		}
+    		// Get rid of some values that don't need at the front-end
+    		pathways.forEach(p -> {
+    			p.setChildren(null);
+    			p.setSpecies(null);
+    			p.setType(null);
+    			p.setDiagram(null);
+    		});
+    		this.pathways = pathways;
+    		return pathways;
+    	}
+    	catch(Exception e) {
+    		logger.error(e.getMessage(), e);
+    	}
+    	return Collections.EMPTY_LIST; // Just return an empty list.
+    }
+	
+	private void traversePathway(ReactomePathway topPathway,
+	                             ReactomePathway currentPathway,
+	                             List<ReactomePathway> list,
+	                             Set<String> listedPathways) {
+		if (!currentPathway.getType().equals("Pathway") &&
+			!currentPathway.getType().equals("TopLevelPathway"))
+			return; // Check pathways only
+		if (listedPathways.contains(currentPathway.getName()))
+			return; // Added to the list already
+		currentPathway.setTopPathway(topPathway.getName());
+		list.add(currentPathway);
+		listedPathways.add(currentPathway.getName());
+		if (currentPathway.getChildren() == null)
+			return; // No need to go down.
+		for (ReactomePathway child : currentPathway.getChildren())
+			traversePathway(topPathway, child, list, listedPathways);
+	}
     
     /**
      * Query Reactome FI service 
