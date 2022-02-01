@@ -126,6 +126,10 @@ do_diff_exp_analysis <- function(selection.json.text) {
   if (!is.null(user.select$usePairedData) && user.select$usePairedData) {
     other.vars <- c(other.vars, "immport_subject_accession") # paired analysis
   }
+  # Check if batch is selected
+  if (!is.null(user.select$batchCorrection) && user.select$batchCorrection) {
+      other.vars <- c(other.vars, "batch_factor")
+  }
   
   # For test. It should be controlled by the user interface
   other.vars <- c(other.vars, "type_subtype")
