@@ -21,8 +21,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.sql.rowset.FilteredRowSet;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -41,6 +39,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import tech.tablesaw.api.DoubleColumn;
 import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.columns.Column;
@@ -57,6 +56,49 @@ public class BioSampleMetaDataProcessor {
     private final String SAMPLE_META_FILE = "src/main/resources/data/biosample_metadata.csv";
     
     public BioSampleMetaDataProcessor() {
+    }
+    
+    /**
+     * There are some rows use hours. For these rows, we need to convert them as days by dividing 24.
+     * @throws IOException
+     */
+    @Test
+    public void convertHoursToDays() throws IOException {
+    	String src = "output/ImmuneExposureGeneExpression_091621.csv";
+    	String target = "output/ImmuneExposureGeneExpression_020922.csv";
+    	
+    	CsvReadOptions.Builder builder = CsvReadOptions.builder(src).separator(',');
+    	CsvReadOptions options = builder.build();
+    	Table table = Table.read().usingOptions(options);
+    	System.out.println("Total rows: " + table.rowCount());
+    	System.out.println("Total cols: " + table.columnCount());
+    	
+    	// Check how many time units are used
+    	StringColumn timeUnitCol = table.stringColumn("immport_vaccination_time_unit");
+    	Set<String> timeUnits = new HashSet<>();
+    	DoubleColumn timeCol = table.doubleColumn("immport_vaccination_time");
+    	int totalUpdate = 0;
+    	for (int i = 0; i < table.rowCount(); i++) {
+    		String timeUnit = timeUnitCol.getString(i);
+    		timeUnits.add(timeUnit);
+    		if (timeUnit.equals("Hours")) {
+    			Double time = timeCol.getDouble(i);
+    			Double day = time / 24.0d;
+    			// Convert it into two decimal
+    			// This is just rounded since it is not easy for negative days.
+    			day = ((int)(day * 100)) / 100.0d;
+    			timeUnitCol.set(i, "Days");
+    			timeCol.set(i, day);
+    			totalUpdate ++;
+    		}
+    	}
+    	System.out.println("Total time units: " + String.join(", ", timeUnits));
+    	System.out.println("Total updated rows: " + totalUpdate);
+
+    	// Save the updated table
+    	CsvWriteOptions.Builder writerBuilder = CsvWriteOptions.builder(target)
+    			.separator(',');
+    	table.write().usingOptions(writerBuilder.build());
     }
     
     /**

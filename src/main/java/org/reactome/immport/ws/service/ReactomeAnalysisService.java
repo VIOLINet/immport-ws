@@ -260,7 +260,7 @@ public class ReactomeAnalysisService {
     	
     }
 
-	public List<BiosampleAnalysis> analyzeBiosamples(String jsonText) {
+    public List<BiosampleAnalysis> analyzeBiosamples(String jsonText) {
 //	    System.out.println(jsonText);
 		
 		String response = "";

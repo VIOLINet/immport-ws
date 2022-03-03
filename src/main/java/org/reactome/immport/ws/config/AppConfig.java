@@ -34,78 +34,80 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScans(value = { @ComponentScan("org.reactome.immport.ws.service")})
 public class AppConfig {
 
-   @Autowired
-   private Environment env;
-   
-   @Bean
-   public ReactomeAnalysisConfig getReactomeAnalysisConfig() {
-       ReactomeAnalysisConfig config = new ReactomeAnalysisConfig();
-       config.setReactomeAnalysisURL(env.getProperty("reactome.analysis.service"));
-       config.setReactomeFIServiceURL(env.getProperty("reactome.fi.service"));
-       config.setReactomePathwayHierarchyURL(env.getProperty("reactome.pathway.hierarchy.service"));
-       config.setModuleColors(env.getProperty("reactome.fi.moduleColors").split(";"));
-       return config;
-   }
-   
-   @Bean
-   public ImmportServiceConfig getImmportServiceConfig() {
-	   ImmportServiceConfig config = new ImmportServiceConfig();
-	   config.setBiosampleMetatdataFileLocation(env.getProperty("biosample.metatdata.file"));
-	   config.setTestDiffGeneExpFileLocation(env.getProperty("test.diff.exp.result.file"));
-	   return config;
-   }
+	@Autowired
+	private Environment env;
 
-   @Bean
-   public LocalSessionFactoryBean getSessionFactory() {
-      LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+	@Bean
+	public ReactomeAnalysisConfig getReactomeAnalysisConfig() {
+		ReactomeAnalysisConfig config = new ReactomeAnalysisConfig();
+		config.setReactomeAnalysisURL(env.getProperty("reactome.analysis.service"));
+		config.setReactomeFIServiceURL(env.getProperty("reactome.fi.service"));
+		config.setReactomePathwayHierarchyURL(env.getProperty("reactome.pathway.hierarchy.service"));
+		config.setModuleColors(env.getProperty("reactome.fi.moduleColors").split(";"));
+		return config;
+	}
 
-      Properties props = new Properties();
-      // Setting JDBC properties
-      props.put(DRIVER, env.getProperty("mysql.driver"));
-      props.put(URL, env.getProperty("mysql.url"));
-      props.put(USER, env.getProperty("mysql.user"));
-      props.put(PASS, env.getProperty("mysql.password"));
-      // The following code prevents JDBC connection.
-//      props.put("mysql.requireSSL", env.getProperty("my.requireSSL"));
-//      props.put("mysql.verifyServerCertificate", env.getProperty("mysql.verifyServerCertificate"));
-//      props.put("mysql.useSSL", env.getProperty("mysql.useSSL"));
-      
-      // Setting Hibernate properties
-      props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
-      props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
-      // The following cannot work. Have to set in the running property as the following:
-      // -Dhibernate.dialect.storage_engine=innodb
-//      props.put(STORAGE_ENGINE, env.getProperty("hibernate.dialect.storage_engine"));
+	@Bean
+	public ImmportServiceConfig getImmportServiceConfig() {
+		ImmportServiceConfig config = new ImmportServiceConfig();
+		config.setBiosampleMetatdataFileLocation(env.getProperty("biosample.metatdata.file"));
+		config.setTestDiffGeneExpFileLocation(env.getProperty("test.diff.exp.result.file"));
+		return config;
+	}
 
-      // Setting C3P0 properties
-      props.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));
-      props.put(C3P0_MAX_SIZE, env.getProperty("hibernate.c3p0.max_size"));
-      props.put(C3P0_ACQUIRE_INCREMENT, 
-            env.getProperty("hibernate.c3p0.acquire_increment"));
-      props.put(C3P0_TIMEOUT, env.getProperty("hibernate.c3p0.timeout"));
-      props.put(C3P0_MAX_STATEMENTS, env.getProperty("hibernate.c3p0.max_statements"));
+	@Bean
+	public LocalSessionFactoryBean getSessionFactory() {
+		if (env.getProperty("is.deployed").equals("true")) return null;
+		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 
-      factoryBean.setHibernateProperties(props);
-      factoryBean.setPackagesToScan("org.reactome.immport.ws.model");
+		Properties props = new Properties();
+		// Setting JDBC properties
+		props.put(DRIVER, env.getProperty("mysql.driver"));
+		props.put(URL, env.getProperty("mysql.url"));
+		props.put(USER, env.getProperty("mysql.user"));
+		props.put(PASS, env.getProperty("mysql.password"));
+		// The following code prevents JDBC connection.
+		//      props.put("mysql.requireSSL", env.getProperty("my.requireSSL"));
+		//      props.put("mysql.verifyServerCertificate", env.getProperty("mysql.verifyServerCertificate"));
+		//      props.put("mysql.useSSL", env.getProperty("mysql.useSSL"));
 
-      return factoryBean;
-   }
+		// Setting Hibernate properties
+		props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
+		props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
+		// The following cannot work. Have to set in the running property as the following:
+		// -Dhibernate.dialect.storage_engine=innodb
+		//      props.put(STORAGE_ENGINE, env.getProperty("hibernate.dialect.storage_engine"));
 
-   @Bean
-   public HibernateTransactionManager getTransactionManager() {
-      HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-      transactionManager.setSessionFactory(getSessionFactory().getObject());
-      return transactionManager;
-   }
-   
-   @Bean
-   public RScriptService getRService() {
-       RScriptService service = new RScriptService();
-       service.setDataDir(env.getProperty("r.data.dir"));
-       service.setScript(env.getProperty("r.script"));
-       service.setWorkDir(env.getProperty("r.work.dir"));
-       service.setCommand(env.getProperty("r.command"));
-       service.startService();
-       return service;
-   }
+		// Setting C3P0 properties
+		props.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));
+		props.put(C3P0_MAX_SIZE, env.getProperty("hibernate.c3p0.max_size"));
+		props.put(C3P0_ACQUIRE_INCREMENT, 
+				env.getProperty("hibernate.c3p0.acquire_increment"));
+		props.put(C3P0_TIMEOUT, env.getProperty("hibernate.c3p0.timeout"));
+		props.put(C3P0_MAX_STATEMENTS, env.getProperty("hibernate.c3p0.max_statements"));
+
+		factoryBean.setHibernateProperties(props);
+		factoryBean.setPackagesToScan("org.reactome.immport.ws.model");
+
+		return factoryBean;
+	}
+
+	@Bean
+	public HibernateTransactionManager getTransactionManager() {
+		if (env.getProperty("is.deployed").equals("true")) return null;
+		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+		transactionManager.setSessionFactory(getSessionFactory().getObject());
+		return transactionManager;
+	}
+
+	@Bean
+	public RScriptService getRService() {
+		RScriptService service = new RScriptService();
+		service.setDataDir(env.getProperty("r.data.dir"));
+		service.setScript(env.getProperty("r.script"));
+		service.setWorkDir(env.getProperty("r.work.dir"));
+		service.setCommand(env.getProperty("r.command"));
+		service.startService();
+		return service;
+	}
 }

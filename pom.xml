@@ -138,6 +138,8 @@
 			<groupId>tech.tablesaw</groupId>
 			<artifactId>tablesaw-core</artifactId>
 			<version>0.38.5</version>
+			<!-- The following is needed to run some methods in class BioSampleMetaDataProcessor. 
+			However, it cannot be used in the ws because of the version conflict.-->
 			<exclusions>
 				<exclusion>
 					    <groupId>io.github.classgraph</groupId>

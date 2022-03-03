@@ -14,6 +14,7 @@ p_load("tidyverse")
 p_load("dplyr")
 p_load("doParallel")
 p_load("limma")
+p_load("Biobase")
 
 # The file paths for pre-generated files are hard-coded here. This may be enhanced so that these file names
 # can be configured inside Java directly
@@ -54,6 +55,7 @@ validate_variables <- function(variables, pheno.dat) {
 
 # Perform the differential expression analysis via limma
 do_diff_exp_analysis <- function(selection.json.text) {
+    # print(selection.json.text)
   user.select <- fromJSON(selection.json.text, simplifyVector = TRUE)
   # -----------------------------------------------------
   # Filter biosamples by users study design selections &
@@ -168,16 +170,23 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # Make sure the coef.name is the first parametmer so that we can use coef = 2 in top.table
   de.formula <- as.formula(paste("~" , paste(c(coef.name, total.vars), collapse = ' + ')))
   # print(de.formula)
+  # View(pheno.dat)
   design <- model.matrix(de.formula, data = pheno.dat)
   # View(design)
+  # View(expr.dat)
   # print(dim(design))
   # print(dim(expr.dat))
-  fit <- limma::lmFit(expr.dat, design)
+  # At the UM server with Red hat linux, most likley because of different versions of limma
+  # have to convert expr.dat from dataframe to ExpressionSet as the following. Otherwise, avgExpr
+  # get disappeared.
+  # See this old post for the information: https://support.bioconductor.org/p/16598/
+  fit <- limma::lmFit(ExpressionSet(as.matrix(expr.dat)), design)
   fit <- limma::eBayes(fit)
   # View(fit$coefficients)
   # View(fit$p.value)
   # Try to get all genes
   top.table <- limma::topTable(fit, coef=2, number = Inf)
+  json.rtn = toJSON(top.table, digits = NA)
   # View(top.table)
   # write.table(top.table, "top_table.csv", sep = ",", quote = F, col.names = T)
   # -----------------------------------------------------

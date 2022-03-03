@@ -12,8 +12,7 @@ page: https://medium.com/@kasunpdh/using-the-maven-assembly-plugin-to-build-a-zi
             <directory>${project.basedir}/src/main/resources/data</directory>
             <outputDirectory>immport_ws_rservice/data</outputDirectory>
     		<includes>
-      			<include>all_expr_df_final_adjusted.csv</include>
-      			<include>all_expr_df_final.csv</include>
+      			<include>gene_expression_matrix.csv</include>
       			<include>biosample_metadata.csv</include>
     		</includes>
         </fileSet>
