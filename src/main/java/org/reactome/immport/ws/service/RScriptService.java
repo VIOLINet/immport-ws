@@ -66,6 +66,11 @@ public class RScriptService {
         if (process != null && process.isAlive())
             process.destroy();
     }
+    
+    public void restart() {
+        stopService();
+        startService();
+    }
 
     /**
      * Start the R REST service by using Java process calling

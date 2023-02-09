@@ -167,7 +167,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
     # total.vars <- c(total.vars, synergy.terms)
   }
   # print(total.vars)
-  # Make sure the coef.name is the first parametmer so that we can use coef = 2 in top.table
+  # Make sure the coef.name is the first parameter so that we can use coef = 2 in top.table
   de.formula <- as.formula(paste("~" , paste(c(coef.name, total.vars), collapse = ' + ')))
   # print(de.formula)
   # View(pheno.dat)
@@ -186,7 +186,7 @@ do_diff_exp_analysis <- function(selection.json.text) {
   # View(fit$p.value)
   # Try to get all genes
   top.table <- limma::topTable(fit, coef=2, number = Inf)
-  json.rtn = toJSON(top.table, digits = NA)
+  #json.rtn = toJSON(top.table, digits = NA)
   # View(top.table)
   # write.table(top.table, "top_table.csv", sep = ",", quote = F, col.names = T)
   # -----------------------------------------------------

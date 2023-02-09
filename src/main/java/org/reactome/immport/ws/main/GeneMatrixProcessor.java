@@ -26,7 +26,8 @@ import org.junit.Test;
 public class GeneMatrixProcessor {
     private final String GENE_NAME_FILE = "/Volumes/ssd/datasets/genenames/human_gene_names_051121.txt";
 //    private final String MATRIX_FILE = "/Volumes/ssd/docs/Immport_VO_project_Nasim/all_expr_all_genes_df_final.csv";
-    private final String MATRIX_FILE = "/Volumes/ssd/results/immport-ws/data_eng/immport_vaccine_expression_matrix_091421.csv";
+//    private final String MATRIX_FILE = "/Volumes/ssd/results/immport-ws/data_eng/immport_vaccine_expression_matrix_091421.csv";
+    private final String MATRIX_FILE = "src/main/resources/data/gene_expression_matrix.csv";
     
     public GeneMatrixProcessor() {
     }
@@ -266,21 +267,22 @@ public class GeneMatrixProcessor {
     @Test
     public void checkGeneNamesInMatrix() throws IOException {
         String fileName = MATRIX_FILE;
-        boolean hasQuotations = true;
-        // Check the merged, gene-name normalized file
-        String dir = "/Volumes/ssd/docs/Immport_VO_project_Nasim/";
-        String mergedFile = dir + "all_expr_all_genes_df_final_mapped_merged_051221.csv";
-        fileName = mergedFile;
-        
-        String filteredFile = dir + "all_expr_all_genes_df_final_mapped_merged_approved_genes_051321.csv";
-        fileName = filteredFile;
-        hasQuotations = false;
+        boolean hasQuotations = false;
+//        // Check the merged, gene-name normalized file
+//        String dir = "/Volumes/ssd/docs/Immport_VO_project_Nasim/";
+//        String mergedFile = dir + "all_expr_all_genes_df_final_mapped_merged_051221.csv";
+//        fileName = mergedFile;
+//        
+//        String filteredFile = dir + "all_expr_all_genes_df_final_mapped_merged_approved_genes_051321.csv";
+//        fileName = filteredFile;
+//        hasQuotations = false;
         
         FileReader fr = new FileReader(fileName);
         BufferedReader br = new BufferedReader(fr);
         int totalLines = 0;
         Set<String> allGenes = new HashSet<>();
-        String line = br.readLine(); // Head line
+        String line = br.readLine(); // Header line
+        System.out.println("Total samples: " + ((line.split(",")).length - 1));
         while ((line = br.readLine()) != null) {
             String[] tokens = line.split(",");
             String gene = null;
@@ -301,7 +303,7 @@ public class GeneMatrixProcessor {
         System.out.println("Total names mapped to more than one symbol: " + synsWithMoreThanOneGene.size());
         synsWithMoreThanOneGene.retainAll(allGenes);
         System.out.println("Used in the matrix file: " + synsWithMoreThanOneGene.size());
-//        synsWithMoreThanOneGene.stream().sorted().forEach(System.out::println);
+        synsWithMoreThanOneGene.stream().sorted().forEach(System.out::println);
         // For these names that can be mapped to more than one gene symbol, try to use 
         // previous symbols only
         Map<String, Set<String>> geneToPreSymols = loadGeneToSynonyms(true);

@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -56,6 +58,122 @@ public class BioSampleMetaDataProcessor {
     private final String SAMPLE_META_FILE = "src/main/resources/data/biosample_metadata.csv";
     
     public BioSampleMetaDataProcessor() {
+    }
+    
+    /**
+     * This method is used to generate some stats from the meta file.
+     * @throws IOException
+     */
+    @Test
+    public void calculateStats() throws IOException {
+    	// As of May 9, 2022, SAMPLE_META_FILE should point to output/ImmuneExposureGeneExpression_020922.csv
+    	String src = SAMPLE_META_FILE;
+        FileReader reader = new FileReader(src);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+        // Studies, subjects, min age and max age, vaccine ids, biosamples, min days and max days, type and subtype,
+    	// biosamples, gsm, gse, gpl
+    	Set<String> studies = new HashSet<String>();
+    	Set<String> subjects = new HashSet<>();
+    	double minAge = Double.MAX_VALUE;
+    	double maxAge = Double.MIN_VALUE;
+    	Set<String> vaccines = new HashSet<>();
+    	double minDays = Double.MAX_VALUE;
+    	double maxDays = Double.MIN_VALUE;
+    	Set<String> types = new HashSet<>();
+    	Set<String> subtypes = new HashSet<>();
+    	Set<String> biosamples = new HashSet<>();
+    	Set<String> gsms = new HashSet<>();
+    	Set<String> gses = new HashSet<>();
+    	Set<String> gpls = new HashSet<>();
+    	Set<String> races = new HashSet<>();
+    	int totalRows = 0;
+    	// For individual vaccine
+    	Map<String, VaccineRelatedStats> vaccine2info = new HashMap<>();
+    	for (CSVRecord record : records) {
+    		totalRows ++;
+    		studies.add(record.get("immport_study_accession"));
+    		subjects.add(record.get("immport_subject_accession"));
+    		double minAge1 = Double.parseDouble(record.get("study_min_age"));
+    		if (minAge1 < minAge) minAge = minAge1;
+    		double maxAge1 = Double.parseDouble(record.get("study_max_age"));
+    		if (maxAge1 > maxAge) maxAge = maxAge1;
+    		vaccines.add(record.get("immport_immune_exposure_material_id"));
+    		double day = Double.parseDouble(record.get("immport_vaccination_time"));
+    		if (day < minDays) minDays = day;
+    		if (day > maxDays) maxDays = day;
+    		types.add(record.get("biosample_type"));
+    		subtypes.add(record.get("subtype"));
+    		biosamples.add(record.get("immport_biosample_accession"));
+    		gsms.add(record.get("gsm"));
+    		gses.add(record.get("gse"));
+    		gpls.add(record.get("gpl"));
+    		races.add(record.get("race"));
+    		// Collect the vaccine specific information
+    		VaccineRelatedStats vaccineStats = vaccine2info.get(record.get("vaccine"));
+    		if (vaccineStats == null) {
+    			vaccineStats = new VaccineRelatedStats();
+    			vaccineStats.vaccine = record.get("vaccine");
+    			vaccineStats.vaccineId = record.get("immport_immune_exposure_material_id");
+    			vaccine2info.put(vaccineStats.vaccine, vaccineStats);
+    		}
+    		vaccineStats.studies.add(record.get("immport_study_accession"));
+    		vaccineStats.subjects.add(record.get("immport_subject_accession"));
+    		if (minAge1 < vaccineStats.minAge) vaccineStats.minAge = minAge1;
+    		if (maxAge1 > vaccineStats.maxAge) vaccineStats.maxAge = maxAge1;
+    		if (day < vaccineStats.minDays) vaccineStats.minDays = day;
+    		if (day > vaccineStats.maxDays) vaccineStats.maxDays = day;
+    		vaccineStats.cellTypes.add(record.get("biosample_type"));
+    		vaccineStats.cellSubTypes.add(record.get("subtype"));
+    		vaccineStats.biosamples.add(record.get("immport_biosample_accession"));
+    		vaccineStats.gsms.add(record.get("gsm"));
+    		vaccineStats.gses.add(record.get("gse"));
+    		vaccineStats.gpls.add(record.get("gpl"));
+    		vaccineStats.races.add(record.get("race"));
+    	}
+    	System.out.println("Total studies: " + studies.size());
+    	System.out.println("Total subjects: " + subjects.size());
+    	System.out.println("Min age: " + minAge);
+    	System.out.println("Max age: " + maxAge);
+    	System.out.println("Total vaccines: " + vaccines.size());
+    	System.out.println("Min day: " + minDays);
+    	System.out.println("Max day: " + maxDays);
+    	System.out.println("Total types: " + types.size());
+    	System.out.println("Total subtypes: " + subtypes.size());
+    	System.out.println("Total biosamples: " + biosamples.size());
+    	System.out.println("Total GSMs: " + gsms.size());
+    	System.out.println("Total GSEs: " + gses.size());
+    	System.out.println("Total GPLs: " + gpls.size());
+    	System.out.println("Total races: " + races.size());
+    	System.out.println("Total rows: " + totalRows);
+    	
+    	System.out.println("\nVaccine based stats:");
+    	List<String> vaccineList = vaccine2info.keySet().stream().sorted().collect(Collectors.toList());
+    	StringBuilder builder = new StringBuilder();
+    	String headers = "Vaccine\tVO_ID\tCategories\t" + 
+    	                 "Races\tminAge\tMaxAge\tminDays\t" +
+    			         "maxDays\tCell_Types\tCell_Subtypes\t" + 
+    	                 "Biosamples\tGSMs\tGSEs\tGPLs\tStudies";
+    	System.out.println(headers);
+    	for (String vaccine : vaccineList) {
+    		VaccineRelatedStats stats = vaccine2info.get(vaccine);
+    		builder.append(vaccine).append("\t");
+    		builder.append(stats.vaccineId).append("\t");
+    		builder.append("\t"); // To be filled manually
+    		builder.append(stats.races.size()).append("\t");
+    		builder.append(stats.minAge).append("\t");
+    		builder.append(stats.maxAge).append("\t");
+    		builder.append(stats.minDays).append("\t");
+    		builder.append(stats.maxDays).append("\t");
+    		builder.append(stats.cellTypes.size()).append("\t");
+    		builder.append(stats.cellSubTypes.size()).append("\t");
+    		builder.append(stats.biosamples.size()).append("\t");
+    		builder.append(stats.gsms.size()).append("\t");
+    		builder.append(stats.gses.size()).append("\t");
+    		builder.append(stats.gpls.size()).append("\t");
+    		builder.append(stats.studies.size()).append("\t");
+    		System.out.println(builder.toString());
+    		builder.setLength(0);
+    	}
     }
     
     /**
@@ -427,7 +545,7 @@ public class BioSampleMetaDataProcessor {
         // Perform some pairwise overlapping analysis
         List<String> gseList = gse2gsms.keySet().stream().sorted().collect(Collectors.toList());
         // The first gse should be replaced by the second gse since the second gse contains all GSM ids in the first gse
-        // and it has the largest accession number
+        // and it has the larger accession number
         Map<String, String> gse2gse = new HashMap<>();
         for (int i = 0; i < gseList.size() - 1; i++) {
             String gse1 = gseList.get(i);
@@ -864,6 +982,27 @@ public class BioSampleMetaDataProcessor {
         Set<String> subtypes = gsmToSubType.values().stream().collect(Collectors.toSet());
         System.out.println("Total sub-types: " + subtypes.size());
         subtypes.stream().sorted().forEach(System.out::println);
+    }
+    
+    private class VaccineRelatedStats {
+    	String vaccine;
+    	String vaccineId;
+    	Set<String> studies = new HashSet<>();
+    	Set<String> races = new HashSet<>();
+    	double minAge = Double.MAX_VALUE;
+    	double maxAge = 0.0d;
+    	double minDays = Double.MAX_VALUE;
+    	double maxDays = -minDays;
+    	Set<String> cellTypes = new HashSet<>();
+    	Set<String> cellSubTypes = new HashSet<>();
+    	Set<String> biosamples = new HashSet<>();
+    	Set<String> subjects = new HashSet<>();
+    	Set<String> gses = new HashSet<>();
+    	Set<String> gsms = new HashSet<>();
+    	Set<String> gpls= new HashSet<>();
+    	
+    	public VaccineRelatedStats() {
+    	}
     }
 
 }

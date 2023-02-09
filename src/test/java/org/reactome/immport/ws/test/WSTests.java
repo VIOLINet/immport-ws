@@ -29,6 +29,9 @@ public class WSTests {
     protected final String HTTP_POST = "Post";
     protected final String HTTP_GET = "Get";
 
+    public WSTests() {
+    	
+    }
     
     @Test
     public void testGetStudy() throws Exception {

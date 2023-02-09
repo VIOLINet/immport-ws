@@ -279,10 +279,12 @@ public class ReactomeAnalysisService {
 			response = response.replaceAll("\\\\", "");
 			response = response.substring(2, response.length()-2);
 			return structureBiosampleAnalysis(response);
-
-			
 		} catch (IOException e) {
 			logger.error(e);
+			// Let's try to restart reservice
+			logger.info("Restarting rservice...");
+			rservice.restart();
+			logger.info("Restarting done.");
 			return new ArrayList<>();
 		}
 	}
